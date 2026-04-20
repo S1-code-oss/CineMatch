@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineMatch - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF3366;
+            --primary-dark: #CC0033;
+            --bg-dark: #0A0A0A;
+            --bg-card: #1A1A1A;
+            --bg-elevated: #252525;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --text-tertiary: #666666;
+            --accent-blue: #00D9FF;
+            --accent-purple: #9D4EDD;
+            --accent-yellow: #FFD60A;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Animated background gradient */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 51, 102, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(157, 78, 221, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0, 217, 255, 0.1) 0%, transparent 50%);
+            animation: gradientShift 20s ease infinite;
+            pointer-events: none;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        /* Grain texture overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+        }
+
+        /* Left side - Branding */
+        .brand-side {
+            padding: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--primary), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .tagline {
+            font-size: 24px;
+            color: var(--text-secondary);
+            margin-bottom: 60px;
+            font-weight: 300;
+            line-height: 1.5;
+            animation: fadeInUp 0.8s ease 0.1s backwards;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-bottom: 60px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            font-size: 18px;
+            color: var(--text-secondary);
+            animation: fadeInUp 0.8s ease backwards;
+        }
+
+        .feature-item:nth-child(1) { animation-delay: 0.2s; }
+        .feature-item:nth-child(2) { animation-delay: 0.3s; }
+        .feature-item:nth-child(3) { animation-delay: 0.4s; }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .floating-cards {
+            position: absolute;
+            bottom: 80px;
+            left: 80px;
+            display: flex;
+            gap: 12px;
+            animation: fadeInUp 0.8s ease 0.6s backwards;
+        }
+
+        .movie-mini-card {
+            width: 100px;
+            height: 150px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2D2D2D, #1A1A1A);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .movie-mini-card:nth-child(2) { animation-delay: 0.5s; }
+        .movie-mini-card:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Right side - Form */
+        .form-side {
+            padding: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 16px 64px rgba(0, 0, 0, 0.4);
+            animation: fadeInScale 0.8s ease 0.2s backwards;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+
+        .form-subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 6px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 16px rgba(255, 51, 102, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-family: 'Outfit', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--bg-elevated);
+            box-shadow: 0 0 0 4px rgba(255, 51, 102, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .password-strength {
+            height: 4px;
+            background: var(--bg-card);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--accent-purple));
+            transition: width 0.3s ease;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .checkbox-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 51, 102, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 32px 0;
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--bg-elevated);
+        }
+
+        .footer-links {
+            text-align: center;
+            margin-top: 24px;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: var(--primary);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .brand-side {
+                display: none;
+            }
+
+            .form-side {
+                padding: 40px 24px;
+            }
+        }
+
+        /* Hidden by default */
+        .register-fields {
+            display: none;
+        }
+
+        .register-fields.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Side - Branding -->
+        <div class="brand-side">
+            <div class="logo">CineMatch</div>
+            <div class="tagline">Your personal movie companion.<br>Discover, track, and share your cinematic journey.</div>
+            
+            <ul class="feature-list">
+                <li class="feature-item">
+                    <div class="feature-icon">🎬</div>
+                    <span>Personalized recommendations based on your taste</span>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-icon">💫</div>
+                    <span>Find your perfect movie match with friends</span>
+                </li>
+                <li class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <span>Track your viewing stats and discover patterns</span>
+                </li>
+            </ul>
+
+            <div class="floating-cards">
+                <div class="movie-mini-card"></div>
+                <div class="movie-mini-card"></div>
+                <div class="movie-mini-card"></div>
+            </div>
+        </div>
+
+        <!-- Right Side - Form -->
+        <div class="form-side">
+            <div class="form-container">
+                <div class="form-header">
+                    <h1 class="form-title">Welcome Back</h1>
+                    <p class="form-subtitle">Sign in to continue your movie journey</p>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab('login')">Login</button>
+                    <button class="tab" onclick="switchTab('register')">Register</button>
+                </div>
+
+                <form id="authForm">
+                    <div class="register-fields">
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-input" placeholder="Choose a username">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" placeholder="you@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" placeholder="••••••••" id="password" oninput="updatePasswordStrength(this.value)" required>
+                        <div class="password-strength register-fields">
+                            <div class="password-strength-bar" id="strengthBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="register-fields">
+                        <div class="form-group">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-input" placeholder="••••••••">
+                        </div>
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" class="checkbox" id="remember">
+                        <label class="checkbox-label" for="remember">Remember me for 30 days</label>
+                    </div>
+
+                    <div class="register-fields checkbox-group">
+                        <input type="checkbox" class="checkbox" id="terms">
+                        <label class="checkbox-label" for="terms">I agree to the Terms of Service</label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span id="btnText">Sign In</span>
+                    </button>
+                </form>
+
+                <div class="footer-links">
+                    <a href="#" class="footer-link" id="forgotLink">Forgot password?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'login';
+
+        function switchTab(tab) {
+            currentTab = tab;
+            const tabs = document.querySelectorAll('.tab');
+            const registerFields = document.querySelectorAll('.register-fields');
+            const btnText = document.getElementById('btnText');
+            const formTitle = document.querySelector('.form-title');
+            const formSubtitle = document.querySelector('.form-subtitle');
+            const forgotLink = document.getElementById('forgotLink');
+
+            tabs.forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (tab === 'register') {
+                registerFields.forEach(field => field.classList.add('active'));
+                btnText.textContent = 'Create Account';
+                formTitle.textContent = 'Create Account';
+                formSubtitle.textContent = 'Join CineMatch and start discovering';
+                forgotLink.style.display = 'none';
+            } else {
+                registerFields.forEach(field => field.classList.remove('active'));
+                btnText.textContent = 'Sign In';
+                formTitle.textContent = 'Welcome Back';
+                formSubtitle.textContent = 'Sign in to continue your movie journey';
+                forgotLink.style.display = 'inline';
+            }
+        }
+
+        function updatePasswordStrength(password) {
+            if (currentTab !== 'register') return;
+            
+            const bar = document.getElementById('strengthBar');
+            let strength = 0;
+
+            if (password.length >= 8) strength += 25;
+            if (password.match(/[a-z]+/)) strength += 25;
+            if (password.match(/[A-Z]+/)) strength += 25;
+            if (password.match(/[0-9]+/)) strength += 25;
+
+            bar.style.width = strength + '%';
+        }
+
+        document.getElementById('authForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert(currentTab === 'login' ? 'Logging in...' : 'Creating account...');
+        });
+    </script>
+</body>
+</html>

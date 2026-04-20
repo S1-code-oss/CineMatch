@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineMatch - Profile & Stats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #FF3366;
+            --bg-dark: #0A0A0A;
+            --bg-card: #151515;
+            --bg-elevated: #1F1F1F;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --text-tertiary: #666666;
+            --accent-blue: #00D9FF;
+            --accent-purple: #9D4EDD;
+            --accent-yellow: #FFD60A;
+            --accent-green: #06FFA5;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 80px 40px;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
+            border-radius: 32px;
+            padding: 48px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 40px;
+            align-items: center;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .profile-avatar-large {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 72px;
+            font-weight: 800;
+            box-shadow: 0 16px 48px rgba(255, 51, 102, 0.3);
+            border: 6px solid var(--bg-dark);
+        }
+
+        .profile-info h1 {
+            font-size: 48px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 8px;
+        }
+
+        .profile-meta {
+            display: flex;
+            gap: 24px;
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 16px;
+        }
+
+        .profile-bio {
+            color: var(--text-secondary);
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #CC0033);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 40px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 8px;
+            animation: fadeInUp 0.6s ease 0.1s backwards;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--accent-purple));
+            color: white;
+            box-shadow: 0 4px 16px rgba(255, 51, 102, 0.3);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.6s ease 0.2s backwards;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 51, 102, 0.3);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255, 51, 102, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .stat-value {
+            font-size: 40px;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Chart Sections */
+        .chart-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.6s ease 0.3s backwards;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .chart-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -0.5px;
+        }
+
+        /* Rating Distribution */
+        .rating-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .rating-bar-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .rating-stars {
+            color: var(--accent-yellow);
+            font-size: 14px;
+            width: 80px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .rating-bar-bg {
+            flex: 1;
+            height: 32px;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .rating-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent-purple));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 12px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: width 0.6s ease;
+        }
+
+        /* Genre Chart */
+        .genre-chart {
+            position: relative;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pie-chart {
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--primary) 0% 35%,
+                var(--accent-purple) 35% 60%,
+                var(--accent-blue) 60% 80%,
+                var(--accent-yellow) 80% 95%,
+                var(--accent-green) 95% 100%
+            );
+            position: relative;
+            box-shadow: 0 0 60px rgba(255, 51, 102, 0.3);
+        }
+
+        .pie-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pie-center-value {
+            font-size: 32px;
+            font-weight: 900;
+        }
+
+        .pie-center-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .genre-legend {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .legend-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .legend-value {
+            margin-left: auto;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Decade Chart */
+        .decade-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 250px;
+            padding-top: 40px;
+        }
+
+        .decade-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .bar-container {
+            width: 100%;
+            max-width: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 100%;
+            position: relative;
+        }
+
+        .bar {
+            width: 100%;
+            background: linear-gradient(180deg, var(--primary), var(--accent-purple));
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .bar:hover {
+            filter: brightness(1.2);
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .bar-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* Activity Timeline */
+        .activity-timeline {
+            animation: fadeInUp 0.6s ease 0.4s backwards;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 24px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .timeline-time {
+            color: var(--text-tertiary);
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
+            width: 120px;
+        }
+
+        .timeline-content {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--bg-elevated);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .timeline-text {
+            flex: 1;
+        }
+
+        .timeline-text strong {
+            color: var(--text-primary);
+        }
+
+        .timeline-rating {
+            color: var(--accent-yellow);
+            margin-left: 8px;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chart-row {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-header {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .profile-avatar-large {
+                margin: 0 auto;
+            }
+
+            .profile-meta {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar-large">EA</div>
+            <div class="profile-info">
+                <h1>@eman_atif</h1>
+                <div class="profile-meta">
+                    <span>📍 Lahore, Pakistan</span>
+                    <span>🗓️ Member since March 2024</span>
+                </div>
+                <p class="profile-bio">
+                    Movie enthusiast | Sci-Fi lover | Always looking for the next mind-bending thriller
+                </p>
+            </div>
+            <div class="profile-actions">
+                <button class="btn btn-primary">⚙️ Settings</button>
+                <button class="btn btn-secondary">🔗 Share Profile</button>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active">📊 Stats</button>
+            <button class="tab">✍️ Reviews</button>
+            <button class="tab">💾 Watchlist</button>
+            <button class="tab">🏆 Awards</button>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🎬</div>
+                <div class="stat-value">156</div>
+                <div class="stat-label">Movies Rated</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-value">4.2</div>
+                <div class="stat-label">Average Rating</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-value">Action</div>
+                <div class="stat-label">Most Watched Genre</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-value">2010s</div>
+                <div class="stat-label">Favorite Decade</div>
+            </div>
+        </div>
+
+        <!-- Charts Row 1 -->
+        <div class="chart-row">
+            <div class="chart-card">
+                <h2 class="chart-title">Rating Distribution</h2>
+                <div class="rating-bars">
+                    <div class="rating-bar-item">
+                        <div class="rating-stars">⭐</div>
+                        <div class="rating-bar-bg">
+                            <div class="rating-bar-fill" style="width: 12%;">12%</div>
+                        </div>
+                    </div>
+                    <div class="rating-bar-item">
+                        <div class="rating-stars">⭐⭐</div>
+                        <div class="rating-bar-bg">
+                            <div class="rating-bar-fill" style="width: 18%;">18%</div>
+                        </div>
+                    </div>
+                    <div class="rating-bar-item">
+                        <div class="rating-stars">⭐⭐⭐</div>
+                        <div class="rating-bar-bg">
+                            <div class="rating-bar-fill" style="width: 35%;">35%</div>
+                        </div>
+                    </div>
+                    <div class="rating-bar-item">
+                        <div class="rating-stars">⭐⭐⭐⭐</div>
+                        <div class="rating-bar-bg">
+                            <div class="rating-bar-fill" style="width: 25%;">25%</div>
+                        </div>
+                    </div>
+                    <div class="rating-bar-item">
+                        <div class="rating-stars">⭐⭐⭐⭐⭐</div>
+                        <div class="rating-bar-bg">
+                            <div class="rating-bar-fill" style="width: 10%;">10%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h2 class="chart-title">Genre Breakdown</h2>
+                <div class="genre-chart">
+                    <div class="pie-chart">
+                        <div class="pie-center">
+                            <div class="pie-center-value">156</div>
+                            <div class="pie-center-label">Total</div>
+                        </div>
+                    </div>
+                    <div class="genre-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: var(--primary);"></div>
+                            <span class="legend-label">Action</span>
+                            <span class="legend-value">35%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: var(--accent-purple);"></div>
+                            <span class="legend-label">Sci-Fi</span>
+                            <span class="legend-value">25%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: var(--accent-blue);"></div>
+                            <span class="legend-label">Thriller</span>
+                            <span class="legend-value">20%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: var(--accent-yellow);"></div>
+                            <span class="legend-label">Drama</span>
+                            <span class="legend-value">15%</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: var(--accent-green);"></div>
+                            <span class="legend-label">Other</span>
+                            <span class="legend-value">5%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Row 2 -->
+        <div class="chart-row">
+            <div class="chart-card">
+                <h2 class="chart-title">Favorite Decades</h2>
+                <div class="decade-chart">
+                    <div class="decade-bar">
+                        <div class="bar-container">
+                            <div class="bar" style="height: 25%;">
+                                <span class="bar-value">12</span>
+                            </div>
+                        </div>
+                        <div class="bar-label">1980s</div>
+                    </div>
+                    <div class="decade-bar">
+                        <div class="bar-container">
+                            <div class="bar" style="height: 45%;">
+                                <span class="bar-value">28</span>
+                            </div>
+                        </div>
+                        <div class="bar-label">1990s</div>
+                    </div>
+                    <div class="decade-bar">
+                        <div class="bar-container">
+                            <div class="bar" style="height: 70%;">
+                                <span class="bar-value">45</span>
+                            </div>
+                        </div>
+                        <div class="bar-label">2000s</div>
+                    </div>
+                    <div class="decade-bar">
+                        <div class="bar-container">
+                            <div class="bar" style="height: 100%;">
+                                <span class="bar-value">58</span>
+                            </div>
+                        </div>
+                        <div class="bar-label">2010s</div>
+                    </div>
+                    <div class="decade-bar">
+                        <div class="bar-container">
+                            <div class="bar" style="height: 35%;">
+                                <span class="bar-value">13</span>
+                            </div>
+                        </div>
+                        <div class="bar-label">2020s</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h2 class="chart-title">Recent Activity</h2>
+                <div class="activity-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">2 days ago</div>
+                        <div class="timeline-content">
+                            <div class="timeline-icon">⭐</div>
+                            <div class="timeline-text">
+                                Rated <strong>The Dark Knight</strong>
+                                <span class="timeline-rating">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">3 days ago</div>
+                        <div class="timeline-content">
+                            <div class="timeline-icon">💾</div>
+                            <div class="timeline-text">
+                                Added <strong>Dune: Part Two</strong> to watchlist
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">1 week ago</div>
+                        <div class="timeline-content">
+                            <div class="timeline-icon">✍️</div>
+                            <div class="timeline-text">
+                                Wrote review for <strong>Interstellar</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">1 week ago</div>
+                        <div class="timeline-content">
+                            <div class="timeline-icon">🎯</div>
+                            <div class="timeline-text">
+                                Created CineBlend with <strong>@sara_anwaar</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">2 weeks ago</div>
+                        <div class="timeline-content">
+                            <div class="timeline-icon">⭐</div>
+                            <div class="timeline-text">
+                                Rated <strong>Inception</strong>
+                                <span class="timeline-rating">⭐⭐⭐⭐⭐</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animate bars on load
+        window.addEventListener('load', () => {
+            const ratingFills = document.querySelectorAll('.rating-bar-fill');
+            ratingFills.forEach((fill, index) => {
+                const width = fill.style.width;
+                fill.style.width = '0%';
+                setTimeout(() => {
+                    fill.style.width = width;
+                }, 300 + (index * 100));
+            });
+
+            const bars = document.querySelectorAll('.bar');
+            bars.forEach((bar, index) => {
+                const height = bar.style.height;
+                bar.style.height = '0%';
+                setTimeout(() => {
+                    bar.style.height = height;
+                }, 500 + (index * 100));
+            });
+        });
+    </script>
+</body>
+</html>
