@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineMatch - Trending</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #FF3366; --primary-dark: #CC0033;
+            --bg-dark: #0A0A0A; --bg-card: #151515; --bg-elevated: #1F1F1F;
+            --text-primary: #FFFFFF; --text-secondary: #A0A0A0; --text-tertiary: #666666;
+            --accent-blue: #00D9FF; --accent-purple: #9D4EDD; --accent-yellow: #FFD60A; --accent-green: #06FFA5;
+        }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-dark); color: var(--text-primary); overflow-x: hidden; }
+        body::before { content: ''; position: fixed; top:0;left:0;right:0;bottom:0; background: radial-gradient(circle at 10% 20%, rgba(255,51,102,0.08) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(157,78,221,0.08) 0%, transparent 40%); pointer-events: none; z-index: 0; }
+        .main-container { position: relative; z-index: 1; min-height: 100vh; }
+
+        .nav { position: sticky; top: 0; background: rgba(10,10,10,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 40px; z-index: 100; height: 80px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-left { display: flex; align-items: center; gap: 48px; }
+        .logo { font-size: 28px; font-weight: 800; letter-spacing: -1px; background: linear-gradient(135deg, var(--primary), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-link { color: var(--text-secondary); text-decoration: none; font-size: 15px; font-weight: 500; transition: all 0.3s ease; position: relative; }
+        .nav-link:hover, .nav-link.active { color: var(--text-primary); }
+        .nav-link.active::after { content: ''; position: absolute; bottom: -28px; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent-purple)); border-radius: 2px 2px 0 0; }
+        .nav-right { display: flex; align-items: center; gap: 24px; }
+        .search-bar { position: relative; width: 300px; }
+        .search-input { width: 100%; padding: 12px 20px 12px 44px; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; color: var(--text-primary); font-size: 14px; font-family: 'Outfit', sans-serif; transition: all 0.3s ease; }
+        .search-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255,51,102,0.1); }
+        .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); pointer-events: none; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); display: flex; align-items: center; justify-content: center; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .user-avatar:hover { transform: scale(1.1); box-shadow: 0 4px 16px rgba(157,78,221,0.4); }
+
+        .page-content { padding: 48px 80px 80px; }
+        .page-header { margin-bottom: 16px; animation: fadeInUp 0.5s ease; }
+        .page-header h1 { font-size: 42px; font-weight: 900; letter-spacing: -2px; margin-bottom: 8px; }
+        .page-header p { color: var(--text-secondary); font-size: 16px; font-weight: 300; }
+        .highlight { color: var(--primary); }
+
+        .window-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(255,51,102,0.1); border: 1px solid rgba(255,51,102,0.3); border-radius: 24px; font-size: 13px; font-weight: 600; margin-bottom: 36px; animation: fadeInUp 0.5s ease 0.05s backwards; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.7;transform:scale(1.2)} }
+
+        /* TOP 3 PODIUM */
+        .podium { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 16px; margin-bottom: 48px; animation: fadeInUp 0.5s ease 0.1s backwards; align-items: end; }
+
+        .podium-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; overflow: hidden; cursor: pointer; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); position: relative; }
+        .podium-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(0,0,0,0.6); }
+        .podium-card.gold { border-color: rgba(255,214,10,0.4); }
+        .podium-card.gold:hover { border-color: var(--accent-yellow); }
+        .podium-card.silver { border-color: rgba(160,160,160,0.3); }
+        .podium-card.bronze { border-color: rgba(255,107,53,0.3); }
+
+        .rank-badge { position: absolute; top: 12px; left: 12px; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; font-family: 'JetBrains Mono', monospace; z-index: 3; }
+        .gold .rank-badge { background: var(--accent-yellow); color: #000; }
+        .silver .rank-badge { background: #A0A0A0; color: #000; }
+        .bronze .rank-badge { background: #FF6B35; color: #fff; }
+
+        .podium-poster { width: 100%; aspect-ratio: 2/3; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card)); display: flex; align-items: center; justify-content: center; font-size: 64px; position: relative; overflow: hidden; }
+        .podium-poster::after { content: ''; position: absolute; top:0;left:0;right:0;bottom:0; background: linear-gradient(to top, var(--bg-card), transparent 60%); }
+        .activity-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; z-index: 2; }
+        .gold .activity-bar { background: var(--accent-yellow); }
+        .silver .activity-bar { background: #A0A0A0; }
+        .bronze .activity-bar { background: #FF6B35; }
+
+        .podium-info { padding: 16px; }
+        .podium-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+        .podium-meta { display: flex; justify-content: space-between; align-items: center; color: var(--text-tertiary); font-size: 13px; margin-bottom: 10px; }
+        .podium-rating { color: var(--accent-yellow); font-weight: 600; }
+        .activity-count { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent-green); font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+
+        /* REST OF LIST */
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .section-title { font-size: 28px; font-weight: 700; letter-spacing: -1px; }
+
+        .trending-list { display: flex; flex-direction: column; gap: 12px; animation: fadeInUp 0.5s ease 0.2s backwards; }
+
+        .trending-item { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 20px; cursor: pointer; transition: all 0.3s ease; }
+        .trending-item:hover { transform: translateX(4px); border-color: rgba(255,51,102,0.2); background: var(--bg-elevated); }
+
+        .trend-rank { font-size: 20px; font-weight: 900; font-family: 'JetBrains Mono', monospace; color: var(--text-tertiary); width: 32px; text-align: center; flex-shrink: 0; }
+        .trend-poster { width: 48px; height: 68px; border-radius: 8px; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card)); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+        .trend-info { flex: 1; }
+        .trend-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+        .trend-meta { font-size: 13px; color: var(--text-secondary); display: flex; gap: 16px; }
+        .trend-rating { color: var(--accent-yellow); font-weight: 600; }
+        .trend-activity { display: flex; align-items: center; gap: 6px; font-size: 13px; font-family: 'JetBrains Mono', monospace; color: var(--accent-green); font-weight: 500; white-space: nowrap; }
+        .trend-genres { display: flex; gap: 6px; }
+        .genre-tag { padding: 4px 10px; background: rgba(255,255,255,0.05); border-radius: 12px; font-size: 11px; font-weight: 500; color: var(--text-secondary); }
+        .icon-btn { width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; font-size: 18px; flex-shrink: 0; }
+        .icon-btn:hover { background: var(--primary); border-color: var(--primary); transform: scale(1.1); }
+
+        .trending-item:nth-child(1) { animation: fadeInUp 0.5s ease 0.2s backwards; }
+        .trending-item:nth-child(2) { animation: fadeInUp 0.5s ease 0.25s backwards; }
+        .trending-item:nth-child(3) { animation: fadeInUp 0.5s ease 0.3s backwards; }
+        .trending-item:nth-child(4) { animation: fadeInUp 0.5s ease 0.35s backwards; }
+        .trending-item:nth-child(5) { animation: fadeInUp 0.5s ease 0.4s backwards; }
+        .trending-item:nth-child(6) { animation: fadeInUp 0.5s ease 0.45s backwards; }
+        .trending-item:nth-child(7) { animation: fadeInUp 0.5s ease 0.5s backwards; }
+
+        @keyframes fadeInUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+
+        @media (max-width: 1024px) {
+            .page-content { padding: 40px; }
+            .nav-links { display: none; }
+            .podium { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="main-container">
+    <nav class="nav">
+        <div class="nav-left">
+            <a href="cinematch-browse.html" class="logo">CineMatch</a>
+            <ul class="nav-links">
+                <li><a href="cinematch-browse.html" class="nav-link">Browse</a></li>
+                <li><a href="watchlist.html" class="nav-link">Watchlist</a></li>
+                <li><a href="recommendations.html" class="nav-link">For You</a></li>
+                <li><a href="cinematch-cineblend.html" class="nav-link">CineBlend</a></li>
+                <li><a href="trending.html" class="nav-link active">Trending</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <div class="search-bar"><span class="search-icon">🔍</span><input type="text" class="search-input" placeholder="Search movies..."></div>
+            <div class="user-avatar">EA</div>
+        </div>
+    </nav>
+
+    <div class="page-content">
+        <div class="page-header">
+            <h1><span class="highlight">Trending</span> Now</h1>
+            <p>Movies with the most rating and watchlist activity this week</p>
+        </div>
+
+        <div class="window-badge">
+            <span class="dot"></span>
+            Rolling 7-day window · Updates daily
+        </div>
+
+        <!-- TOP 3 PODIUM -->
+        <div class="podium">
+            <div class="podium-card silver">
+                <div class="rank-badge">2</div>
+                <div class="podium-poster">🎬<div class="activity-bar"></div></div>
+                <div class="podium-info">
+                    <div class="podium-title">Oppenheimer</div>
+                    <div class="podium-meta"><span>Drama · 2023</span><span class="podium-rating">⭐ 4.8</span></div>
+                    <div class="activity-count">▲ 1,240 ratings this week</div>
+                </div>
+            </div>
+            <div class="podium-card gold">
+                <div class="rank-badge">1</div>
+                <div class="podium-poster">🎬<div class="activity-bar"></div></div>
+                <div class="podium-info">
+                    <div class="podium-title">Dune: Part Two</div>
+                    <div class="podium-meta"><span>Sci-Fi · 2024</span><span class="podium-rating">⭐ 4.9</span></div>
+                    <div class="activity-count">▲ 2,381 ratings this week</div>
+                </div>
+            </div>
+            <div class="podium-card bronze">
+                <div class="rank-badge">3</div>
+                <div class="podium-poster">🎬<div class="activity-bar"></div></div>
+                <div class="podium-info">
+                    <div class="podium-title">Poor Things</div>
+                    <div class="podium-meta"><span>Drama · 2023</span><span class="podium-rating">⭐ 4.6</span></div>
+                    <div class="activity-count">▲ 987 ratings this week</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REST OF LIST -->
+        <div class="section-header">
+            <h2 class="section-title">This Week's Rankings</h2>
+        </div>
+        <div class="trending-list">
+            <div class="trending-item">
+                <div class="trend-rank">4</div>
+                <div class="trend-poster">🎬</div>
+                <div class="trend-info">
+                    <div class="trend-title">The Zone of Interest</div>
+                    <div class="trend-meta"><span>Drama · 2023</span><span class="trend-rating">⭐ 4.5</span></div>
+                </div>
+                <div class="trend-genres"><span class="genre-tag">Drama</span><span class="genre-tag">History</span></div>
+                <div class="trend-activity">▲ 741</div>
+                <button class="icon-btn" onclick="toggleWatchlist(this)">♡</button>
+            </div>
+            <div class="trending-item">
+                <div class="trend-rank">5</div>
+                <div class="trend-poster">🎬</div>
+                <div class="trend-info">
+                    <div class="trend-title">Killers of the Flower Moon</div>
+                    <div class="trend-meta"><span>Thriller · 2023</span><span class="trend-rating">⭐ 4.7</span></div>
+                </div>
+                <div class="trend-genres"><span class="genre-tag">Thriller</span><span class="genre-tag">Drama</span></div>
+                <div class="trend-activity">▲ 698</div>
+                <button class="icon-btn" onclick="toggleWatchlist(this)">♡</button>
+            </div>
+            <div class="trending-item">
+                <div class="trend-rank">6</div>
+                <div class="trend-poster">🎬</div>
+                <div class="trend-info">
+                    <div class="trend-title">Past Lives</div>
+                    <div class="trend-meta"><span>Drama · 2023</span><span class="trend-rating">⭐ 4.6</span></div>
+                </div>
+                <div class="trend-genres"><span class="genre-tag">Drama</span><span class="genre-tag">Romance</span></div>
+                <div class="trend-activity">▲ 634</div>
+                <button class="icon-btn" onclick="toggleWatchlist(this)">♡</button>
+            </div>
+            <div class="trending-item">
+                <div class="trend-rank">7</div>
+                <div class="trend-poster">🎬</div>
+                <div class="trend-info">
+                    <div class="trend-title">Inception</div>
+                    <div class="trend-meta"><span>Sci-Fi · 2010</span><span class="trend-rating">⭐ 4.8</span></div>
+                </div>
+                <div class="trend-genres"><span class="genre-tag">Sci-Fi</span><span class="genre-tag">Action</span></div>
+                <div class="trend-activity">▲ 512</div>
+                <button class="icon-btn" onclick="toggleWatchlist(this)">♡</button>
+            </div>
+            <div class="trending-item">
+                <div class="trend-rank">8</div>
+                <div class="trend-poster">🎬</div>
+                <div class="trend-info">
+                    <div class="trend-title">The Holdovers</div>
+                    <div class="trend-meta"><span>Comedy · 2023</span><span class="trend-rating">⭐ 4.5</span></div>
+                </div>
+                <div class="trend-genres"><span class="genre-tag">Comedy</span><span class="genre-tag">Drama</span></div>
+                <div class="trend-activity">▲ 487</div>
+                <button class="icon-btn" onclick="toggleWatchlist(this)">♡</button>
+            </div>
+            <div class="trending-item">
+                <div class="trend-rank">9</div>
+                <div class="trend-poster">🎬</div>
+                <div class="trend-info">
+                    <div class="trend-title">Saltburn</div>
+                    <div class="trend-meta"><span>Thriller · 2023</span><span class="trend-rating">⭐ 4.3</span></div>
+                </div>
+                <div class="trend-genres"><span class="genre-tag">Thriller</span><span class="genre-tag">Drama</span></div>
+                <div class="trend-activity">▲ 463</div>
+                <button class="icon-btn" onclick="toggleWatchlist(this)">♡</button>
+            </div>
+            <div class="trending-item">
+                <div class="trend-rank">10</div>
+                <div class="trend-poster">🎬</div>
+                <div class="trend-info">
+                    <div class="trend-title">Parasite</div>
+                    <div class="trend-meta"><span>Thriller · 2019</span><span class="trend-rating">⭐ 4.8</span></div>
+                </div>
+                <div class="trend-genres"><span class="genre-tag">Thriller</span><span class="genre-tag">Drama</span></div>
+                <div class="trend-activity">▲ 401</div>
+                <button class="icon-btn" onclick="toggleWatchlist(this)">♡</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function toggleWatchlist(btn) {
+        btn.textContent = btn.textContent === '♡' ? '♥' : '♡';
+        btn.style.color = btn.textContent === '♥' ? 'var(--primary)' : '';
+    }
+</script>
+</body>
+</html>
