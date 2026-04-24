@@ -6,6 +6,8 @@ from auth      import auth_bp
 from movies    import movies_bp
 from ratings   import ratings_bp
 from reviews   import reviews_bp
+from cineblend  import cineblend_bp
+
 load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -21,6 +23,8 @@ app.register_blueprint(auth_bp,       url_prefix="/api")
 app.register_blueprint(movies_bp,     url_prefix="/api")
 app.register_blueprint(ratings_bp,    url_prefix="/api")
 app.register_blueprint(reviews_bp,    url_prefix="/api")
+app.register_blueprint(cineblend_bp,  url_prefix="/api")
+
 @app.route("/")
 @app.route("/login")
 def login_page():
