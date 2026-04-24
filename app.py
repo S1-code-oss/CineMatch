@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from auth      import auth_bp
 from movies    import movies_bp
 from ratings   import ratings_bp
-
+from reviews   import reviews_bp
 load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -20,7 +20,7 @@ CORS(app, supports_credentials=True)
 app.register_blueprint(auth_bp,       url_prefix="/api")
 app.register_blueprint(movies_bp,     url_prefix="/api")
 app.register_blueprint(ratings_bp,    url_prefix="/api")
-
+app.register_blueprint(reviews_bp,    url_prefix="/api")
 @app.route("/")
 @app.route("/login")
 def login_page():
