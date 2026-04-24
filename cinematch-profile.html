@@ -725,7 +725,7 @@
     </div>
 
     <script>
-        // Animate bars on load
+         // Animate bars on load
         window.addEventListener('load', () => {
             const ratingFills = document.querySelectorAll('.rating-bar-fill');
             ratingFills.forEach((fill, index) => {
@@ -745,6 +745,50 @@
                 }, 500 + (index * 100));
             });
         });
+
+        // Tab switching
+document.querySelectorAll('.tab').forEach((tab, index) => {
+    tab.addEventListener('click', function () {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        // Backend will load tab content — for now just log
+        const tabs = ['stats', 'reviews', 'watchlist', 'awards'];
+        console.log('Tab switched to:', tabs[index]);
+    });
+});
+
+// Tab switching
+const tabs = document.querySelectorAll('.tab');
+const tabNames = ['stats', 'reviews', 'watchlist', 'awards'];
+
+tabs.forEach((tab, index) => {
+    tab.addEventListener('click', function() {
+        tabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        console.log('Tab:', tabNames[index]);
+        // Backend will load actual content per tab
+    });
+});
+
+// Settings button
+document.querySelector('.btn-primary').addEventListener('click', function() {
+    alert('Settings page will be added by the backend.');
+});
+
+// Share Profile button
+document.querySelector('.btn-secondary').addEventListener('click', function() {
+    const btn = this;
+    btn.textContent = '✓ Link Copied!';
+    btn.style.color = '#06FFA5';
+    btn.style.borderColor = '#06FFA5';
+    setTimeout(() => {
+        btn.textContent = '🔗 Share Profile';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+    }, 2000);
+});
+
+
     </script>
 </body>
 </html>
