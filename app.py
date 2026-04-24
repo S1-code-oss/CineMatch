@@ -8,6 +8,7 @@ from ratings   import ratings_bp
 from reviews   import reviews_bp
 from cineblend  import cineblend_bp
 from trending   import trending_bp
+from watchlist  import watchlist_bp
 
 load_dotenv()
 
@@ -26,6 +27,7 @@ app.register_blueprint(ratings_bp,    url_prefix="/api")
 app.register_blueprint(reviews_bp,    url_prefix="/api")
 app.register_blueprint(cineblend_bp,  url_prefix="/api")
 app.register_blueprint(trending_bp,   url_prefix="/api")
+app.register_blueprint(watchlist_bp,  url_prefix="/api")
 
 @app.route("/")
 @app.route("/login")
@@ -47,6 +49,10 @@ def cineblend_page():
 @app.route("/trending")
 def trending_page():
     return send_from_directory(BASE_DIR, "cinematch-trending.html")
+
+@app.route("/watchlist")
+def watchlist_page():
+    return send_from_directory(BASE_DIR, "cinematch-watchlist.html")
 
 #dashboard and admin/dashboard both redirect to browse for now
 @app.route("/dashboard")
