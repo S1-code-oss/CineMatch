@@ -13,6 +13,6 @@ def get_connection():
         f"DRIVER={{ODBC Driver 17 for SQL Server}};"
         f"SERVER={server};"
         f"DATABASE={database};"
-        "Trusted_Connection=yes;"   # Windows auth — no username/password needed
+        "Trusted_Connection=yes;"   # Windows auth no username/password needed
     )
     return pyodbc.connect(conn_str)

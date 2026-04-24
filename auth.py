@@ -1,6 +1,5 @@
 """
-UC-01: Logging In / Registering
-Handles: login, register, logout
+UC01 logging in/ registering handles login, register, logout
 """
 
 from flask import Blueprint, request, jsonify, session
@@ -18,8 +17,8 @@ def _is_valid_email(email: str) -> bool:
 
 def _is_strong_password(password: str) -> bool:
     """
-    Password must be at least 8 characters and contain at least one
-    uppercase letter, one lowercase letter, and one digit.
+    Password be at least 8 characters and contain at least 1
+    uc letter, 1 lc letter, one digit
     """
     if len(password) < 8:
         return False

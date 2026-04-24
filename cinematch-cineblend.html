@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CineMatch - CineBlend</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -35,7 +38,6 @@
             min-height: 100vh;
         }
 
-        /* Animated background */
         body::before {
             content: '';
             position: fixed;
@@ -43,7 +45,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
+            background:
                 radial-gradient(circle at 20% 50%, rgba(255, 51, 102, 0.12) 0%, transparent 40%),
                 radial-gradient(circle at 80% 50%, rgba(157, 78, 221, 0.12) 0%, transparent 40%);
             animation: pulse 8s ease-in-out infinite;
@@ -51,8 +53,51 @@
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 60px rgba(255, 51, 102, 0.3), inset 0 0 40px rgba(0, 0, 0, 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 80px rgba(255, 51, 102, 0.5), inset 0 0 40px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .container {
@@ -62,7 +107,6 @@
             padding: 80px 40px;
         }
 
-        /* Header */
         .header {
             text-align: center;
             margin-bottom: 60px;
@@ -99,12 +143,122 @@
             font-weight: 300;
         }
 
-        /* Results Section */
-        .results {
+        /* ── Input screen ─────────────────────────────────────── */
+        #inputScreen {
+            max-width: 560px;
+            margin: 0 auto;
+            text-align: center;
             animation: fadeInUp 0.8s ease 0.2s backwards;
         }
 
-        /* Compatibility Score */
+        .input-card {
+            background: var(--bg-card);
+            border-radius: 32px;
+            padding: 56px 48px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .input-emoji {
+            font-size: 64px;
+            margin-bottom: 24px;
+        }
+
+        .input-card h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+        }
+
+        .input-card p {
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        #friendInput {
+            flex: 1;
+            padding: 16px 20px;
+            background: var(--bg-elevated);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #friendInput:focus {
+            border-color: var(--primary);
+        }
+
+        #friendInput::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .btn-blend {
+            padding: 16px 28px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-blend:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 51, 102, 0.4);
+        }
+
+        .btn-blend:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #blendError {
+            color: #ff6b6b;
+            font-size: 14px;
+            min-height: 20px;
+        }
+
+        /* ── Loading ──────────────────────────────────────────── */
+        #loadingScreen {
+            display: none;
+            text-align: center;
+            padding: 80px 0;
+        }
+
+        .spinner {
+            width: 56px;
+            height: 56px;
+            border: 4px solid rgba(255, 51, 102, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+            margin: 0 auto 24px;
+        }
+
+        /* ── Results screen ───────────────────────────────────── */
+        #resultsScreen {
+            display: none;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+        }
+
+        /* ── Compatibility section ────────────────────────────── */
         .compatibility-section {
             background: var(--bg-card);
             border-radius: 32px;
@@ -122,17 +276,8 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: conic-gradient(
-                from 0deg,
-                transparent,
-                rgba(255, 51, 102, 0.1),
-                transparent 30%
-            );
+            background: conic-gradient(from 0deg, transparent, rgba(255, 51, 102, 0.1), transparent 30%);
             animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            100% { transform: rotate(360deg); }
         }
 
         .compatibility-content {
@@ -174,35 +319,51 @@
             font-size: 14px;
         }
 
+        /* Genre bars under avatars */
         .profile-genres {
             margin-top: 16px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             align-items: center;
         }
 
+        .genre-bar-row {
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .genre-bar-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-bottom: 5px;
+        }
+
         .genre-bar {
-            width: 200px;
+            width: 100%;
             background: var(--bg-elevated);
             border-radius: 8px;
             overflow: hidden;
-            height: 8px;
+            height: 6px;
         }
 
         .genre-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent-purple));
             border-radius: 8px;
+            transition: width 1s ease;
         }
 
-        .genre-label {
-            font-size: 12px;
-            color: var(--text-tertiary);
-            margin-top: 4px;
+        .genre-fill.me {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
         }
 
-        /* Compatibility Meter */
+        .genre-fill.friend {
+            background: linear-gradient(90deg, var(--accent-purple), var(--primary));
+        }
+
+        /* ── Compatibility meter ──────────────────────────────── */
         .compatibility-meter {
             text-align: center;
         }
@@ -211,26 +372,13 @@
             width: 240px;
             height: 240px;
             border-radius: 50%;
-            background: conic-gradient(
-                from 0deg,
-                var(--primary) 0%,
-                var(--accent-purple) 72%,
-                var(--bg-elevated) 72%
-            );
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             margin: 0 auto 24px;
-            box-shadow: 
-                0 0 60px rgba(255, 51, 102, 0.3),
-                inset 0 0 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 60px rgba(255, 51, 102, 0.3), inset 0 0 40px rgba(0, 0, 0, 0.5);
             animation: glow 2s ease-in-out infinite;
-        }
-
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 60px rgba(255, 51, 102, 0.3), inset 0 0 40px rgba(0, 0, 0, 0.5); }
-            50% { box-shadow: 0 0 80px rgba(255, 51, 102, 0.5), inset 0 0 40px rgba(0, 0, 0, 0.5); }
         }
 
         .meter-inner {
@@ -277,7 +425,7 @@
             background-clip: text;
         }
 
-        /* Shared Genres */
+        /* ── Shared genres ────────────────────────────────────── */
         .shared-section {
             background: var(--bg-card);
             border-radius: 32px;
@@ -299,6 +447,7 @@
             align-items: center;
             gap: 40px;
             margin-bottom: 40px;
+            flex-wrap: wrap;
         }
 
         .genre-circle {
@@ -310,8 +459,8 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            position: relative;
             background: var(--bg-elevated);
+            padding: 16px;
         }
 
         .genre-circle.left {
@@ -333,10 +482,11 @@
         }
 
         .genre-circle-title {
-            font-size: 16px;
+            font-size: 13px;
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             color: var(--text-secondary);
+            text-align: center;
         }
 
         .genre-list {
@@ -345,11 +495,11 @@
         }
 
         .genre-list li {
-            font-size: 14px;
-            margin-bottom: 6px;
+            font-size: 13px;
+            margin-bottom: 5px;
         }
 
-        /* Top Pick */
+        /* ── Top pick ─────────────────────────────────────────── */
         .top-pick {
             background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
             border-radius: 32px;
@@ -373,7 +523,7 @@
 
         .movie-showcase {
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 260px 1fr;
             gap: 40px;
             align-items: center;
         }
@@ -386,49 +536,50 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 120px;
+            font-size: 80px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
         }
 
-        .movie-details {
-            flex: 1;
+        .movie-poster-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .movie-details-title {
-            font-size: 48px;
+            font-size: 44px;
             font-weight: 900;
             letter-spacing: -2px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             line-height: 1.1;
         }
 
         .movie-details-meta {
             display: flex;
-            gap: 24px;
-            margin-bottom: 20px;
+            gap: 20px;
+            margin-bottom: 16px;
             color: var(--text-secondary);
-            font-size: 16px;
+            font-size: 15px;
+            flex-wrap: wrap;
         }
 
-        .movie-details-meta span {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
+        /* Movie description — shown only if backend provides it */
         .movie-details-desc {
-            font-size: 18px;
+            font-size: 16px;
             line-height: 1.7;
             color: var(--text-secondary);
-            margin-bottom: 24px;
+            margin-bottom: 20px;
+            display: none;
         }
 
+        /* Reason box with left accent border */
         .movie-details-reason {
-            padding: 20px;
-            background: rgba(255, 51, 102, 0.1);
+            padding: 20px 24px;
+            background: rgba(255, 51, 102, 0.08);
             border-left: 4px solid var(--primary);
-            border-radius: 8px;
-            margin-bottom: 32px;
+            border-radius: 0 12px 12px 0;
+            margin-bottom: 28px;
         }
 
         .movie-details-reason p {
@@ -440,10 +591,76 @@
         .movie-actions {
             display: flex;
             gap: 16px;
+            flex-wrap: wrap;
         }
 
+        /* ── Recommendations ──────────────────────────────────── */
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 24px;
+        }
+
+        .rec-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .rec-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 51, 102, 0.3);
+        }
+
+        .rec-poster {
+            width: 100%;
+            aspect-ratio: 2/3;
+            background: linear-gradient(135deg, var(--bg-elevated), #252525);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            overflow: hidden;
+        }
+
+        .rec-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .rec-info {
+            padding: 14px;
+        }
+
+        .rec-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .rec-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .rec-rating {
+            color: var(--accent-yellow);
+            font-weight: 600;
+        }
+
+        /* ── Buttons ──────────────────────────────────────────── */
         .btn {
-            padding: 16px 32px;
+            padding: 14px 28px;
             border: none;
             border-radius: 12px;
             font-size: 15px;
@@ -453,7 +670,7 @@
             font-family: 'Outfit', sans-serif;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .btn-primary {
@@ -476,74 +693,30 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
-        /* More Recommendations */
-        .recommendations-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 24px;
-        }
-
-        .rec-card {
-            background: var(--bg-card);
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .rec-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-            border-color: rgba(255, 51, 102, 0.3);
-        }
-
-        .rec-poster {
-            width: 100%;
-            aspect-ratio: 2/3;
-            background: linear-gradient(135deg, var(--bg-elevated), #252525);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-        }
-
-        .rec-info {
-            padding: 16px;
-        }
-
-        .rec-title {
+        /* ── Toast ────────────────────────────────────────────── */
+        #toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            padding: 14px 28px;
+            border-radius: 40px;
             font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 999;
+            white-space: nowrap;
+            pointer-events: none;
         }
 
-        .rec-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-            color: var(--text-tertiary);
-        }
-
-        .rec-rating {
-            color: var(--accent-yellow);
-            font-weight: 600;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        #toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
         }
 
         @media (max-width: 1024px) {
@@ -557,7 +730,7 @@
             }
 
             .genre-overlap {
-                flex-direction: column;
+                flex-wrap: wrap;
             }
 
             .page-title {
@@ -570,53 +743,72 @@
         }
     </style>
 </head>
+
 <body>
+
+    <div id="toast"></div>
+
     <div class="container">
         <div class="header">
-            <a href="#" class="brand-link">← Back to CineMatch</a>
-            <h1 class="page-title">CineBlend Results</h1>
+            <a href="/browse" class="brand-link">← Back to CineMatch</a>
+            <h1 class="page-title">CineBlend ✨</h1>
             <p class="page-subtitle">Discover your perfect movie match together</p>
         </div>
 
-        <div class="results">
-            <!-- Compatibility Score -->
+        <!-- INPUT SCREEN -->
+        <div id="inputScreen">
+            <div class="input-card">
+                <div class="input-emoji">🎬</div>
+                <h2>Who are you blending with?</h2>
+                <p>Enter a friend's username to compare your movie tastes and get personalised recommendations for your
+                    next movie night.</p>
+                <div class="input-group">
+                    <input id="friendInput" type="text" placeholder="Enter username..."
+                        onkeydown="if(event.key==='Enter') startBlend()">
+                    <button class="btn-blend" onclick="startBlend()">Blend ✨</button>
+                </div>
+                <div id="blendError"></div>
+            </div>
+        </div>
+
+        <!-- LOADING -->
+        <div id="loadingScreen">
+            <div class="spinner"></div>
+            <p style="color:var(--text-secondary);font-size:18px;">Calculating your compatibility...</p>
+        </div>
+
+        <!-- RESULTS SCREEN -->
+        <div id="resultsScreen">
+
+            <!-- Compatibility -->
             <div class="compatibility-section">
                 <div class="compatibility-content">
+
                     <div class="user-profile">
-                        <div class="profile-avatar">EA</div>
-                        <div class="profile-name">@eman_atif</div>
-                        <div class="profile-stats">156 movies rated • Avg 4.2⭐</div>
-                        <div class="profile-genres">
-                            <div class="genre-bar">
-                                <div class="genre-fill" style="width: 65%;"></div>
-                            </div>
-                            <div class="genre-label">Action 65%</div>
-                        </div>
+                        <div class="profile-avatar" id="myAvatar"></div>
+                        <div class="profile-name" id="myName"></div>
+                        <div class="profile-stats" id="myStats"></div>
+                        <div class="profile-genres" id="myGenreBars"></div>
                     </div>
 
                     <div class="compatibility-meter">
-                        <div class="meter-circle">
+                        <div class="meter-circle" id="meterCircle">
                             <div class="meter-inner">
-                                <div class="meter-percentage">72%</div>
+                                <div class="meter-percentage" id="meterPct"></div>
                                 <div class="meter-label">Match</div>
                             </div>
                         </div>
-                        <p class="compatibility-message">
-                            You and <strong>@sara_anwaar</strong> have <strong>great taste</strong> in common!
-                        </p>
+                        <p class="compatibility-message" id="compatMessage"></p>
                     </div>
 
                     <div class="user-profile">
-                        <div class="profile-avatar" style="background: linear-gradient(135deg, var(--accent-purple), var(--primary));">SA</div>
-                        <div class="profile-name">@sara_anwaar</div>
-                        <div class="profile-stats">143 movies rated • Avg 4.5⭐</div>
-                        <div class="profile-genres">
-                            <div class="genre-bar">
-                                <div class="genre-fill" style="width: 70%; background: linear-gradient(90deg, var(--accent-purple), var(--primary));"></div>
-                            </div>
-                            <div class="genre-label">Drama 70%</div>
-                        </div>
+                        <div class="profile-avatar" id="friendAvatar"
+                            style="background: linear-gradient(135deg, var(--accent-purple), var(--primary));"></div>
+                        <div class="profile-name" id="friendName"></div>
+                        <div class="profile-stats" id="friendStats"></div>
+                        <div class="profile-genres" id="friendGenreBars"></div>
                     </div>
+
                 </div>
             </div>
 
@@ -626,180 +818,230 @@
                 <div class="genre-overlap">
                     <div class="genre-circle left">
                         <div class="genre-circle-title">Your Top Genres</div>
-                        <ul class="genre-list">
-                            <li>Action</li>
-                            <li>Sci-Fi</li>
-                            <li>Thriller</li>
-                        </ul>
+                        <ul class="genre-list" id="myGenreList"></ul>
                     </div>
-
                     <div class="genre-circle overlap">
                         <div class="genre-circle-title">Shared Love</div>
-                        <ul class="genre-list">
-                            <li><strong>Drama</strong></li>
-                            <li><strong>Thriller</strong></li>
-                        </ul>
+                        <ul class="genre-list" id="sharedGenreList"></ul>
                     </div>
-
                     <div class="genre-circle right">
-                        <div class="genre-circle-title">Sara's Top Genres</div>
-                        <ul class="genre-list">
-                            <li>Drama</li>
-                            <li>Romance</li>
-                            <li>Comedy</li>
-                        </ul>
+                        <div class="genre-circle-title" id="friendGenreTitle"></div>
+                        <ul class="genre-list" id="friendGenreList"></ul>
                     </div>
                 </div>
             </div>
 
             <!-- Top Pick -->
-            <div class="top-pick">
+            <div class="top-pick" id="topPickSection">
                 <span class="top-pick-badge">🏆 Your Top Movie Night Pick</span>
                 <div class="movie-showcase">
-                    <div class="movie-poster-large">🎬</div>
+                    <div class="movie-poster-large" id="topPickPoster"></div>
                     <div class="movie-details">
-                        <h2 class="movie-details-title">The Shawshank Redemption</h2>
-                        <div class="movie-details-meta">
-                            <span>⭐ 4.9</span>
-                            <span>1994</span>
-                            <span>2h 22m</span>
-                            <span>Drama</span>
-                        </div>
-                        <p class="movie-details-desc">
-                            Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.
-                        </p>
+                        <h2 class="movie-details-title" id="topPickTitle"></h2>
+                        <div class="movie-details-meta" id="topPickMeta"></div>
+                        <p class="movie-details-desc" id="topPickDesc"></p>
                         <div class="movie-details-reason">
-                            <p>
-                                <strong>Why this is perfect for you both:</strong><br>
-                                This critically acclaimed drama combines Eman's love for compelling storytelling with Sara's preference for emotional depth. Neither of you have rated this yet, and it's highly rated by users with similar taste profiles. It's streaming on Netflix and Prime Video.
-                            </p>
+                            <p>Perfect for both of you based on your shared genres.</p>
                         </div>
                         <div class="movie-actions">
-                            <button class="btn btn-primary">▶ Watch Trailer</button>
-                            <button class="btn btn-secondary">+ Add to Both Watchlists</button>
+                            <button class="btn btn-primary" onclick="shareBlend()">
+                                📤 Share This Blend
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- More Recommendations -->
+            <!-- Recommendations -->
             <div class="shared-section">
                 <h2 class="section-title">More Perfect Picks For You Two</h2>
-                <div class="recommendations-grid">
-                    <div class="rec-card">
-                        <div class="rec-poster">🎬</div>
-                        <div class="rec-info">
-                            <div class="rec-title">The Green Mile</div>
-                            <div class="rec-meta">
-                                <span>1999 • 3h 9m</span>
-                                <span class="rec-rating">⭐ 4.8</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="rec-card">
-                        <div class="rec-poster">🎬</div>
-                        <div class="rec-info">
-                            <div class="rec-title">Forrest Gump</div>
-                            <div class="rec-meta">
-                                <span>1994 • 2h 22m</span>
-                                <span class="rec-rating">⭐ 4.7</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="rec-card">
-                        <div class="rec-poster">🎬</div>
-                        <div class="rec-info">
-                            <div class="rec-title">12 Angry Men</div>
-                            <div class="rec-meta">
-                                <span>1957 • 1h 36m</span>
-                                <span class="rec-rating">⭐ 4.9</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="rec-card">
-                        <div class="rec-poster">🎬</div>
-                        <div class="rec-info">
-                            <div class="rec-title">Good Will Hunting</div>
-                            <div class="rec-meta">
-                                <span>1997 • 2h 6m</span>
-                                <span class="rec-rating">⭐ 4.6</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="rec-card">
-                        <div class="rec-poster">🎬</div>
-                        <div class="rec-info">
-                            <div class="rec-title">A Beautiful Mind</div>
-                            <div class="rec-meta">
-                                <span>2001 • 2h 15m</span>
-                                <span class="rec-rating">⭐ 4.5</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="rec-card">
-                        <div class="rec-poster">🎬</div>
-                        <div class="rec-info">
-                            <div class="rec-title">The Prestige</div>
-                            <div class="rec-meta">
-                                <span>2006 • 2h 10m</span>
-                                <span class="rec-rating">⭐ 4.7</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="recommendations-grid" id="recsGrid"></div>
             </div>
 
-            <!-- Action Buttons -->
-            <div style="display: flex; justify-content: center; gap: 16px; margin-top: 48px;">
-                <button class="btn btn-primary">📤 Share This Blend</button>
-                <button class="btn btn-secondary">← Create New Blend</button>
+            <!-- Bottom actions -->
+            <div style="display:flex; justify-content:center; gap:16px; margin-top:48px;">
+                <button class="btn btn-secondary" onclick="resetBlend()">← Try Another Friend</button>
             </div>
         </div>
     </div>
-</body>
+
     <script>
+        // ── Session check ────────────────────────────────────────────
+        async function checkSession() {
+            try {
+                const res = await fetch('/api/me', { credentials: 'include' });
+                const data = await res.json();
+                if (!data.logged_in) window.location.href = '/login';
+            } catch {
+                window.location.href = '/login';
+            }
+        }
+        checkSession();
 
-document.querySelector('.brand-link').addEventListener('click', function(e) {
-    e.preventDefault();
-    window.location.href = 'cinematch-browse.html';
-});
-  
-    document.querySelectorAll('.btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const text = this.textContent.trim();
+        // ── Helpers ──────────────────────────────────────────────────
+        function formatRuntime(mins) {
+            if (!mins) return '';
+            return `${Math.floor(mins / 60)}h ${mins % 60}m`;
+        }
 
-            if (text.includes('Share')) {
-                alert('Blend link copied! Share this with your friend.');
+        function compatMessage(score, friendName) {
+            if (score >= 90) return `You and <strong>@${friendName}</strong> are basically <strong>movie soulmates!</strong>`;
+            if (score >= 70) return `You and <strong>@${friendName}</strong> have <strong>great taste</strong> in common!`;
+            if (score >= 50) return `You and <strong>@${friendName}</strong> share <strong>some solid picks</strong>!`;
+            return `You and <strong>@${friendName}</strong> have <strong>different tastes</strong> — great for variety!`;
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        // Renders small genre bars under each profile avatar.
+        // genres: top genre names array; side: 'me' | 'friend'
+        function renderGenreBars(containerId, genres, side) {
+            const el = document.getElementById(containerId);
+            if (!genres || genres.length === 0) { el.innerHTML = ''; return; }
+            const widths = [68, 52, 38]; // descending visual weights
+            el.innerHTML = genres.slice(0, 3).map((g, i) => `
+            <div class="genre-bar-row">
+                <div class="genre-bar-label"><span>${g}</span></div>
+                <div class="genre-bar">
+                    <div class="genre-fill ${side}" style="width: ${widths[i]}%;"></div>
+                </div>
+            </div>
+        `).join('');
+        }
+
+        // ── Share blend ──────────────────────────────────────────────
+        let _currentFriend = '';
+
+        function shareBlend() {
+            const url = `${location.origin}${location.pathname}?blend=${encodeURIComponent(_currentFriend)}`;
+            navigator.clipboard.writeText(url)
+                .then(() => showToast('✅ Blend link copied to clipboard!'))
+                .catch(() => prompt('Copy this link:', url));
+        }
+
+        // ── Main blend flow ──────────────────────────────────────────
+        async function startBlend() {
+            const username = document.getElementById('friendInput').value.trim();
+            const errEl = document.getElementById('blendError');
+            errEl.textContent = '';
+
+            if (!username) { errEl.textContent = 'Please enter a username.'; return; }
+
+            document.getElementById('inputScreen').style.display = 'none';
+            document.getElementById('loadingScreen').style.display = 'block';
+
+            try {
+                const res = await fetch('/api/cineblend', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ friend_username: username })
+                });
+                const data = await res.json();
+
+                document.getElementById('loadingScreen').style.display = 'none';
+
+                if (!data.success) {
+                    document.getElementById('inputScreen').style.display = 'block';
+                    errEl.textContent = data.message || 'Something went wrong.';
+                    return;
+                }
+
+                renderResults(data);
+            } catch (e) {
+                document.getElementById('loadingScreen').style.display = 'none';
+                document.getElementById('inputScreen').style.display = 'block';
+                errEl.textContent = 'Could not connect to server.';
+            }
+        }
+
+        function renderResults(data) {
+            const score = Math.round(data.compatibility_score);
+            _currentFriend = data.friend.username;
+
+            // Meter
+            const pct = Math.min(score, 100);
+            document.getElementById('meterCircle').style.background =
+                `conic-gradient(from 0deg, var(--primary) 0%, var(--accent-purple) ${pct * 3.6}deg, var(--bg-elevated) ${pct * 3.6}deg)`;
+            document.getElementById('meterPct').textContent = `${score}%`;
+            document.getElementById('compatMessage').innerHTML = compatMessage(score, data.friend.username);
+
+            // My profile
+            document.getElementById('myAvatar').textContent = (data.me.username || '?')[0].toUpperCase();
+            document.getElementById('myName').textContent = '@' + data.me.username;
+            document.getElementById('myStats').textContent = `${data.me.rating_count} movies rated`;
+            renderGenreBars('myGenreBars', data.my_genres, 'me');
+
+            // Friend profile
+            document.getElementById('friendAvatar').textContent = (data.friend.username || '?')[0].toUpperCase();
+            document.getElementById('friendName').textContent = '@' + data.friend.username;
+            document.getElementById('friendStats').textContent = `${data.friend.rating_count} movies rated`;
+            document.getElementById('friendGenreTitle').textContent = `${data.friend.username}'s Top`;
+            renderGenreBars('friendGenreBars', data.friend_genres, 'friend');
+
+            // Genre circles
+            document.getElementById('myGenreList').innerHTML =
+                (data.my_genres || []).slice(0, 4).map(g => `<li>${g}</li>`).join('');
+            document.getElementById('sharedGenreList').innerHTML =
+                (data.shared_genres || []).slice(0, 3).map(g => `<li><strong>${g}</strong></li>`).join('') || '<li>None yet</li>';
+            document.getElementById('friendGenreList').innerHTML =
+                (data.friend_genres || []).slice(0, 4).map(g => `<li>${g}</li>`).join('');
+
+            // Top pick
+            if (data.top_pick) {
+                const tp = data.top_pick;
+                document.getElementById('topPickTitle').textContent = tp.title;
+                document.getElementById('topPickMeta').innerHTML =
+                    `<span>⭐ ${tp.average_rating.toFixed(1)}</span><span>${tp.release_year || ''}</span><span>${formatRuntime(tp.runtime)}</span><span>${tp.genres || ''}</span>`;
+
+                // Description: show only if backend returns overview/description
+                const descEl = document.getElementById('topPickDesc');
+                const desc = tp.overview || tp.description || '';
+                descEl.textContent = desc;
+                descEl.style.display = desc ? 'block' : 'none';
+
+                const posterEl = document.getElementById('topPickPoster');
+                posterEl.innerHTML = tp.poster_url
+                    ? `<img src="${tp.poster_url}" alt="${tp.title}">`
+                    : '🎬';
+
+                document.getElementById('topPickSection').style.display = 'block';
+            } else {
+                document.getElementById('topPickSection').style.display = 'none';
             }
 
-            if (text.includes('Watchlist')) {
-                this.textContent = '✓ Added to Both Watchlists';
-                this.style.color = 'var(--accent-green)';
-                this.style.borderColor = 'var(--accent-green)';
-            }
+            // Recommendations grid
+            document.getElementById('recsGrid').innerHTML = (data.recommendations || []).map(m => `
+            <div class="rec-card">
+                <div class="rec-poster">
+                    ${m.poster_url ? `<img src="${m.poster_url}" alt="${m.title}">` : '🎬'}
+                </div>
+                <div class="rec-info">
+                    <div class="rec-title">${m.title}</div>
+                    <div class="rec-meta">
+                        <span>${m.release_year || ''} · ${formatRuntime(m.runtime)}</span>
+                        <span class="rec-rating">⭐ ${m.average_rating.toFixed(1)}</span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
 
+            document.getElementById('resultsScreen').style.display = 'block';
+        }
 
-            if (text.includes('Trailer')) {
-                alert('Trailer will be loaded by the backend from TMDB.');
-            }
+        function resetBlend() {
+            document.getElementById('resultsScreen').style.display = 'none';
+            document.getElementById('friendInput').value = '';
+            document.getElementById('blendError').textContent = '';
+            _currentFriend = '';
+            document.getElementById('inputScreen').style.display = 'block';
+        }
+    </script>
+</body>
 
-
-            if (text.includes('New Blend')) {
-                window.location.href = 'cinematch-cineblend.html';
-            }
-        });
-    });
-
-    document.querySelectorAll('.rec-card').forEach(card => {
-        card.addEventListener('click', () => {
-            console.log('Open detail for:', card.querySelector('.rec-title').textContent);
-        });
-    });
-
-</script>
 </html>
