@@ -929,27 +929,163 @@
         </div>
     </div>
 
-    <script>
-        // Add interactivity to heart buttons
-        document.querySelectorAll('.icon-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (btn.textContent === '♡') {
-                    btn.textContent = '♥';
-                    btn.style.color = 'var(--primary)';
-                } else if (btn.textContent === '♥') {
-                    btn.textContent = '♡';
-                    btn.style.color = '';
-                }
-            });
-        });
+       <!-- Rating Modal -->
+<div id="ratingModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center;">
+    <div style="background:#151515;border-radius:24px;padding:48px;text-align:center;border:1px solid rgba(255,255,255,0.1);min-width:340px;box-shadow:0 24px 64px rgba(0,0,0,0.6);">
+        <h3 id="ratingMovieTitle" style="font-size:20px;font-weight:700;margin-bottom:28px;letter-spacing:-0.5px;"></h3>
+        <div id="starRow" style="display:flex;gap:16px;justify-content:center;margin-bottom:32px;font-size:48px;cursor:pointer;">
+            <span data-val="1" style="color:#666;transition:color 0.15s;">★</span>
+            <span data-val="2" style="color:#666;transition:color 0.15s;">★</span>
+            <span data-val="3" style="color:#666;transition:color 0.15s;">★</span>
+            <span data-val="4" style="color:#666;transition:color 0.15s;">★</span>
+            <span data-val="5" style="color:#666;transition:color 0.15s;">★</span>
+        </div>
+        <button onclick="submitRating()" style="width:100%;padding:16px;background:linear-gradient(135deg,#FF3366,#CC0033);border:none;border-radius:12px;color:white;font-size:16px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;margin-bottom:12px;">Submit Rating</button>
+        <button onclick="closeModal()" style="background:none;border:none;color:#666;cursor:pointer;font-family:'Outfit',sans-serif;font-size:14px;">Cancel</button>
+    </div>
+</div>
 
-        // Movie card click
-        document.querySelectorAll('.movie-card').forEach(card => {
-            card.addEventListener('click', () => {
-                alert('Opening movie details...');
+
+
+    
+        <script>
+        
+
+
+        // 1. Watchlist toggle (heart button)
+document.querySelectorAll('.icon-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (btn.textContent === '♡') {
+            btn.textContent = '♥';
+            btn.style.color = 'var(--primary)';
+        } else if (btn.textContent === '♥') {
+            btn.textContent = '♡';
+            btn.style.color = '';
+        }
+    });
+});
+
+// 2. Search bar filters cards by title
+document.querySelector('.search-input').addEventListener('input', function () {
+    const query = this.value.toLowerCase();
+    document.querySelectorAll('.movie-card').forEach(card => {
+        const title = card.querySelector('.movie-title').textContent.toLowerCase();
+        card.style.display = title.includes(query) ? '' : 'none';
+    });
+});
+
+// 3. Genre checkboxes filter cards
+document.querySelectorAll('.filter-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', filterMovies);
+});
+
+function filterMovies() {
+    const checked = [...document.querySelectorAll('.filter-checkbox:checked')]
+        .map(cb => cb.closest('.filter-option').querySelector('.filter-label').textContent.trim());
+
+    document.querySelectorAll('.movie-card').forEach(card => {
+        if (checked.length === 0) { card.style.display = ''; return; }
+        const genres = [...card.querySelectorAll('.genre-tag')].map(t => t.textContent.trim());
+        const match = checked.some(c => genres.includes(c));
+        card.style.display = match ? '' : 'none';
+    });
+}
+
+// 4. Star rating button opens modal
+document.querySelectorAll('.icon-btn').forEach(btn => {
+    if (btn.textContent === '⭐') {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const title = btn.closest('.movie-card').querySelector('.movie-title').textContent;
+            openRatingModal(title);
+        });
+    }
+});
+
+// 5. Movie card click (placeholder for detail page)
+document.querySelectorAll('.movie-card').forEach(card => {
+    card.addEventListener('click', () => {
+        // Backend will link to actual detail page
+        console.log('Open detail for:', card.querySelector('.movie-title').textContent);
+    });
+});
+
+// 6. Rating Modal functions
+let selectedRating = 0;
+
+function openRatingModal(title) {
+    selectedRating = 0;
+    document.getElementById('ratingMovieTitle').textContent = 'Rate: ' + title;
+    document.querySelectorAll('#starRow span').forEach(s => s.style.color = '#666666');
+    document.getElementById('ratingModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('ratingModal').style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('#starRow span').forEach(star => {
+        star.addEventListener('mouseover', function () {
+            const val = parseInt(this.dataset.val);
+            document.querySelectorAll('#starRow span').forEach((s, i) => {
+                s.style.color = i < val ? '#FFD60A' : '#666666';
             });
         });
+        star.addEventListener('click', function () {
+            selectedRating = parseInt(this.dataset.val);
+        });
+    });
+
+    document.getElementById('starRow').addEventListener('mouseleave', () => {
+        document.querySelectorAll('#starRow span').forEach((s, i) => {
+            s.style.color = i < selectedRating ? '#FFD60A' : '#666666';
+        });
+    });
+});
+
+function submitRating() {
+    if (selectedRating === 0) { alert('Please select a star rating'); return; }
+    console.log('Rating submitted:', { rating: selectedRating });
+    // Backend will POST this to Flask
+    closeModal();
+}
+
+// 7. Hero Watch Trailer button
+document.querySelector('.btn-primary').addEventListener('click', function() {
+    alert('Trailer will be loaded by the backend from TMDB.');
+});
+
+// 8. Hero Add to Watchlist button
+document.querySelector('.btn-secondary').addEventListener('click', function() {
+    const btn = this;
+    btn.textContent = '✓ Added to Watchlist';
+    btn.style.background = 'rgba(6, 255, 165, 0.15)';
+    btn.style.color = '#06FFA5';
+});
+
+// 9. Release Year slider - show value as you drag
+const yearSlider = document.querySelectorAll('.slider')[0];
+const yearLabel = yearSlider.nextElementSibling.querySelectorAll('span')[1];
+yearSlider.addEventListener('input', function() {
+    yearLabel.textContent = this.value;
+});
+
+// 10. Rating slider - show value as you drag
+const ratingSlider = document.querySelectorAll('.slider')[1];
+const ratingLabel = ratingSlider.nextElementSibling.querySelectorAll('span')[1];
+ratingSlider.addEventListener('input', function() {
+    ratingLabel.textContent = this.value + '+';
+});
+
+
+
+
+
+
+
     </script>
+
 </body>
 </html>
