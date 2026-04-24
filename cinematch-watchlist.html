@@ -121,7 +121,18 @@ body::before { content: ''; position: fixed; top:0;left:0;right:0;bottom:0; back
 .movie-card:nth-child(8) { animation-delay: 0.4s; }
 
 @keyframes fadeInUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
-
+/* PROFILE DROPDOWN */
+.profile-wrap { position: relative; }
+.profile-dropdown { position: absolute; top: calc(100% + 12px); right: 0; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 8px; min-width: 200px; opacity: 0; transform: translateY(-8px) scale(0.97); pointer-events: none; transition: all 0.2s ease; z-index: 200; box-shadow: 0 16px 48px rgba(0,0,0,0.6); }
+.profile-wrap.open .profile-dropdown { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
+.dropdown-header { padding: 10px 12px 12px; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 6px; }
+.dropdown-username { font-size: 15px; font-weight: 700; }
+.dropdown-email { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+.dropdown-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: all 0.2s; cursor: pointer; border: none; background: none; width: 100%; font-family: 'Outfit', sans-serif; }
+.dropdown-item:hover { background: var(--bg-elevated); color: var(--text-primary); }
+.dropdown-item .di-icon { font-size: 16px; width: 20px; text-align: center; }
+.dropdown-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 6px 0; }
+.dropdown-item.danger:hover { background: rgba(255,51,102,0.1); color: var(--primary); }
 @media (max-width: 1024px) {
   .page-content { padding: 40px; }
   .nav-links { display: none; }
@@ -151,7 +162,21 @@ body::before { content: ''; position: fixed; top:0;left:0;right:0;bottom:0; back
       <span class="search-icon">🔍</span>
       <input type="text" class="search-input" placeholder="Search movies...">
     </div>
-    <div class="user-avatar">EA</div>
+   <div class="profile-wrap" id="profileWrap">
+      <div class="user-avatar" onclick="toggleDropdown()">EA</div>
+      <div class="profile-dropdown" id="profileDropdown">
+        <div class="dropdown-header">
+          <div class="dropdown-username">Eman Atif</div>
+          <div class="dropdown-email">@eman_atif</div>
+        </div>
+        <a href="cinematch-profile.html" class="dropdown-item"><span class="di-icon">👤</span> My Profile</a>
+        <a href="cinematch-dashboard.html" class="dropdown-item"><span class="di-icon">📊</span> Dashboard</a>
+        <a href="cinematch-watchlist.html" class="dropdown-item"><span class="di-icon">🔖</span> Watchlist</a>
+        <div class="dropdown-divider"></div>
+        <a href="#" class="dropdown-item"><span class="di-icon">⚙️</span> Settings</a>
+        <button class="dropdown-item danger" onclick="alert('Logged out')"><span class="di-icon">🚪</span> Log Out</button>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -186,7 +211,7 @@ body::before { content: ''; position: fixed; top:0;left:0;right:0;bottom:0; back
     <button class="filter-pill" onclick="setFilter(this,'Thriller')">Thriller <span class="pill-count">2</span></button>
     <button class="filter-pill" onclick="setFilter(this,'Comedy')">Comedy <span class="pill-count">1</span></button>
     <div class="filter-sep"></div>
-    <button class="filter-pill" onclick="setFilter(this,'watched')" id="watched-filter">✓ Watched <span class="pill-count">0</span></button>
+    <button class="filter-pill" onclick="setFilter(this,'watched')" id="watched-filter">✓ Watched <span class="pill-count" id="watched-count">0</span></button>
   </div>
 
   <div class="movie-grid" id="movieGrid">
@@ -343,6 +368,53 @@ body::before { content: ''; position: fixed; top:0;left:0;right:0;bottom:0; back
 
 <script>
 let watchedCount = 0;
+let activeRateBtn = null;
+let selectedStars = 0;
+let currentTitle = '';
+
+function toggleDropdown() {
+  const wrap = document.getElementById('profileWrap');
+  wrap.classList.toggle('open');
+}
+// Count cards that start with watched badge visible
+document.addEventListener('DOMContentLoaded', function() {
+  watchedCount = document.querySelectorAll('.movie-card.watched').length;
+  const wc = document.getElementById('watched-count');
+  if (wc) wc.textContent = watchedCount;
+});
+function openRating(btn, title) {
+  activeRateBtn = btn;
+  currentTitle = title;
+  selectedStars = 0;
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalSub').textContent = 'Tap a star to rate';
+  document.getElementById('watched-count').textContent = watchedCount;
+  document.getElementById('ratingOverlay').classList.add('open');
+}
+
+function closeRating(e) {
+  if (!e || e.target === document.getElementById('ratingOverlay')) {
+    document.getElementById('ratingOverlay').classList.remove('open');
+    activeRateBtn = null;
+    selectedStars = 0;
+  }
+}
+
+function selectStar(val) {
+  selectedStars = val;
+  document.querySelectorAll('.star-btn').forEach(s => {
+    s.classList.toggle('lit', parseInt(s.dataset.v) <= val);
+  });
+  document.getElementById('modalSub').textContent = val + ' star' + (val !== 1 ? 's' : '');
+}
+
+function submitRating() {
+  if (!selectedStars) { showToast('Pick a star rating first!', ''); return; }
+  document.getElementById('ratingOverlay').classList.remove('open');
+  showToast('✓ Rated "' + currentTitle + '" ' + selectedStars + '★', 'green');
+  activeRateBtn = null;
+  selectedStars = 0;
+}
 
 function showToast(msg, type) {
   const t = document.getElementById('toast');
@@ -353,7 +425,6 @@ function showToast(msg, type) {
 }
 
 function updateCount() {
-  const visible = [...document.querySelectorAll('.movie-card')].filter(c => c.style.display !== 'none');
   const remaining = document.querySelectorAll('.movie-card').length;
   document.getElementById('wl-count').textContent = remaining + ' movie' + (remaining !== 1 ? 's' : '') + ' saved — your future cinema queue';
   if (remaining === 0) document.getElementById('emptyState').style.display = 'block';
