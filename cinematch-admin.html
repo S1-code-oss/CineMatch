@@ -197,26 +197,55 @@
 </div>
 
 <script>
-    function searchTMDB() {
-        const query = document.getElementById('tmdbSearch').value.trim();
-        if (!query) return;
-        // Placeholder — backend will replace with real TMDB API call
-        alert('Backend will call TMDB API with query: "' + query + '"');
+      function searchTMDB() {
+    const query = document.getElementById('tmdbSearch').value.trim();
+    if (!query) return;
+    alert('Backend will call TMDB API with query: "' + query + '"');
+}
+
+function addMovie(btn) {
+    btn.textContent = '✓ Added';
+    btn.classList.add('added');
+    btn.disabled = true;
+}
+
+function removeRow(btn) {
+    const row = btn.closest('.library-row');
+    row.style.transition = 'opacity 0.3s, transform 0.3s';
+    row.style.opacity = '0';
+    row.style.transform = 'translateX(20px)';
+    setTimeout(() => row.remove(), 300);
+}
+
+function editRow(btn) {
+    const row = btn.closest('.library-row');
+    const titleEl = row.querySelector('.row-title');
+    const genreEl = row.querySelector('.row-genre');
+
+    // If already editing, save it
+    if (btn.textContent === '✓') {
+        titleEl.contentEditable = 'false';
+        genreEl.contentEditable = 'false';
+        titleEl.style.outline = '';
+        genreEl.style.outline = '';
+        btn.textContent = '✎';
+        btn.style.color = '';
+        return;
     }
 
-    function addMovie(btn) {
-        btn.textContent = '✓ Added';
-        btn.classList.add('added');
-        btn.disabled = true;
-    }
-
-    function removeRow(btn) {
-        const row = btn.closest('.library-row');
-        row.style.transition = 'opacity 0.3s, transform 0.3s';
-        row.style.opacity = '0';
-        row.style.transform = 'translateX(20px)';
-        setTimeout(() => row.remove(), 300);
-    }
+    // Enter edit mode
+    titleEl.contentEditable = 'true';
+    genreEl.contentEditable = 'true';
+    titleEl.style.outline = '1px solid #FF3366';
+    titleEl.style.borderRadius = '4px';
+    titleEl.style.padding = '2px 6px';
+    genreEl.style.outline = '1px solid #FF3366';
+    genreEl.style.borderRadius = '4px';
+    genreEl.style.padding = '2px 6px';
+    titleEl.focus();
+    btn.textContent = '✓';
+    btn.style.color = '#06FFA5';
+}
 </script>
 </body>
 </html>
