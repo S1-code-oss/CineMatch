@@ -1,19 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CineMatch - CineBlend</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --primary: #FF3366;
@@ -41,10 +34,7 @@
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background:
                 radial-gradient(circle at 20% 50%, rgba(255, 51, 102, 0.12) 0%, transparent 40%),
                 radial-gradient(circle at 80% 50%, rgba(157, 78, 221, 0.12) 0%, transparent 40%);
@@ -52,53 +42,17 @@
             pointer-events: none;
         }
 
-        @keyframes pulse {
-
-            0%,
-            100% {
-                opacity: 1;
-            }
-
-            50% {
-                opacity: 0.6;
-            }
-        }
-
-        @keyframes rotate {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
         @keyframes glow {
-
-            0%,
-            100% {
-                box-shadow: 0 0 60px rgba(255, 51, 102, 0.3), inset 0 0 40px rgba(0, 0, 0, 0.5);
-            }
-
-            50% {
-                box-shadow: 0 0 80px rgba(255, 51, 102, 0.5), inset 0 0 40px rgba(0, 0, 0, 0.5);
-            }
+            0%, 100% { box-shadow: 0 0 60px rgba(255,51,102,0.3), inset 0 0 40px rgba(0,0,0,0.5); }
+            50%       { box-shadow: 0 0 80px rgba(255,51,102,0.5), inset 0 0 40px rgba(0,0,0,0.5); }
         }
-
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .container {
             position: relative;
@@ -143,7 +97,7 @@
             font-weight: 300;
         }
 
-        /* ── Input screen ─────────────────────────────────────── */
+        /* input screen */
         #inputScreen {
             max-width: 560px;
             margin: 0 auto;
@@ -155,13 +109,10 @@
             background: var(--bg-card);
             border-radius: 32px;
             padding: 56px 48px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .input-emoji {
-            font-size: 64px;
-            margin-bottom: 24px;
-        }
+        .input-emoji { font-size: 64px; margin-bottom: 24px; }
 
         .input-card h2 {
             font-size: 28px;
@@ -187,7 +138,7 @@
             flex: 1;
             padding: 16px 20px;
             background: var(--bg-elevated);
-            border: 2px solid rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255,255,255,0.08);
             border-radius: 14px;
             color: var(--text-primary);
             font-family: 'Outfit', sans-serif;
@@ -196,13 +147,8 @@
             transition: border-color 0.2s;
         }
 
-        #friendInput:focus {
-            border-color: var(--primary);
-        }
-
-        #friendInput::placeholder {
-            color: var(--text-tertiary);
-        }
+        #friendInput:focus { border-color: var(--primary); }
+        #friendInput::placeholder { color: var(--text-tertiary); }
 
         .btn-blend {
             padding: 16px 28px;
@@ -218,16 +164,8 @@
             white-space: nowrap;
         }
 
-        .btn-blend:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(255, 51, 102, 0.4);
-        }
-
-        .btn-blend:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn-blend:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,51,102,0.4); }
+        .btn-blend:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         #blendError {
             color: #ff6b6b;
@@ -235,7 +173,7 @@
             min-height: 20px;
         }
 
-        /* ── Loading ──────────────────────────────────────────── */
+        /* Loading */
         #loadingScreen {
             display: none;
             text-align: center;
@@ -243,28 +181,24 @@
         }
 
         .spinner {
-            width: 56px;
-            height: 56px;
-            border: 4px solid rgba(255, 51, 102, 0.2);
+            width: 56px; height: 56px;
+            border: 4px solid rgba(255,51,102,0.2);
             border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 0.9s linear infinite;
             margin: 0 auto 24px;
         }
 
-        /* ── Results screen ───────────────────────────────────── */
-        #resultsScreen {
-            display: none;
-            animation: fadeInUp 0.8s ease 0.2s backwards;
-        }
+        /* results screen*/
+        #resultsScreen { display: none; animation: fadeInUp 0.8s ease 0.2s backwards; }
 
-        /* ── Compatibility section ────────────────────────────── */
+        /* compatibility section */
         .compatibility-section {
             background: var(--bg-card);
             border-radius: 32px;
             padding: 60px;
             margin-bottom: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.05);
             position: relative;
             overflow: hidden;
         }
@@ -272,11 +206,9 @@
         .compatibility-section::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg, transparent, rgba(255, 51, 102, 0.1), transparent 30%);
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255,51,102,0.1), transparent 30%);
             animation: rotate 20s linear infinite;
         }
 
@@ -289,37 +221,23 @@
             align-items: center;
         }
 
-        .user-profile {
-            text-align: center;
-        }
+        .user-profile { text-align: center; }
 
         .profile-avatar {
-            width: 120px;
-            height: 120px;
+            width: 120px; height: 120px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-            font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 48px; font-weight: 700;
             margin: 0 auto 20px;
             border: 4px solid var(--bg-elevated);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
 
-        .profile-name {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
+        .profile-name { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        .profile-stats { color: var(--text-secondary); font-size: 14px; }
 
-        .profile-stats {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-
-        /* Genre bars under avatars */
+        /* Genre bars under avatar*/
         .profile-genres {
             margin-top: 16px;
             display: flex;
@@ -328,10 +246,7 @@
             align-items: center;
         }
 
-        .genre-bar-row {
-            width: 100%;
-            max-width: 200px;
-        }
+        .genre-bar-row { width: 100%; max-width: 200px; }
 
         .genre-bar-label {
             display: flex;
@@ -355,46 +270,32 @@
             transition: width 1s ease;
         }
 
-        .genre-fill.me {
-            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-        }
+        .genre-fill.me     { background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple)); }
+        .genre-fill.friend { background: linear-gradient(90deg, var(--accent-purple), var(--primary)); }
 
-        .genre-fill.friend {
-            background: linear-gradient(90deg, var(--accent-purple), var(--primary));
-        }
-
-        /* ── Compatibility meter ──────────────────────────────── */
-        .compatibility-meter {
-            text-align: center;
-        }
+        /*Compatibility meter  */
+        .compatibility-meter { text-align: center; }
 
         .meter-circle {
-            width: 240px;
-            height: 240px;
+            width: 240px; height: 240px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             position: relative;
             margin: 0 auto 24px;
-            box-shadow: 0 0 60px rgba(255, 51, 102, 0.3), inset 0 0 40px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 60px rgba(255,51,102,0.3), inset 0 0 40px rgba(0,0,0,0.5);
             animation: glow 2s ease-in-out infinite;
         }
 
         .meter-inner {
-            width: 190px;
-            height: 190px;
+            width: 190px; height: 190px;
             border-radius: 50%;
             background: var(--bg-card);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
         }
 
         .meter-percentage {
-            font-size: 72px;
-            font-weight: 900;
+            font-size: 72px; font-weight: 900;
             letter-spacing: -3px;
             background: linear-gradient(135deg, var(--primary), var(--accent-purple));
             -webkit-background-clip: text;
@@ -404,19 +305,11 @@
         }
 
         .meter-label {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-top: 8px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            font-size: 14px; color: var(--text-secondary);
+            margin-top: 8px; letter-spacing: 2px; text-transform: uppercase;
         }
 
-        .compatibility-message {
-            font-size: 18px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
+        .compatibility-message { font-size: 18px; color: var(--text-secondary); font-weight: 500; }
         .compatibility-message strong {
             color: var(--text-primary);
             background: linear-gradient(135deg, var(--primary), var(--accent-purple));
@@ -425,21 +318,16 @@
             background-clip: text;
         }
 
-        /* ── Shared genres ────────────────────────────────────── */
+        /* shared genres  */
         .shared-section {
             background: var(--bg-card);
             border-radius: 32px;
             padding: 48px;
             margin-bottom: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .section-title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 32px;
-            letter-spacing: -1px;
-        }
+        .section-title { font-size: 28px; font-weight: 700; margin-bottom: 32px; letter-spacing: -1px; }
 
         .genre-overlap {
             display: flex;
@@ -451,62 +339,36 @@
         }
 
         .genre-circle {
-            width: 200px;
-            height: 200px;
+            width: 200px; height: 200px;
             border-radius: 50%;
             border: 3px solid;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             flex-direction: column;
             background: var(--bg-elevated);
             padding: 16px;
         }
 
-        .genre-circle.left {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 40px rgba(0, 217, 255, 0.2);
-        }
-
+        .genre-circle.left  { border-color: var(--accent-blue);   box-shadow: 0 0 40px rgba(0,217,255,0.2); }
         .genre-circle.overlap {
             border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(255, 51, 102, 0.1), rgba(157, 78, 221, 0.1));
-            box-shadow: 0 0 60px rgba(255, 51, 102, 0.3);
-            transform: scale(1.2);
-            z-index: 2;
+            background: linear-gradient(135deg, rgba(255,51,102,0.1), rgba(157,78,221,0.1));
+            box-shadow: 0 0 60px rgba(255,51,102,0.3);
+            transform: scale(1.2); z-index: 2;
         }
+        .genre-circle.right { border-color: var(--accent-purple); box-shadow: 0 0 40px rgba(157,78,221,0.2); }
 
-        .genre-circle.right {
-            border-color: var(--accent-purple);
-            box-shadow: 0 0 40px rgba(157, 78, 221, 0.2);
-        }
+        .genre-circle-title { font-size: 13px; font-weight: 600; margin-bottom: 10px; color: var(--text-secondary); text-align: center; }
+        .genre-list { list-style: none; text-align: center; }
+        .genre-list li { font-size: 13px; margin-bottom: 5px; }
 
-        .genre-circle-title {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--text-secondary);
-            text-align: center;
-        }
-
-        .genre-list {
-            list-style: none;
-            text-align: center;
-        }
-
-        .genre-list li {
-            font-size: 13px;
-            margin-bottom: 5px;
-        }
-
-        /* ── Top pick ─────────────────────────────────────────── */
+        /* Top pick */
         .top-pick {
             background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
             border-radius: 32px;
             padding: 48px;
             margin-bottom: 40px;
-            border: 2px solid rgba(255, 51, 102, 0.2);
-            box-shadow: 0 16px 48px rgba(255, 51, 102, 0.2);
+            border: 2px solid rgba(255,51,102,0.2);
+            box-shadow: 0 16px 48px rgba(255,51,102,0.2);
         }
 
         .top-pick-badge {
@@ -514,57 +376,33 @@
             padding: 8px 20px;
             background: linear-gradient(135deg, var(--primary), var(--accent-purple));
             border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            font-size: 13px; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase;
             margin-bottom: 24px;
         }
 
-        .movie-showcase {
-            display: grid;
-            grid-template-columns: 260px 1fr;
-            gap: 40px;
-            align-items: center;
-        }
+        .movie-showcase { display: grid; grid-template-columns: 260px 1fr; gap: 40px; align-items: center; }
 
         .movie-poster-large {
-            width: 100%;
-            aspect-ratio: 2/3;
+            width: 100%; aspect-ratio: 2/3;
             background: linear-gradient(135deg, var(--bg-elevated), #252525);
             border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             font-size: 80px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             overflow: hidden;
         }
 
-        .movie-poster-large img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .movie-poster-large img { width: 100%; height: 100%; object-fit: cover; }
 
-        .movie-details-title {
-            font-size: 44px;
-            font-weight: 900;
-            letter-spacing: -2px;
-            margin-bottom: 12px;
-            line-height: 1.1;
-        }
+        .movie-details-title { font-size: 44px; font-weight: 900; letter-spacing: -2px; margin-bottom: 12px; line-height: 1.1; }
 
         .movie-details-meta {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 16px;
-            color: var(--text-secondary);
-            font-size: 15px;
-            flex-wrap: wrap;
+            display: flex; gap: 20px; margin-bottom: 16px;
+            color: var(--text-secondary); font-size: 15px; flex-wrap: wrap;
         }
 
-        /* Movie description — shown only if backend provides it */
+        /* Movie description*/
         .movie-details-desc {
             font-size: 16px;
             line-height: 1.7;
@@ -573,7 +411,6 @@
             display: none;
         }
 
-        /* Reason box with left accent border */
         .movie-details-reason {
             padding: 20px 24px;
             background: rgba(255, 51, 102, 0.08);
@@ -588,13 +425,9 @@
             line-height: 1.6;
         }
 
-        .movie-actions {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
+        .movie-actions { display: flex; gap: 16px; flex-wrap: wrap; }
 
-        /* ── Recommendations ──────────────────────────────────── */
+        /* Recommendations*/
         .recommendations-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -605,95 +438,42 @@
             background: var(--bg-card);
             border-radius: 16px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.05);
             transition: all 0.3s ease;
         }
 
-        .rec-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-            border-color: rgba(255, 51, 102, 0.3);
-        }
+        .rec-card:hover { transform: translateY(-8px); box-shadow: 0 12px 32px rgba(0,0,0,0.5); border-color: rgba(255,51,102,0.3); }
 
         .rec-poster {
-            width: 100%;
-            aspect-ratio: 2/3;
+            width: 100%; aspect-ratio: 2/3;
             background: linear-gradient(135deg, var(--bg-elevated), #252525);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 40px; overflow: hidden;
         }
 
-        .rec-poster img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .rec-poster img { width: 100%; height: 100%; object-fit: cover; }
 
-        .rec-info {
-            padding: 14px;
-        }
+        .rec-info { padding: 14px; }
+        .rec-title { font-size: 14px; font-weight: 600; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .rec-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-tertiary); }
+        .rec-rating { color: var(--accent-yellow); font-weight: 600; }
 
-        .rec-title {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        .rec-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            color: var(--text-tertiary);
-        }
-
-        .rec-rating {
-            color: var(--accent-yellow);
-            font-weight: 600;
-        }
-
-        /* ── Buttons ──────────────────────────────────────────── */
+        /* Button */
         .btn {
             padding: 14px 28px;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            border: none; border-radius: 12px;
+            font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: all 0.3s ease;
             font-family: 'Outfit', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            display: flex; align-items: center; gap: 8px;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-        }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,51,102,0.4); }
+        .btn-secondary { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(255, 51, 102, 0.4);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        /* ── Toast ────────────────────────────────────────────── */
+        /* Toast*/
         #toast {
             position: fixed;
             bottom: 32px;
@@ -705,8 +485,8 @@
             border-radius: 40px;
             font-size: 15px;
             font-weight: 500;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
             opacity: 0;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 999;
@@ -720,191 +500,169 @@
         }
 
         @media (max-width: 1024px) {
-            .compatibility-content {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .movie-showcase {
-                grid-template-columns: 1fr;
-            }
-
-            .genre-overlap {
-                flex-wrap: wrap;
-            }
-
-            .page-title {
-                font-size: 48px;
-            }
-
-            .container {
-                padding: 40px 24px;
-            }
+            .compatibility-content { grid-template-columns: 1fr; gap: 40px; }
+            .movie-showcase { grid-template-columns: 1fr; }
+            .genre-overlap { flex-wrap: wrap; }
+            .page-title { font-size: 48px; }
+            .container { padding: 40px 24px; }
         }
     </style>
 </head>
-
 <body>
 
-    <div id="toast"></div>
+<div id="toast"></div>
 
-    <div class="container">
-        <div class="header">
-            <a href="/browse" class="brand-link">← Back to CineMatch</a>
-            <h1 class="page-title">CineBlend ✨</h1>
-            <p class="page-subtitle">Discover your perfect movie match together</p>
-        </div>
+<div class="container">
+    <div class="header">
+        <a href="/browse" class="brand-link">← Back to CineMatch</a>
+        <h1 class="page-title">CineBlend ✨</h1>
+        <p class="page-subtitle">Discover your perfect movie match together</p>
+    </div>
 
-        <!-- INPUT SCREEN -->
-        <div id="inputScreen">
-            <div class="input-card">
-                <div class="input-emoji">🎬</div>
-                <h2>Who are you blending with?</h2>
-                <p>Enter a friend's username to compare your movie tastes and get personalised recommendations for your
-                    next movie night.</p>
-                <div class="input-group">
-                    <input id="friendInput" type="text" placeholder="Enter username..."
-                        onkeydown="if(event.key==='Enter') startBlend()">
-                    <button class="btn-blend" onclick="startBlend()">Blend ✨</button>
-                </div>
-                <div id="blendError"></div>
+    <!-- INPUT SCREEN -->
+    <div id="inputScreen">
+        <div class="input-card">
+            <div class="input-emoji">🎬</div>
+            <h2>Who are you blending with?</h2>
+            <p>Enter a friend's username to compare your movie tastes and get personalised recommendations for your next movie night.</p>
+            <div class="input-group">
+                <input id="friendInput" type="text" placeholder="Enter username..." onkeydown="if(event.key==='Enter') startBlend()">
+                <button class="btn-blend" onclick="startBlend()">Blend ✨</button>
             </div>
-        </div>
-
-        <!-- LOADING -->
-        <div id="loadingScreen">
-            <div class="spinner"></div>
-            <p style="color:var(--text-secondary);font-size:18px;">Calculating your compatibility...</p>
-        </div>
-
-        <!-- RESULTS SCREEN -->
-        <div id="resultsScreen">
-
-            <!-- Compatibility -->
-            <div class="compatibility-section">
-                <div class="compatibility-content">
-
-                    <div class="user-profile">
-                        <div class="profile-avatar" id="myAvatar"></div>
-                        <div class="profile-name" id="myName"></div>
-                        <div class="profile-stats" id="myStats"></div>
-                        <div class="profile-genres" id="myGenreBars"></div>
-                    </div>
-
-                    <div class="compatibility-meter">
-                        <div class="meter-circle" id="meterCircle">
-                            <div class="meter-inner">
-                                <div class="meter-percentage" id="meterPct"></div>
-                                <div class="meter-label">Match</div>
-                            </div>
-                        </div>
-                        <p class="compatibility-message" id="compatMessage"></p>
-                    </div>
-
-                    <div class="user-profile">
-                        <div class="profile-avatar" id="friendAvatar"
-                            style="background: linear-gradient(135deg, var(--accent-purple), var(--primary));"></div>
-                        <div class="profile-name" id="friendName"></div>
-                        <div class="profile-stats" id="friendStats"></div>
-                        <div class="profile-genres" id="friendGenreBars"></div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Shared Genres -->
-            <div class="shared-section">
-                <h2 class="section-title">🎯 Your Shared Favorite Genres</h2>
-                <div class="genre-overlap">
-                    <div class="genre-circle left">
-                        <div class="genre-circle-title">Your Top Genres</div>
-                        <ul class="genre-list" id="myGenreList"></ul>
-                    </div>
-                    <div class="genre-circle overlap">
-                        <div class="genre-circle-title">Shared Love</div>
-                        <ul class="genre-list" id="sharedGenreList"></ul>
-                    </div>
-                    <div class="genre-circle right">
-                        <div class="genre-circle-title" id="friendGenreTitle"></div>
-                        <ul class="genre-list" id="friendGenreList"></ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Top Pick -->
-            <div class="top-pick" id="topPickSection">
-                <span class="top-pick-badge">🏆 Your Top Movie Night Pick</span>
-                <div class="movie-showcase">
-                    <div class="movie-poster-large" id="topPickPoster"></div>
-                    <div class="movie-details">
-                        <h2 class="movie-details-title" id="topPickTitle"></h2>
-                        <div class="movie-details-meta" id="topPickMeta"></div>
-                        <p class="movie-details-desc" id="topPickDesc"></p>
-                        <div class="movie-details-reason">
-                            <p>Perfect for both of you based on your shared genres.</p>
-                        </div>
-                        <div class="movie-actions">
-                            <button class="btn btn-primary" onclick="shareBlend()">
-                                📤 Share This Blend
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recommendations -->
-            <div class="shared-section">
-                <h2 class="section-title">More Perfect Picks For You Two</h2>
-                <div class="recommendations-grid" id="recsGrid"></div>
-            </div>
-
-            <!-- Bottom actions -->
-            <div style="display:flex; justify-content:center; gap:16px; margin-top:48px;">
-                <button class="btn btn-secondary" onclick="resetBlend()">← Try Another Friend</button>
-            </div>
+            <div id="blendError"></div>
         </div>
     </div>
 
-    <script>
-        // ── Session check ────────────────────────────────────────────
-        async function checkSession() {
-            try {
-                const res = await fetch('/api/me', { credentials: 'include' });
-                const data = await res.json();
-                if (!data.logged_in) window.location.href = '/login';
-            } catch {
-                window.location.href = '/login';
-            }
-        }
-        checkSession();
+    <!-- LOADING -->
+    <div id="loadingScreen">
+        <div class="spinner"></div>
+        <p style="color:var(--text-secondary);font-size:18px;">Calculating your compatibility...</p>
+    </div>
 
-        // ── Helpers ──────────────────────────────────────────────────
-        function formatRuntime(mins) {
-            if (!mins) return '';
-            return `${Math.floor(mins / 60)}h ${mins % 60}m`;
-        }
+    <!-- RESULTS SCREEN -->
+    <div id="resultsScreen">
 
-        function compatMessage(score, friendName) {
-            if (score >= 90) return `You and <strong>@${friendName}</strong> are basically <strong>movie soulmates!</strong>`;
-            if (score >= 70) return `You and <strong>@${friendName}</strong> have <strong>great taste</strong> in common!`;
-            if (score >= 50) return `You and <strong>@${friendName}</strong> share <strong>some solid picks</strong>!`;
-            return `You and <strong>@${friendName}</strong> have <strong>different tastes</strong> — great for variety!`;
-        }
+        <!-- Compatibility -->
+        <div class="compatibility-section">
+            <div class="compatibility-content">
 
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3000);
-        }
+                <div class="user-profile">
+                    <div class="profile-avatar" id="myAvatar"></div>
+                    <div class="profile-name" id="myName"></div>
+                    <div class="profile-stats" id="myStats"></div>
+                    <div class="profile-genres" id="myGenreBars"></div>
+                </div>
 
-        // Renders small genre bars under each profile avatar.
-        // genres: top genre names array; side: 'me' | 'friend'
-        function renderGenreBars(containerId, genres, side) {
-            const el = document.getElementById(containerId);
-            if (!genres || genres.length === 0) { el.innerHTML = ''; return; }
-            const widths = [68, 52, 38]; // descending visual weights
-            el.innerHTML = genres.slice(0, 3).map((g, i) => `
+                <div class="compatibility-meter">
+                    <div class="meter-circle" id="meterCircle">
+                        <div class="meter-inner">
+                            <div class="meter-percentage" id="meterPct"></div>
+                            <div class="meter-label">Match</div>
+                        </div>
+                    </div>
+                    <p class="compatibility-message" id="compatMessage"></p>
+                </div>
+
+                <div class="user-profile">
+                    <div class="profile-avatar" id="friendAvatar" style="background: linear-gradient(135deg, var(--accent-purple), var(--primary));"></div>
+                    <div class="profile-name" id="friendName"></div>
+                    <div class="profile-stats" id="friendStats"></div>
+                    <div class="profile-genres" id="friendGenreBars"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Shared Genres -->
+        <div class="shared-section">
+            <h2 class="section-title">🎯 Your Shared Favorite Genres</h2>
+            <div class="genre-overlap">
+                <div class="genre-circle left">
+                    <div class="genre-circle-title">Your Top Genres</div>
+                    <ul class="genre-list" id="myGenreList"></ul>
+                </div>
+                <div class="genre-circle overlap">
+                    <div class="genre-circle-title">Shared Love</div>
+                    <ul class="genre-list" id="sharedGenreList"></ul>
+                </div>
+                <div class="genre-circle right">
+                    <div class="genre-circle-title" id="friendGenreTitle"></div>
+                    <ul class="genre-list" id="friendGenreList"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Pick -->
+        <div class="top-pick" id="topPickSection">
+            <span class="top-pick-badge">🏆 Your Top Movie Night Pick</span>
+            <div class="movie-showcase">
+                <div class="movie-poster-large" id="topPickPoster"></div>
+                <div class="movie-details">
+                    <h2 class="movie-details-title" id="topPickTitle"></h2>
+                    <div class="movie-details-meta" id="topPickMeta"></div>
+                    <p class="movie-details-desc" id="topPickDesc"></p>
+                    <div class="movie-details-reason">
+                        <p>Perfect for both of you based on your shared genres.</p>
+                    </div>
+                    <div class="movie-actions">
+                        <button class="btn btn-primary" onclick="shareBlend()">
+                            📤 Share This Blend
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="shared-section">
+            <h2 class="section-title">More Perfect Picks For You Two</h2>
+            <div class="recommendations-grid" id="recsGrid"></div>
+        </div>
+
+        <!-- Bottom actions -->
+        <div style="display:flex; justify-content:center; gap:16px; margin-top:48px;">
+            <button class="btn btn-secondary" onclick="resetBlend()">← Try Another Friend</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function checkSession() {
+        try {
+            const res = await fetch('/api/me', { credentials: 'include' });
+            const data = await res.json();
+            if (!data.logged_in) window.location.href = '/login';
+        } catch {
+            window.location.href = '/login';
+        }
+    }
+    checkSession();
+
+    function formatRuntime(mins) {
+        if (!mins) return '';
+        return `${Math.floor(mins / 60)}h ${mins % 60}m`;
+    }
+
+    function compatMessage(score, friendName) {
+        if (score >= 90) return `You and <strong>@${friendName}</strong> are basically <strong>movie soulmates!</strong>`;
+        if (score >= 70) return `You and <strong>@${friendName}</strong> have <strong>great taste</strong> in common!`;
+        if (score >= 50) return `You and <strong>@${friendName}</strong> share <strong>some solid picks</strong>!`;
+        return `You and <strong>@${friendName}</strong> have <strong>different tastes</strong> — great for variety!`;
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // Renders small genre bars under each profile avatar.
+    function renderGenreBars(containerId, genres, side) {
+        const el = document.getElementById(containerId);
+        if (!genres || genres.length === 0) { el.innerHTML = ''; return; }
+        const widths = [68, 52, 38]; // descending visual weights
+        el.innerHTML = genres.slice(0, 3).map((g, i) => `
             <div class="genre-bar-row">
                 <div class="genre-bar-label"><span>${g}</span></div>
                 <div class="genre-bar">
@@ -912,111 +670,111 @@
                 </div>
             </div>
         `).join('');
-        }
+    }
 
-        // ── Share blend ──────────────────────────────────────────────
-        let _currentFriend = '';
+    // share blend 
+    let _currentFriend = '';
 
-        function shareBlend() {
-            const url = `${location.origin}${location.pathname}?blend=${encodeURIComponent(_currentFriend)}`;
-            navigator.clipboard.writeText(url)
-                .then(() => showToast('✅ Blend link copied to clipboard!'))
-                .catch(() => prompt('Copy this link:', url));
-        }
+    function shareBlend() {
+        const url = `${location.origin}${location.pathname}?blend=${encodeURIComponent(_currentFriend)}`;
+        navigator.clipboard.writeText(url)
+            .then(() => showToast('✅ Blend link copied to clipboard!'))
+            .catch(() => prompt('Copy this link:', url));
+    }
 
-        // ── Main blend flow ──────────────────────────────────────────
-        async function startBlend() {
-            const username = document.getElementById('friendInput').value.trim();
-            const errEl = document.getElementById('blendError');
-            errEl.textContent = '';
+    //Main blend flow 
+    async function startBlend() {
+        const username = document.getElementById('friendInput').value.trim();
+        const errEl = document.getElementById('blendError');
+        errEl.textContent = '';
 
-            if (!username) { errEl.textContent = 'Please enter a username.'; return; }
+        if (!username) { errEl.textContent = 'Please enter a username.'; return; }
 
-            document.getElementById('inputScreen').style.display = 'none';
-            document.getElementById('loadingScreen').style.display = 'block';
+        document.getElementById('inputScreen').style.display = 'none';
+        document.getElementById('loadingScreen').style.display = 'block';
 
-            try {
-                const res = await fetch('/api/cineblend', {
-                    method: 'POST',
-                    credentials: 'include',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ friend_username: username })
-                });
-                const data = await res.json();
+        try {
+            const res = await fetch('/api/cineblend', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ friend_username: username })
+            });
+            const data = await res.json();
 
-                document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('loadingScreen').style.display = 'none';
 
-                if (!data.success) {
-                    document.getElementById('inputScreen').style.display = 'block';
-                    errEl.textContent = data.message || 'Something went wrong.';
-                    return;
-                }
-
-                renderResults(data);
-            } catch (e) {
-                document.getElementById('loadingScreen').style.display = 'none';
+            if (!data.success) {
                 document.getElementById('inputScreen').style.display = 'block';
-                errEl.textContent = 'Could not connect to server.';
+                errEl.textContent = data.message || 'Something went wrong.';
+                return;
             }
+
+            renderResults(data);
+        } catch (e) {
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('inputScreen').style.display = 'block';
+            errEl.textContent = 'Could not connect to server.';
+        }
+    }
+
+    function renderResults(data) {
+        const score = Math.round(data.compatibility_score);
+        _currentFriend = data.friend.username;
+
+        // Meter
+        const pct = Math.min(score, 100);
+        document.getElementById('meterCircle').style.background =
+            `conic-gradient(from 0deg, var(--primary) 0%, var(--accent-purple) ${pct * 3.6}deg, var(--bg-elevated) ${pct * 3.6}deg)`;
+        document.getElementById('meterPct').textContent = `${score}%`;
+        document.getElementById('compatMessage').innerHTML = compatMessage(score, data.friend.username);
+
+        // My profile
+        document.getElementById('myAvatar').textContent = (data.me.username || '?')[0].toUpperCase();
+        document.getElementById('myName').textContent = '@' + data.me.username;
+        document.getElementById('myStats').textContent = `${data.me.rating_count} movies rated`;
+        renderGenreBars('myGenreBars', data.my_genres, 'me');
+
+        // Friend profile
+        document.getElementById('friendAvatar').textContent = (data.friend.username || '?')[0].toUpperCase();
+        document.getElementById('friendName').textContent = '@' + data.friend.username;
+        document.getElementById('friendStats').textContent = `${data.friend.rating_count} movies rated`;
+        document.getElementById('friendGenreTitle').textContent = `${data.friend.username}'s Top`;
+        renderGenreBars('friendGenreBars', data.friend_genres, 'friend');
+
+        // Genre circles
+        document.getElementById('myGenreList').innerHTML =
+            (data.my_genres || []).slice(0, 4).map(g => `<li>${g}</li>`).join('');
+        document.getElementById('sharedGenreList').innerHTML =
+            (data.shared_genres || []).slice(0, 3).map(g => `<li><strong>${g}</strong></li>`).join('') || '<li>None yet</li>';
+        document.getElementById('friendGenreList').innerHTML =
+            (data.friend_genres || []).slice(0, 4).map(g => `<li>${g}</li>`).join('');
+
+        // Top pick
+        if (data.top_pick) {
+            const tp = data.top_pick;
+            document.getElementById('topPickTitle').textContent = tp.title;
+            document.getElementById('topPickMeta').innerHTML =
+                `<span>⭐ ${tp.average_rating.toFixed(1)}</span><span>${tp.release_year || ''}</span><span>${formatRuntime(tp.runtime)}</span><span>${tp.genres || ''}</span>`;
+
+            // Description
+            const descEl = document.getElementById('topPickDesc');
+            const desc = tp.overview || tp.description || '';
+            descEl.textContent = desc;
+            descEl.style.display = desc ? 'block' : 'none';
+
+            const posterEl = document.getElementById('topPickPoster');
+            posterEl.innerHTML = tp.poster_url
+                ? `<img src="${tp.poster_url}" alt="${tp.title}">`
+                : '🎬';
+
+            document.getElementById('topPickSection').style.display = 'block';
+        } else {
+            document.getElementById('topPickSection').style.display = 'none';
         }
 
-        function renderResults(data) {
-            const score = Math.round(data.compatibility_score);
-            _currentFriend = data.friend.username;
-
-            // Meter
-            const pct = Math.min(score, 100);
-            document.getElementById('meterCircle').style.background =
-                `conic-gradient(from 0deg, var(--primary) 0%, var(--accent-purple) ${pct * 3.6}deg, var(--bg-elevated) ${pct * 3.6}deg)`;
-            document.getElementById('meterPct').textContent = `${score}%`;
-            document.getElementById('compatMessage').innerHTML = compatMessage(score, data.friend.username);
-
-            // My profile
-            document.getElementById('myAvatar').textContent = (data.me.username || '?')[0].toUpperCase();
-            document.getElementById('myName').textContent = '@' + data.me.username;
-            document.getElementById('myStats').textContent = `${data.me.rating_count} movies rated`;
-            renderGenreBars('myGenreBars', data.my_genres, 'me');
-
-            // Friend profile
-            document.getElementById('friendAvatar').textContent = (data.friend.username || '?')[0].toUpperCase();
-            document.getElementById('friendName').textContent = '@' + data.friend.username;
-            document.getElementById('friendStats').textContent = `${data.friend.rating_count} movies rated`;
-            document.getElementById('friendGenreTitle').textContent = `${data.friend.username}'s Top`;
-            renderGenreBars('friendGenreBars', data.friend_genres, 'friend');
-
-            // Genre circles
-            document.getElementById('myGenreList').innerHTML =
-                (data.my_genres || []).slice(0, 4).map(g => `<li>${g}</li>`).join('');
-            document.getElementById('sharedGenreList').innerHTML =
-                (data.shared_genres || []).slice(0, 3).map(g => `<li><strong>${g}</strong></li>`).join('') || '<li>None yet</li>';
-            document.getElementById('friendGenreList').innerHTML =
-                (data.friend_genres || []).slice(0, 4).map(g => `<li>${g}</li>`).join('');
-
-            // Top pick
-            if (data.top_pick) {
-                const tp = data.top_pick;
-                document.getElementById('topPickTitle').textContent = tp.title;
-                document.getElementById('topPickMeta').innerHTML =
-                    `<span>⭐ ${tp.average_rating.toFixed(1)}</span><span>${tp.release_year || ''}</span><span>${formatRuntime(tp.runtime)}</span><span>${tp.genres || ''}</span>`;
-
-                // Description: show only if backend returns overview/description
-                const descEl = document.getElementById('topPickDesc');
-                const desc = tp.overview || tp.description || '';
-                descEl.textContent = desc;
-                descEl.style.display = desc ? 'block' : 'none';
-
-                const posterEl = document.getElementById('topPickPoster');
-                posterEl.innerHTML = tp.poster_url
-                    ? `<img src="${tp.poster_url}" alt="${tp.title}">`
-                    : '🎬';
-
-                document.getElementById('topPickSection').style.display = 'block';
-            } else {
-                document.getElementById('topPickSection').style.display = 'none';
-            }
-
-            // Recommendations grid
-            document.getElementById('recsGrid').innerHTML = (data.recommendations || []).map(m => `
+        // Recommendations grid
+        document.getElementById('recsGrid').innerHTML = (data.recommendations || []).map(m => `
             <div class="rec-card">
                 <div class="rec-poster">
                     ${m.poster_url ? `<img src="${m.poster_url}" alt="${m.title}">` : '🎬'}
@@ -1031,17 +789,16 @@
             </div>
         `).join('');
 
-            document.getElementById('resultsScreen').style.display = 'block';
-        }
+        document.getElementById('resultsScreen').style.display = 'block';
+    }
 
-        function resetBlend() {
-            document.getElementById('resultsScreen').style.display = 'none';
-            document.getElementById('friendInput').value = '';
-            document.getElementById('blendError').textContent = '';
-            _currentFriend = '';
-            document.getElementById('inputScreen').style.display = 'block';
-        }
-    </script>
+    function resetBlend() {
+        document.getElementById('resultsScreen').style.display = 'none';
+        document.getElementById('friendInput').value = '';
+        document.getElementById('blendError').textContent = '';
+        _currentFriend = '';
+        document.getElementById('inputScreen').style.display = 'block';
+    }
+</script>
 </body>
-
 </html>
