@@ -6,6 +6,15 @@
     <title>CineMatch - Trending</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
+
+        .icon-btn.saved {
+    background: rgba(255, 51, 102, 0.2) !important;
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+}
+
+
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --primary: #FF3366; --primary-dark: #CC0033;
@@ -255,9 +264,14 @@
     </div>
 </div>
 <script>
-    function toggleWatchlist(btn) {
-        btn.textContent = btn.textContent === '♡' ? '♥' : '♡';
-        btn.style.color = btn.textContent === '♥' ? 'var(--primary)' : '';
+   function toggleWatchlist(btn) {
+        if (btn.textContent === '♡') {
+            btn.textContent = '♥';
+            btn.classList.add('saved');
+        } else {
+            btn.textContent = '♡';
+            btn.classList.remove('saved');
+        }
     }
 </script>
 </body>
