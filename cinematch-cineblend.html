@@ -762,4 +762,44 @@
         </div>
     </div>
 </body>
+    <script>
+
+document.querySelector('.brand-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    window.location.href = 'cinematch-browse.html';
+});
+  
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const text = this.textContent.trim();
+
+            if (text.includes('Share')) {
+                alert('Blend link copied! Share this with your friend.');
+            }
+
+            if (text.includes('Watchlist')) {
+                this.textContent = '✓ Added to Both Watchlists';
+                this.style.color = 'var(--accent-green)';
+                this.style.borderColor = 'var(--accent-green)';
+            }
+
+
+            if (text.includes('Trailer')) {
+                alert('Trailer will be loaded by the backend from TMDB.');
+            }
+
+
+            if (text.includes('New Blend')) {
+                window.location.href = 'cinematch-cineblend.html';
+            }
+        });
+    });
+
+    document.querySelectorAll('.rec-card').forEach(card => {
+        card.addEventListener('click', () => {
+            console.log('Open detail for:', card.querySelector('.rec-title').textContent);
+        });
+    });
+
+</script>
 </html>
