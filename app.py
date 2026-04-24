@@ -3,6 +3,7 @@ from flask_cors import CORS
 import os
 from dotenv import load_dotenv
 from auth      import auth_bp
+from movies    import movies_bp
 
 load_dotenv()
 
@@ -16,6 +17,7 @@ CORS(app, supports_credentials=True)
 
 # obeys open close when adding a new use case = new blueprint
 app.register_blueprint(auth_bp,       url_prefix="/api")
+app.register_blueprint(movies_bp,     url_prefix="/api")
 
 @app.route("/")
 @app.route("/login")
