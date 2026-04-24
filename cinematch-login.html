@@ -565,10 +565,57 @@
             bar.style.width = strength + '%';
         }
 
+      //  document.getElementById('authForm').addEventListener('submit', (e) => {
+           // e.preventDefault();
+          //  alert(currentTab === 'login' ? 'Logging in...' : 'Creating account...');
+        //});
+
         document.getElementById('authForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert(currentTab === 'login' ? 'Logging in...' : 'Creating account...');
-        });
+    e.preventDefault();
+    const email = document.querySelector('input[type="email"]').value;
+    const password = document.getElementById('password').value;
+
+    // Remove old error if any
+    const oldErr = document.getElementById('error-msg');
+    if (oldErr) oldErr.remove();
+
+    if (!email || !password) {
+        const err = document.createElement('p');
+        err.id = 'error-msg';
+        err.style.cssText = 'color:#FF3366;font-size:14px;text-align:center;margin-bottom:16px;';
+        err.textContent = 'Please fill in all fields';
+        document.querySelector('.submit-btn').before(err);
+        return;
+    }
+
+    if (currentTab === 'register') {
+        const username = document.querySelector('.register-fields input[type="text"]').value;
+        const confirm = document.querySelectorAll('input[type="password"]')[1].value;
+        if (!username) {
+            const err = document.createElement('p');
+            err.id = 'error-msg';
+            err.style.cssText = 'color:#FF3366;font-size:14px;text-align:center;margin-bottom:16px;';
+            err.textContent = 'Please enter a username';
+            document.querySelector('.submit-btn').before(err);
+            return;
+        }
+        if (password !== confirm) {
+            const err = document.createElement('p');
+            err.id = 'error-msg';
+            err.style.cssText = 'color:#FF3366;font-size:14px;text-align:center;margin-bottom:16px;';
+            err.textContent = 'Passwords do not match';
+            document.querySelector('.submit-btn').before(err);
+            return;
+        }
+    }
+
+    // Ready for Flask — backend will handle actual login/register
+    console.log('Submit:', { tab: currentTab, email, password });
+    window.location.href = 'cinematch-browse.html'; // temporary redirect
+});
+
+
+
     </script>
 </body>
 </html>
