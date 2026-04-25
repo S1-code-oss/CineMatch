@@ -6,24 +6,20 @@
     <title>CineMatch - Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --primary: #FF3366;
-            --primary-dark: #CC0033;
-            --bg-dark: #0A0A0A;
-            --bg-card: #1A1A1A;
-            --bg-elevated: #252525;
-            --text-primary: #FFFFFF;
+            --primary:        #FF3366;
+            --primary-dark:   #CC0033;
+            --bg-dark:        #0A0A0A;
+            --bg-card:        #1A1A1A;
+            --bg-elevated:    #252525;
+            --text-primary:   #FFFFFF;
             --text-secondary: #A0A0A0;
-            --text-tertiary: #666666;
-            --accent-blue: #00D9FF;
-            --accent-purple: #9D4EDD;
-            --accent-yellow: #FFD60A;
+            --text-tertiary:  #666666;
+            --accent-blue:    #00D9FF;
+            --accent-purple:  #9D4EDD;
+            --accent-yellow:  #FFD60A;
         }
 
         body {
@@ -31,591 +27,614 @@
             background: var(--bg-dark);
             color: var(--text-primary);
             overflow-x: hidden;
-            position: relative;
             min-height: 100vh;
         }
 
-        /* Animated background gradient */
         body::before {
             content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(255, 51, 102, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(157, 78, 221, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(0, 217, 255, 0.1) 0%, transparent 50%);
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(255,51,102,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(157,78,221,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(0,217,255,0.10)  0%, transparent 50%);
             animation: gradientShift 20s ease infinite;
             pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
         }
 
         @keyframes gradientShift {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.1); }
-        }
-
-        /* Grain texture overlay */
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 1;
+            50%       { opacity: 0.8; transform: scale(1.1); }
         }
 
         .container {
-            position: relative;
-            z-index: 2;
+            position: relative; z-index: 1;
             min-height: 100vh;
             display: grid;
             grid-template-columns: 1fr 1fr;
             align-items: center;
         }
 
-        /* Left side - Branding */
+        /* ── Left / Branding ── */
         .brand-side {
             padding: 80px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            height: 100vh;
-            position: relative;
+            display: flex; flex-direction: column; justify-content: center;
+            height: 100vh; position: relative;
         }
 
         .logo {
-            font-size: 48px;
-            font-weight: 800;
-            letter-spacing: -2px;
+            font-size: 48px; font-weight: 800; letter-spacing: -2px;
             margin-bottom: 24px;
             background: linear-gradient(135deg, var(--primary), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
             animation: fadeInUp 0.8s ease;
         }
 
         .tagline {
-            font-size: 24px;
-            color: var(--text-secondary);
-            margin-bottom: 60px;
-            font-weight: 300;
-            line-height: 1.5;
+            font-size: 24px; color: var(--text-secondary);
+            margin-bottom: 60px; font-weight: 300; line-height: 1.5;
             animation: fadeInUp 0.8s ease 0.1s backwards;
         }
 
-        .feature-list {
-            list-style: none;
-            margin-bottom: 60px;
-        }
+        .feature-list { list-style: none; margin-bottom: 60px; }
 
         .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 24px;
-            font-size: 18px;
-            color: var(--text-secondary);
+            display: flex; align-items: center; gap: 16px;
+            margin-bottom: 24px; font-size: 18px; color: var(--text-secondary);
             animation: fadeInUp 0.8s ease backwards;
         }
-
         .feature-item:nth-child(1) { animation-delay: 0.2s; }
         .feature-item:nth-child(2) { animation-delay: 0.3s; }
         .feature-item:nth-child(3) { animation-delay: 0.4s; }
 
         .feature-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
+            width: 40px; height: 40px; border-radius: 12px;
             background: var(--bg-elevated);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; flex-shrink: 0;
         }
 
         .floating-cards {
-            position: absolute;
-            bottom: 80px;
-            left: 80px;
-            display: flex;
-            gap: 12px;
+            position: absolute; bottom: 80px; left: 80px;
+            display: flex; gap: 12px;
             animation: fadeInUp 0.8s ease 0.6s backwards;
         }
 
         .movie-mini-card {
-            width: 100px;
-            height: 150px;
-            border-radius: 12px;
+            width: 100px; height: 150px; border-radius: 12px;
             background: linear-gradient(135deg, #2D2D2D, #1A1A1A);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.1);
             animation: float 3s ease-in-out infinite;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
-
         .movie-mini-card:nth-child(2) { animation-delay: 0.5s; }
-        .movie-mini-card:nth-child(3) { animation-delay: 1s; }
+        .movie-mini-card:nth-child(3) { animation-delay: 1.0s; }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50%       { transform: translateY(-10px); }
         }
 
-        /* Right side - Form */
+        /* ── Right / Form ── */
         .form-side {
             padding: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+            display: flex; align-items: center; justify-content: center;
         }
 
         .form-container {
-            width: 100%;
-            max-width: 480px;
-            background: rgba(26, 26, 26, 0.6);
+            width: 100%; max-width: 480px;
+            background: rgba(26,26,26,0.6);
             backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 48px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 16px 64px rgba(0, 0, 0, 0.4);
+            border-radius: 24px; padding: 48px;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 16px 64px rgba(0,0,0,0.4);
             animation: fadeInScale 0.8s ease 0.2s backwards;
         }
 
-        .form-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .form-title {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -1px;
-        }
-
-        .form-subtitle {
-            color: var(--text-secondary);
-            font-size: 16px;
-            font-weight: 300;
-        }
-
-        .tabs {
-            display: flex;
-            gap: 8px;
+        /* ── Role toggle — top of card ── */
+        .role-toggle {
+            display: flex; gap: 8px;
             margin-bottom: 32px;
             background: var(--bg-card);
-            border-radius: 12px;
-            padding: 6px;
+            border-radius: 12px; padding: 6px;
         }
 
-        .tab {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            background: transparent;
+        .role-btn {
+            flex: 1; padding: 11px;
+            border: none; background: transparent;
             color: var(--text-secondary);
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            border-radius: 8px;
+            font-size: 14px; font-weight: 600;
+            cursor: pointer; border-radius: 8px;
             transition: all 0.3s ease;
             font-family: 'Outfit', sans-serif;
         }
-
-        .tab.active {
-            background: var(--primary);
+        .role-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            box-shadow: 0 4px 16px rgba(255, 51, 102, 0.3);
+            box-shadow: 0 4px 16px rgba(255,51,102,0.3);
+        }
+        .role-btn:hover:not(.active) { color: var(--text-primary); }
+
+        /* ── Header ── */
+        .form-header { text-align: center; margin-bottom: 28px; }
+
+        .admin-badge {
+            display: none;
+            margin: 0 auto 12px;
+            padding: 4px 14px;
+            background: rgba(255,51,102,0.12);
+            border: 1px solid rgba(255,51,102,0.25);
+            border-radius: 20px;
+            font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+            color: var(--primary); text-transform: uppercase;
+            width: fit-content;
+        }
+        .admin-badge.show { display: block; }
+
+        .form-title    { font-size: 32px; font-weight: 700; margin-bottom: 6px; letter-spacing: -1px; }
+        .form-subtitle { color: var(--text-secondary); font-size: 15px; font-weight: 300; }
+
+        /* ── Auth tabs ── */
+        .auth-tabs {
+            display: flex; gap: 8px;
+            margin-bottom: 28px;
+            background: var(--bg-card);
+            border-radius: 12px; padding: 6px;
+        }
+        .auth-tabs.hidden { display: none; }
+
+        .tab {
+            flex: 1; padding: 12px;
+            border: none; background: transparent;
+            color: var(--text-secondary);
+            font-size: 15px; font-weight: 500;
+            cursor: pointer; border-radius: 8px;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+        .tab.active {
+            background: var(--primary); color: white;
+            box-shadow: 0 4px 16px rgba(255,51,102,0.3);
         }
 
-        .form-group {
-            margin-bottom: 24px;
+        /* ── Message box ── */
+        #msgBox {
+            display: none;
+            padding: 12px 16px; border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px; font-weight: 500;
         }
+
+        /* ── Form fields ── */
+        .form-group { margin-bottom: 20px; }
 
         .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
-            font-weight: 500;
+            display: block; margin-bottom: 8px;
+            font-size: 13px; font-weight: 600;
             color: var(--text-secondary);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
+            letter-spacing: 0.5px; text-transform: uppercase;
         }
 
         .form-input {
-            width: 100%;
-            padding: 16px 20px;
+            width: 100%; padding: 15px 18px;
             background: var(--bg-card);
             border: 2px solid transparent;
             border-radius: 12px;
             color: var(--text-primary);
-            font-size: 16px;
-            font-family: 'Outfit', sans-serif;
+            font-size: 15px; font-family: 'Outfit', sans-serif;
             transition: all 0.3s ease;
         }
-
         .form-input:focus {
             outline: none;
             border-color: var(--primary);
             background: var(--bg-elevated);
-            box-shadow: 0 0 0 4px rgba(255, 51, 102, 0.1);
+            box-shadow: 0 0 0 4px rgba(255,51,102,0.1);
         }
-
-        .form-input::placeholder {
-            color: var(--text-tertiary);
-        }
+        .form-input::placeholder { color: var(--text-tertiary); }
 
         .password-strength {
-            height: 4px;
-            background: var(--bg-card);
-            border-radius: 2px;
-            margin-top: 8px;
-            overflow: hidden;
+            height: 4px; background: var(--bg-elevated);
+            border-radius: 2px; margin-top: 8px; overflow: hidden;
         }
-
         .password-strength-bar {
-            height: 100%;
-            width: 0%;
+            height: 100%; width: 0%;
             background: linear-gradient(90deg, var(--primary), var(--accent-purple));
             transition: width 0.3s ease;
         }
 
         .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
+            display: flex; align-items: center;
+            gap: 12px; margin-bottom: 20px;
         }
+        .checkbox { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
+        .checkbox-label { color: var(--text-secondary); font-size: 14px; cursor: pointer; }
 
-        .checkbox {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            accent-color: var(--primary);
-        }
+        /* Register-only elements */
+        .reg-field        { display: none; }
+        .reg-field.active { display: block; }
+        .reg-check        { display: none; }
+        .reg-check.active { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
 
-        .checkbox-label {
-            color: var(--text-secondary);
-            font-size: 14px;
-            cursor: pointer;
-        }
-
+        /* ── Submit ── */
         .submit-btn {
-            width: 100%;
-            padding: 18px;
+            width: 100%; padding: 17px;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            border: none; border-radius: 12px;
+            color: white; font-size: 15px; font-weight: 700;
+            cursor: pointer; transition: all 0.3s ease;
             font-family: 'Outfit', sans-serif;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
+            letter-spacing: 0.5px; text-transform: uppercase;
+            position: relative; overflow: hidden;
         }
-
         .submit-btn::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transition: left 0.5s ease;
         }
+        .submit-btn:hover::before { left: 100%; }
+        .submit-btn:hover  { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,51,102,0.4); }
+        .submit-btn:active { transform: translateY(0); }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 
-        .submit-btn:hover::before {
-            left: 100%;
-        }
+        /* ── Footer ── */
+        .footer-links { text-align: center; margin-top: 20px; }
+        .footer-link  { color: var(--text-secondary); text-decoration: none; font-size: 14px; transition: color 0.3s; }
+        .footer-link:hover { color: var(--primary); }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(255, 51, 102, 0.4);
-        }
-
-        .submit-btn:active {
-            transform: translateY(0);
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin: 32px 0;
-            color: var(--text-tertiary);
-            font-size: 14px;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--bg-elevated);
-        }
-
-        .footer-links {
-            text-align: center;
-            margin-top: 24px;
-        }
-
-        .footer-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s ease;
-        }
-
-        .footer-link:hover {
-            color: var(--primary);
-        }
-
+        /* ── Keyframes ── */
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.92); }
+            to   { opacity: 1; transform: scale(1); }
         }
 
-        /* Responsive */
+        /* ── Responsive ── */
         @media (max-width: 1024px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-
-            .brand-side {
-                display: none;
-            }
-
-            .form-side {
-                padding: 40px 24px;
-            }
-        }
-
-        /* Hidden by default */
-        .register-fields {
-            display: none;
-        }
-
-        .register-fields.active {
-            display: block;
+            .container   { grid-template-columns: 1fr; }
+            .brand-side  { display: none; }
+            .form-side   { padding: 40px 20px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Left Side - Branding -->
-        <div class="brand-side">
-            <div class="logo">CineMatch</div>
-            <div class="tagline">Your personal movie companion.<br>Discover, track, and share your cinematic journey.</div>
-            
-            <ul class="feature-list">
-                <li class="feature-item">
-                    <div class="feature-icon">🎬</div>
-                    <span>Personalized recommendations based on your taste</span>
-                </li>
-                <li class="feature-item">
-                    <div class="feature-icon">💫</div>
-                    <span>Find your perfect movie match with friends</span>
-                </li>
-                <li class="feature-item">
-                    <div class="feature-icon">📊</div>
-                    <span>Track your viewing stats and discover patterns</span>
-                </li>
-            </ul>
+<div class="container">
 
-            <div class="floating-cards">
-                <div class="movie-mini-card"></div>
-                <div class="movie-mini-card"></div>
-                <div class="movie-mini-card"></div>
-            </div>
-        </div>
+    <!-- ══ LEFT — Branding ══ -->
+    <div class="brand-side">
+        <div class="logo">CineMatch</div>
+        <div class="tagline">Your personal movie companion.<br>Discover, track, and share your cinematic journey.</div>
 
-        <!-- Right Side - Form -->
-        <div class="form-side">
-            <div class="form-container">
-                <div class="form-header">
-                    <h1 class="form-title">Welcome Back</h1>
-                    <p class="form-subtitle">Sign in to continue your movie journey</p>
-                </div>
+        <ul class="feature-list">
+            <li class="feature-item">
+                <div class="feature-icon">🎬</div>
+                <span>Personalized recommendations based on your taste</span>
+            </li>
+            <li class="feature-item">
+                <div class="feature-icon">💫</div>
+                <span>Find your perfect movie match with friends</span>
+            </li>
+            <li class="feature-item">
+                <div class="feature-icon">📊</div>
+                <span>Track your viewing stats and discover patterns</span>
+            </li>
+        </ul>
 
-                <div class="tabs">
-                    <button class="tab active" onclick="switchTab('login')">Login</button>
-                    <button class="tab" onclick="switchTab('register')">Register</button>
-                </div>
-
-                <form id="authForm">
-                    <div class="register-fields">
-                        <div class="form-group">
-                            <label class="form-label">Username</label>
-                            <input type="text" class="form-input" placeholder="Choose a username">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-input" placeholder="you@example.com" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Password</label>
-                        <input type="password" class="form-input" placeholder="••••••••" id="password" oninput="updatePasswordStrength(this.value)" required>
-                        <div class="password-strength register-fields">
-                            <div class="password-strength-bar" id="strengthBar"></div>
-                        </div>
-                    </div>
-
-                    <div class="register-fields">
-                        <div class="form-group">
-                            <label class="form-label">Confirm Password</label>
-                            <input type="password" class="form-input" placeholder="••••••••">
-                        </div>
-                    </div>
-
-                    <div class="checkbox-group">
-                        <input type="checkbox" class="checkbox" id="remember">
-                        <label class="checkbox-label" for="remember">Remember me for 30 days</label>
-                    </div>
-
-                    <div class="register-fields checkbox-group">
-                        <input type="checkbox" class="checkbox" id="terms">
-                        <label class="checkbox-label" for="terms">I agree to the Terms of Service</label>
-                    </div>
-
-                    <button type="submit" class="submit-btn">
-                        <span id="btnText">Sign In</span>
-                    </button>
-                </form>
-
-                <div class="footer-links">
-                    <a href="#" class="footer-link" id="forgotLink">Forgot password?</a>
-                </div>
-            </div>
+        <div class="floating-cards">
+            <div class="movie-mini-card"></div>
+            <div class="movie-mini-card"></div>
+            <div class="movie-mini-card"></div>
         </div>
     </div>
 
-    <script>
-        let currentTab = 'login';
+    <!-- ══ RIGHT — Form ══ -->
+    <div class="form-side">
+        <div class="form-container">
 
-        function switchTab(tab) {
-            currentTab = tab;
-            const tabs = document.querySelectorAll('.tab');
-            const registerFields = document.querySelectorAll('.register-fields');
-            const btnText = document.getElementById('btnText');
-            const formTitle = document.querySelector('.form-title');
-            const formSubtitle = document.querySelector('.form-subtitle');
-            const forgotLink = document.getElementById('forgotLink');
+            <!-- Role toggle — first thing inside the card -->
+            <div class="role-toggle">
+                <button type="button" class="role-btn active" id="btnUser"  onclick="selectRole('user')">👤 User</button>
+                <button type="button" class="role-btn"        id="btnAdmin" onclick="selectRole('admin')">🔐 Admin</button>
+            </div>
 
-            tabs.forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
+            <!-- Header -->
+            <div class="form-header">
+                <div class="admin-badge" id="adminBadge">Admin Portal</div>
+                <h1 class="form-title"    id="formTitle">Welcome Back</h1>
+                <p  class="form-subtitle" id="formSubtitle">Sign in to continue your movie journey</p>
+            </div>
 
-            if (tab === 'register') {
-                registerFields.forEach(field => field.classList.add('active'));
-                btnText.textContent = 'Create Account';
-                formTitle.textContent = 'Create Account';
-                formSubtitle.textContent = 'Join CineMatch and start discovering';
-                forgotLink.style.display = 'none';
+            <!-- Login / Register tabs (hidden in admin mode) -->
+            <div class="auth-tabs" id="authTabs">
+                <button class="tab active" onclick="switchTab('login', event)">Login</button>
+                <button class="tab"        onclick="switchTab('register', event)">Register</button>
+            </div>
+
+            <!-- Message box -->
+            <div id="msgBox"></div>
+
+            <form id="authForm" onsubmit="handleSubmit(event)">
+
+                <!-- Register only: username -->
+                <div class="reg-field" id="fieldUsername">
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-input" id="username" placeholder="Choose a username">
+                    </div>
+                </div>
+
+                <!-- Email / identifier -->
+                <div class="form-group">
+                    <label class="form-label" id="emailLabel">Email</label>
+                    <input class="form-input" type="email" id="email" placeholder="you@example.com">
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input class="form-input" type="password" id="password" placeholder="••••••••"
+                           oninput="updateStrength(this.value)">
+                    <div class="password-strength reg-field" id="strengthWrap">
+                        <div class="password-strength-bar" id="strengthBar"></div>
+                    </div>
+                </div>
+
+                <!-- Register only: confirm password -->
+                <div class="reg-field" id="fieldConfirm">
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <input class="form-input" type="password" id="confirmPassword" placeholder="••••••••">
+                    </div>
+                </div>
+
+                <!-- Remember me — hidden in admin mode -->
+                <div class="checkbox-group" id="rememberGroup">
+                    <input type="checkbox" class="checkbox" id="remember">
+                    <label class="checkbox-label" for="remember">Remember me for 30 days</label>
+                </div>
+
+                <!-- Register only: terms -->
+                <div class="reg-check" id="fieldTerms">
+                    <input type="checkbox" class="checkbox" id="terms">
+                    <label class="checkbox-label" for="terms">I agree to the Terms of Service</label>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span id="btnText">Sign In</span>
+                </button>
+            </form>
+
+            <div class="footer-links">
+                <a href="#" class="footer-link" id="forgotLink">Forgot password?</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    const BACKEND   = 'http://localhost:5000/api';
+    let currentTab  = 'login';   // 'login' | 'register'
+    let currentRole = 'user';    // 'user'  | 'admin'
+
+    // ── Role toggle ──────────────────────────────────────────────────────────
+    function selectRole(role) {
+        currentRole = role;
+        const isAdmin = role === 'admin';
+
+        document.getElementById('btnUser').classList.toggle('active',  !isAdmin);
+        document.getElementById('btnAdmin').classList.toggle('active',  isAdmin);
+        document.getElementById('adminBadge').classList.toggle('show',  isAdmin);
+
+        // Reset to login when switching to admin
+        if (isAdmin) {
+            currentTab = 'login';
+            setRegFields(false);
+            document.getElementById('authTabs').classList.add('hidden');
+        } else {
+            document.getElementById('authTabs').classList.remove('hidden');
+        }
+
+        // Email field behaviour
+        const inp = document.getElementById('email');
+        const lbl = document.getElementById('emailLabel');
+        inp.type        = isAdmin ? 'text'              : 'email';
+        inp.placeholder = isAdmin ? 'Username or email' : 'you@example.com';
+        lbl.textContent = isAdmin ? 'Username or Email' : 'Email';
+
+        // Title / subtitle
+        document.getElementById('formTitle').textContent    = isAdmin ? 'Admin Sign In' : 'Welcome Back';
+        document.getElementById('formSubtitle').textContent = isAdmin
+            ? 'Restricted — authorized personnel only'
+            : 'Sign in to continue your movie journey';
+
+        // Extras
+        document.getElementById('forgotLink').style.display    = isAdmin ? 'none' : 'inline';
+        document.getElementById('rememberGroup').style.display = isAdmin ? 'none' : 'flex';
+        document.getElementById('btnText').textContent         = isAdmin ? 'Sign In to Admin Panel' : 'Sign In';
+
+        hideMsg();
+    }
+
+    // ── Login / Register tab switch ──────────────────────────────────────────
+    function switchTab(tab, event) {
+        if (currentRole === 'admin') return;
+        currentTab = tab;
+        hideMsg();
+
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        event.target.classList.add('active');
+
+        const isReg = tab === 'register';
+        setRegFields(isReg);
+
+        document.getElementById('formTitle').textContent    = isReg ? 'Create Account'                     : 'Welcome Back';
+        document.getElementById('formSubtitle').textContent = isReg ? 'Join CineMatch and start discovering': 'Sign in to continue your movie journey';
+        document.getElementById('btnText').textContent      = isReg ? 'Create Account'                     : 'Sign In';
+        document.getElementById('forgotLink').style.display = isReg ? 'none'                               : 'inline';
+    }
+
+    function setRegFields(on) {
+        document.querySelectorAll('.reg-field').forEach(el => el.classList.toggle('active', on));
+        document.querySelectorAll('.reg-check').forEach(el => el.classList.toggle('active', on));
+    }
+
+    // ── Password strength ────────────────────────────────────────────────────
+    function updateStrength(pw) {
+        if (currentTab !== 'register') return;
+        let s = 0;
+        if (pw.length >= 8)   s += 25;
+        if (/[a-z]/.test(pw)) s += 25;
+        if (/[A-Z]/.test(pw)) s += 25;
+        if (/[0-9]/.test(pw)) s += 25;
+        document.getElementById('strengthBar').style.width = s + '%';
+    }
+
+    // ── Messages ─────────────────────────────────────────────────────────────
+    function showMsg(text, isError) {
+        const b = document.getElementById('msgBox');
+        b.textContent        = text;
+        b.style.display      = 'block';
+        b.style.padding      = '12px 16px';
+        b.style.borderRadius = '10px';
+        b.style.marginBottom = '20px';
+        b.style.fontSize     = '14px';
+        b.style.fontWeight   = '500';
+        b.style.background   = isError ? 'rgba(255,51,102,0.15)' : 'rgba(0,217,100,0.15)';
+        b.style.color        = isError ? '#FF3366'               : '#00D964';
+        b.style.border       = isError ? '1px solid rgba(255,51,102,0.3)' : '1px solid rgba(0,217,100,0.3)';
+    }
+
+    function hideMsg() {
+        const b = document.getElementById('msgBox');
+        b.style.display = 'none';
+        b.textContent   = '';
+    }
+
+    // ── Loading ──────────────────────────────────────────────────────────────
+    function setLoading(on) {
+        document.getElementById('submitBtn').disabled = on;
+        document.getElementById('btnText').textContent = on ? 'Please wait…'
+            : currentRole === 'admin'    ? 'Sign In to Admin Panel'
+            : currentTab  === 'register' ? 'Create Account'
+            :                              'Sign In';
+    }
+
+    // ── Submit router ────────────────────────────────────────────────────────
+    async function handleSubmit(e) {
+        e.preventDefault();
+        hideMsg();
+        if (currentRole === 'admin') return adminLogin();
+        if (currentTab  === 'login') return userLogin();
+        return register();
+    }
+
+    // ── User login ───────────────────────────────────────────────────────────
+    async function userLogin() {
+        const identifier = document.getElementById('email').value.trim();
+        const password   = document.getElementById('password').value;
+
+        if (!identifier) { showMsg('Please enter your email.', true); return; }
+        if (!password)   { showMsg('Please enter your password.', true); return; }
+
+        setLoading(true);
+        try {
+            const res  = await fetch(`${BACKEND}/login`, {
+                method: 'POST', credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ identifier, password }),
+            });
+            const data = await res.json();
+            if (data.success) {
+                showMsg('Login successful! Redirecting…', false);
+                setTimeout(() => { window.location.href = data.redirect; }, 800);
             } else {
-                registerFields.forEach(field => field.classList.remove('active'));
-                btnText.textContent = 'Sign In';
-                formTitle.textContent = 'Welcome Back';
-                formSubtitle.textContent = 'Sign in to continue your movie journey';
-                forgotLink.style.display = 'inline';
+                showMsg(data.message, true);
             }
-        }
-
-        function updatePasswordStrength(password) {
-            if (currentTab !== 'register') return;
-            
-            const bar = document.getElementById('strengthBar');
-            let strength = 0;
-
-            if (password.length >= 8) strength += 25;
-            if (password.match(/[a-z]+/)) strength += 25;
-            if (password.match(/[A-Z]+/)) strength += 25;
-            if (password.match(/[0-9]+/)) strength += 25;
-
-            bar.style.width = strength + '%';
-        }
-
-      //  document.getElementById('authForm').addEventListener('submit', (e) => {
-           // e.preventDefault();
-          //  alert(currentTab === 'login' ? 'Logging in...' : 'Creating account...');
-        //});
-
-        document.getElementById('authForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = document.querySelector('input[type="email"]').value;
-    const password = document.getElementById('password').value;
-
-    // Remove old error if any
-    const oldErr = document.getElementById('error-msg');
-    if (oldErr) oldErr.remove();
-
-    if (!email || !password) {
-        const err = document.createElement('p');
-        err.id = 'error-msg';
-        err.style.cssText = 'color:#FF3366;font-size:14px;text-align:center;margin-bottom:16px;';
-        err.textContent = 'Please fill in all fields';
-        document.querySelector('.submit-btn').before(err);
-        return;
-    }
-
-    if (currentTab === 'register') {
-        const username = document.querySelector('.register-fields input[type="text"]').value;
-        const confirm = document.querySelectorAll('input[type="password"]')[1].value;
-        if (!username) {
-            const err = document.createElement('p');
-            err.id = 'error-msg';
-            err.style.cssText = 'color:#FF3366;font-size:14px;text-align:center;margin-bottom:16px;';
-            err.textContent = 'Please enter a username';
-            document.querySelector('.submit-btn').before(err);
-            return;
-        }
-        if (password !== confirm) {
-            const err = document.createElement('p');
-            err.id = 'error-msg';
-            err.style.cssText = 'color:#FF3366;font-size:14px;text-align:center;margin-bottom:16px;';
-            err.textContent = 'Passwords do not match';
-            document.querySelector('.submit-btn').before(err);
-            return;
+        } catch {
+            showMsg('Could not reach the server. Is Flask running?', true);
+        } finally {
+            setLoading(false);
         }
     }
 
-    // Ready for Flask — backend will handle actual login/register
-    console.log('Submit:', { tab: currentTab, email, password });
-    window.location.href = 'cinematch-browse.html'; // temporary redirect
-});
+    // ── Admin login ──────────────────────────────────────────────────────────
+    async function adminLogin() {
+        const identifier = document.getElementById('email').value.trim();
+        const password   = document.getElementById('password').value;
 
+        if (!identifier) { showMsg('Please enter your username or email.', true); return; }
+        if (!password)   { showMsg('Please enter your password.', true); return; }
 
+        setLoading(true);
+        try {
+            const res  = await fetch(`${BACKEND}/admin/login`, {
+                method: 'POST', credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ identifier, password }),
+            });
+            const data = await res.json();
+            if (data.success) {
+                showMsg('Access granted. Redirecting…', false);
+                setTimeout(() => { window.location.href = data.redirect || '/admin'; }, 800);
+            } else {
+                showMsg(data.message || 'Invalid admin credentials.', true);
+            }
+        } catch {
+            showMsg('Could not reach the server. Is Flask running?', true);
+        } finally {
+            setLoading(false);
+        }
+    }
 
-    </script>
+    // ── Register ─────────────────────────────────────────────────────────────
+    async function register() {
+        const username = document.getElementById('username').value.trim();
+        const email    = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const confirm  = document.getElementById('confirmPassword').value;
+        const terms    = document.getElementById('terms').checked;
+
+        if (!username)           { showMsg('Username is required.', true); return; }
+        if (username.length < 3) { showMsg('Username must be at least 3 characters.', true); return; }
+        if (!email)              { showMsg('Email is required.', true); return; }
+        if (!password)           { showMsg('Password is required.', true); return; }
+        if (password.length < 8) { showMsg('Password must be at least 8 characters.', true); return; }
+        if (password !== confirm) { showMsg('Passwords do not match.', true); return; }
+        if (!terms)              { showMsg('Please agree to the Terms of Service.', true); return; }
+
+        setLoading(true);
+        try {
+            const res  = await fetch(`${BACKEND}/register`, {
+                method: 'POST', credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, email, password, confirm_password: confirm }),
+            });
+            const data = await res.json();
+            if (data.success) {
+                showMsg('Account created! Redirecting…', false);
+                setTimeout(() => { window.location.href = '/browse'; }, 800);
+            } else {
+                showMsg(data.message, true);
+            }
+        } catch {
+            showMsg('Could not reach the server. Is Flask running?', true);
+        } finally {
+            setLoading(false);
+        }
+    }
+</script>
 </body>
-</html>
+</html> 
