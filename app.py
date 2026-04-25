@@ -18,6 +18,7 @@ from admin           import admin_bp
 from admin_auth      import admin_auth_bp
 from recommendations import recommendations_bp
 from community       import community_bp
+from cineblend       import cineblend_bp
 
 load_dotenv()
 
@@ -41,6 +42,7 @@ app.register_blueprint(admin_bp,           url_prefix="/api")
 app.register_blueprint(admin_auth_bp,      url_prefix="/api")
 app.register_blueprint(recommendations_bp, url_prefix="/api")
 app.register_blueprint(community_bp,       url_prefix="/api")
+app.register_blueprint(cineblend_bp,       url_prefix="/api")
 
 @app.route("/")
 @app.route("/login")
