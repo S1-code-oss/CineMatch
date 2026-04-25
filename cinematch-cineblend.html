@@ -791,7 +791,12 @@
 
         document.getElementById('resultsScreen').style.display = 'block';
     }
-
+// Auto-run if URL has ?blend=username
+    const _autoParam = new URLSearchParams(window.location.search).get('blend');
+    if (_autoParam) {
+        document.getElementById('friendInput').value = _autoParam;
+        startBlend();
+    }
     function resetBlend() {
         document.getElementById('resultsScreen').style.display = 'none';
         document.getElementById('friendInput').value = '';
