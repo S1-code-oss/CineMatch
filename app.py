@@ -58,7 +58,15 @@ def profile_page():
 @app.route("/dashboard")
 def dashboard_page():
     return send_from_directory(BASE_DIR, "cinematch-dashboard.html")
+    
+@app.route("/trending")
+def trending_page():
+    return send_from_directory(BASE_DIR, "cinematch-trending.html")
 
+@app.route("/watchlist")
+def watchlist_page():
+    return send_from_directory(BASE_DIR, "cinematch-watchlist.html")
+    
 @app.route("/awards")
 def awards_page():
     return send_from_directory(BASE_DIR, "cinematch-awards.html")
