@@ -34,14 +34,10 @@
             overflow-x: hidden;
         }
 
-        /* Animated background */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: 
                 radial-gradient(circle at 10% 20%, rgba(255, 51, 102, 0.08) 0%, transparent 40%),
                 radial-gradient(circle at 90% 80%, rgba(157, 78, 221, 0.08) 0%, transparent 40%);
@@ -49,544 +45,102 @@
             z-index: 0;
         }
 
-        .main-container {
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-        }
+        .main-container { position: relative; z-index: 1; min-height: 100vh; }
 
-        /* Navigation */
         .nav {
-            position: sticky;
-            top: 0;
+            position: sticky; top: 0;
             background: rgba(10, 10, 10, 0.8);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 0 40px;
-            z-index: 100;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 48px;
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -1px;
-            background: linear-gradient(135deg, var(--primary), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-        }
-
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--text-primary);
-        }
-
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -28px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--accent-purple));
-            border-radius: 2px 2px 0 0;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .search-bar {
-            position: relative;
-            width: 300px;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 12px 20px 12px 44px;
-            background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 24px;
-            color: var(--text-primary);
-            font-size: 14px;
-            font-family: 'Outfit', sans-serif;
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 51, 102, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-tertiary);
-            pointer-events: none;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .user-avatar:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 16px rgba(157, 78, 221, 0.4);
-        }
-
-        /* Hero Section */
-        .hero {
-            position: relative;
-            height: 500px;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to right, 
-                var(--bg-dark) 0%, 
-                transparent 50%, 
-                var(--bg-dark) 100%),
-                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="500"><rect fill="%231a1a1a" width="1920" height="500"/><text x="50%" y="50%" font-size="200" fill="%23252525" text-anchor="middle" dominant-baseline="middle">🎬</text></svg>');
-            background-size: cover;
-            background-position: center;
-            filter: brightness(0.4);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            padding: 80px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            background: linear-gradient(to top, var(--bg-dark), transparent);
-        }
-
-        .hero-badge {
-            display: inline-block;
-            padding: 8px 16px;
-            background: rgba(255, 51, 102, 0.2);
-            border: 1px solid var(--primary);
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-            width: fit-content;
-        }
-
-        .hero-title {
-            font-size: 64px;
-            font-weight: 900;
-            letter-spacing: -2px;
-            margin-bottom: 16px;
-            line-height: 1.1;
-        }
-
-        .hero-meta {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-            margin-bottom: 16px;
-            font-size: 15px;
-            color: var(--text-secondary);
-        }
-
-        .hero-meta span {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .hero-description {
-            font-size: 18px;
-            color: var(--text-secondary);
-            max-width: 600px;
-            line-height: 1.6;
-            margin-bottom: 32px;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 16px;
-        }
-
-        .btn {
-            padding: 16px 32px;
-            border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Outfit', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(255, 51, 102, 0.4);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        /* Content Grid */
-        .content-wrapper {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 40px;
-            padding: 40px 80px;
-        }
-
-        /* Filters Sidebar */
-       .filters {
-    position: sticky;
-    top: 120px;
-    max-height: calc(100vh - 140px);
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #FF3366 #0A0A0A;
-}
-
-.filters::-webkit-scrollbar {
-    width: 4px;
-}
-
-.filters::-webkit-scrollbar-track {
-    background: #0A0A0A;
-}
-
-.filters::-webkit-scrollbar-thumb {
-    background: #FF3366;
-    border-radius: 4px;
-}
-        .filter-section {
-            margin-bottom: 32px;
-        }
-
-        .filter-title {
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-            color: var(--text-secondary);
-        }
-
-        .filter-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .filter-option {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 8px;
-            transition: background 0.3s ease;
-        }
-
-        .filter-option:hover {
-            background: var(--bg-card);
-        }
-
-        .filter-checkbox {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: var(--primary);
-        }
-
-        .filter-label {
-            color: var(--text-secondary);
-            font-size: 15px;
-            flex: 1;
-        }
-
-        .filter-count {
-            font-size: 13px;
-            color: var(--text-tertiary);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .filter-slider {
-            margin-top: 16px;
-        }
-
-        .slider {
-            width: 100%;
-            height: 6px;
-            background: var(--bg-card);
-            border-radius: 3px;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(255, 51, 102, 0.4);
-        }
-
-        .slider-label {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 8px;
-            font-size: 13px;
-            color: var(--text-tertiary);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        /* Movie Grid */
-        .movies-section {
-            min-height: 100vh;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .section-title {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -1px;
-        }
-
-        .view-all {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .view-all:hover {
-            color: var(--primary);
-        }
-
-        .movie-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 24px;
-            margin-bottom: 48px;
-        }
-
-        .movie-card {
-            background: var(--bg-card);
-            border-radius: 16px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-        }
-
-        .movie-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 51, 102, 0.1), rgba(157, 78, 221, 0.1));
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-        }
-
-        .movie-card:hover::before {
-            opacity: 1;
-        }
-
-        .movie-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
-            border-color: rgba(255, 51, 102, 0.3);
-        }
-
-        .movie-poster {
-            width: 100%;
-            aspect-ratio: 2/3;
-            background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 64px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .movie-poster::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to top, var(--bg-card), transparent);
-        }
-
-        .movie-info {
-            padding: 16px;
-        }
-
-        .movie-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            line-height: 1.4;
-        }
-
-        .movie-genres {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-bottom: 12px;
-        }
-
-        .genre-tag {
-            padding: 4px 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            letter-spacing: 0.5px;
-        }
-
-        .movie-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text-tertiary);
-            font-size: 13px;
-            margin-bottom: 12px;
-        }
-
-        .movie-rating {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            color: var(--accent-yellow);
-            font-weight: 600;
-        }
-
-        .movie-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .icon-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 18px;
-        }
-
-        .icon-btn:hover {
-            background: var(--primary);
-            border-color: var(--primary);
-            transform: scale(1.1);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .movie-card {
-            animation: fadeInUp 0.5s ease backwards;
-        }
-
+            padding: 0 40px; z-index: 100;
+            height: 80px; display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-left { display: flex; align-items: center; gap: 48px; }
+        .logo { font-size: 28px; font-weight: 800; letter-spacing: -1px; background: linear-gradient(135deg, var(--primary), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-link { color: var(--text-secondary); text-decoration: none; font-size: 15px; font-weight: 500; transition: all 0.3s ease; position: relative; }
+        .nav-link:hover, .nav-link.active { color: var(--text-primary); }
+        .nav-link.active::after { content: ''; position: absolute; bottom: -28px; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent-purple)); border-radius: 2px 2px 0 0; }
+        .nav-right { display: flex; align-items: center; gap: 24px; }
+
+        .search-bar { position: relative; width: 300px; }
+        .search-input { width: 100%; padding: 12px 20px 12px 44px; background: var(--bg-card); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; color: var(--text-primary); font-size: 14px; font-family: 'Outfit', sans-serif; transition: all 0.3s ease; }
+        .search-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255, 51, 102, 0.1); }
+        .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); pointer-events: none; }
+
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); display: flex; align-items: center; justify-content: center; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .user-avatar:hover { transform: scale(1.1); box-shadow: 0 4px 16px rgba(157, 78, 221, 0.4); }
+
+        .hero { position: relative; height: 500px; margin: 0; overflow: hidden; }
+        .hero-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to right, var(--bg-dark) 0%, transparent 50%, var(--bg-dark) 100%), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="500"><rect fill="%231a1a1a" width="1920" height="500"/><text x="50%" y="50%" font-size="200" fill="%23252525" text-anchor="middle" dominant-baseline="middle">🎬</text></svg>'); background-size: cover; background-position: center; filter: brightness(0.4); }
+        .hero-content { position: relative; z-index: 2; padding: 80px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(to top, var(--bg-dark), transparent); }
+        .hero-badge { display: inline-block; padding: 8px 16px; background: rgba(255, 51, 102, 0.2); border: 1px solid var(--primary); border-radius: 20px; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 16px; width: fit-content; }
+        .hero-title { font-size: 64px; font-weight: 900; letter-spacing: -2px; margin-bottom: 16px; line-height: 1.1; }
+        .hero-meta { display: flex; gap: 24px; align-items: center; margin-bottom: 16px; font-size: 15px; color: var(--text-secondary); }
+        .hero-meta span { display: flex; align-items: center; gap: 8px; }
+        .hero-description { font-size: 18px; color: var(--text-secondary); max-width: 600px; line-height: 1.6; margin-bottom: 32px; }
+        .hero-actions { display: flex; gap: 16px; }
+        .btn { padding: 16px 32px; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-family: 'Outfit', sans-serif; display: flex; align-items: center; gap: 10px; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 51, 102, 0.4); }
+        .btn-secondary { background: rgba(255, 255, 255, 0.1); color: white; backdrop-filter: blur(10px); }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
+
+        .content-wrapper { display: grid; grid-template-columns: 280px 1fr; gap: 40px; padding: 40px 80px; }
+
+        .filters {
+            position: sticky; top: 120px;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #FF3366 #0A0A0A;
+        }
+        .filters::-webkit-scrollbar { width: 4px; }
+        .filters::-webkit-scrollbar-track { background: #0A0A0A; }
+        .filters::-webkit-scrollbar-thumb { background: #FF3366; border-radius: 4px; }
+
+        .filter-section { margin-bottom: 32px; }
+        .filter-title { font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; color: var(--text-secondary); }
+        .filter-options { display: flex; flex-direction: column; gap: 12px; }
+        .filter-option { display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 8px 12px; border-radius: 8px; transition: background 0.3s ease; }
+        .filter-option:hover { background: var(--bg-card); }
+        .filter-checkbox { width: 18px; height: 18px; cursor: pointer; accent-color: var(--primary); }
+        .filter-label { color: var(--text-secondary); font-size: 15px; flex: 1; }
+
+        .filter-slider { margin-top: 16px; }
+        .slider { width: 100%; height: 6px; background: var(--bg-card); border-radius: 3px; outline: none; -webkit-appearance: none; }
+        .slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--primary); cursor: pointer; box-shadow: 0 2px 8px rgba(255, 51, 102, 0.4); }
+        .slider-label { display: flex; justify-content: space-between; margin-top: 8px; font-size: 13px; color: var(--text-tertiary); font-family: 'JetBrains Mono', monospace; }
+
+        .movies-section { min-height: 100vh; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .section-title { font-size: 28px; font-weight: 700; letter-spacing: -1px; }
+        .view-all { color: var(--text-secondary); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.3s ease; }
+        .view-all:hover { color: var(--primary); }
+
+        .movie-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; margin-bottom: 48px; }
+        .movie-card { background: var(--bg-card); border-radius: 16px; overflow: hidden; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(255, 255, 255, 0.05); position: relative; }
+        .movie-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, rgba(255, 51, 102, 0.1), rgba(157, 78, 221, 0.1)); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; }
+        .movie-card:hover::before { opacity: 1; }
+        .movie-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6); border-color: rgba(255, 51, 102, 0.3); }
+        .movie-poster { width: 100%; aspect-ratio: 2/3; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card)); display: flex; align-items: center; justify-content: center; font-size: 64px; position: relative; overflow: hidden; }
+        .movie-poster::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, var(--bg-card), transparent); }
+        .movie-info { padding: 16px; }
+        .movie-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
+        .movie-genres { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+        .genre-tag { padding: 4px 10px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; font-size: 11px; font-weight: 500; color: var(--text-secondary); letter-spacing: 0.5px; }
+        .movie-meta { display: flex; justify-content: space-between; align-items: center; color: var(--text-tertiary); font-size: 13px; margin-bottom: 12px; }
+        .movie-rating { display: flex; align-items: center; gap: 4px; color: var(--accent-yellow); font-weight: 600; }
+        .movie-actions { display: flex; gap: 8px; }
+        .icon-btn { width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; font-size: 18px; }
+        .icon-btn:hover { background: var(--primary); border-color: var(--primary); transform: scale(1.1); }
+
+        .trend-tab { padding: 8px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--text-secondary); font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .trend-tab:hover { background: rgba(255,255,255,0.1); color: white; }
+        .active-tab { background: var(--primary) !important; border-color: var(--primary) !important; color: white !important; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .movie-card { animation: fadeInUp 0.5s ease backwards; }
         .movie-card:nth-child(1) { animation-delay: 0.05s; }
         .movie-card:nth-child(2) { animation-delay: 0.1s; }
         .movie-card:nth-child(3) { animation-delay: 0.15s; }
@@ -594,45 +148,16 @@
         .movie-card:nth-child(5) { animation-delay: 0.25s; }
         .movie-card:nth-child(6) { animation-delay: 0.3s; }
 
-        .trend-tab {
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.15);
-            background: rgba(255,255,255,0.05);
-            color: var(--text-secondary);
-            font-family: 'Outfit', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .trend-tab:hover { background: rgba(255,255,255,0.1); color: white; }
-        .active-tab { background: var(--primary) !important; border-color: var(--primary) !important; color: white !important; }
-
         @media (max-width: 1024px) {
-            .content-wrapper {
-                grid-template-columns: 1fr;
-                padding: 40px;
-            }
-
-            .filters {
-                position: relative;
-                top: 0;
-            }
-
-            .hero-content {
-                padding: 40px;
-            }
-
-            .hero-title {
-                font-size: 48px;
-            }
+            .content-wrapper { grid-template-columns: 1fr; padding: 40px; }
+            .filters { position: relative; top: 0; }
+            .hero-content { padding: 40px; }
+            .hero-title { font-size: 48px; }
         }
     </style>
 </head>
 <body>
     <div class="main-container">
-        <!-- Navigation -->
         <nav class="nav">
             <div class="nav-left">
                 <div class="logo">CineMatch</div>
@@ -642,7 +167,7 @@
                     <li><a href="#" class="nav-link"        id="nav-foryou"    onclick="showSection('foryou');return false;">For You</a></li>
                     <li><a href="#" class="nav-link"        id="nav-trending"  onclick="showSection('trending');return false;">Trending</a></li>
                     <li><a href="/cineblend" class="nav-link">CineBlend</a></li>
-                    <li><a href="#" class="nav-link"        id="nav-awards"    onclick="showSection('awards');return false;">Awards</a></li>
+                    <li><a href="/awards" class="nav-link">Awards</a></li>
                 </ul>
             </div>
             <div class="nav-right">
@@ -654,7 +179,7 @@
             </div>
         </nav>
 
-        <!-- ── Inline section panels — right after nav so no scroll needed ── -->
+        <!-- Inline section panels -->
         <div id="section-watchlist" style="display:none;padding:48px 80px 80px;">
             <h1 style="font-size:36px;font-weight:900;letter-spacing:-1.5px;margin-bottom:8px;">♥ My <span style="color:#FF3366;">Watchlist</span></h1>
             <p style="color:#A0A0A0;font-size:15px;margin-bottom:32px;">Movies you've saved to watch later.</p>
@@ -686,12 +211,6 @@
             <div id="trendingContent"><p style="color:#A0A0A0;">Loading…</p></div>
         </div>
 
-        <div id="section-awards" style="display:none;padding:48px 80px 80px;">
-            <h1 style="font-size:36px;font-weight:900;letter-spacing:-1.5px;margin-bottom:8px;">🏆 Community <span style="color:#FF3366;">Awards</span></h1>
-            <p style="color:#A0A0A0;font-size:15px;margin-bottom:32px;">Monthly highlights from community activity.</p>
-            <div id="awardsInlineContent"><p style="color:#A0A0A0;">Loading…</p></div>
-        </div>
-
         <!-- Hero Section -->
         <section class="hero">
             <div class="hero-bg"></div>
@@ -699,14 +218,9 @@
                 <span class="hero-badge">✨ Featured This Week</span>
                 <h1 class="hero-title">Dune: Part Two</h1>
                 <div class="hero-meta">
-                    <span>⭐ 4.8</span>
-                    <span>2024</span>
-                    <span>2h 46m</span>
-                    <span>Sci-Fi, Adventure</span>
+                    <span>⭐ 4.8</span><span>2024</span><span>2h 46m</span><span>Sci-Fi, Adventure</span>
                 </div>
-                <p class="hero-description">
-                    Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.
-                </p>
+                <p class="hero-description">Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.</p>
                 <div class="hero-actions">
                     <button class="btn btn-primary">▶ Watch Trailer</button>
                     <button class="btn btn-secondary">+ Add to Watchlist</button>
@@ -716,7 +230,6 @@
 
         <!-- Content Grid -->
         <div class="content-wrapper">
-            <!-- Filters Sidebar -->
             <aside class="filters">
                 <div class="filter-section">
                     <h3 class="filter-title">Genres</h3>
@@ -733,29 +246,20 @@
                         <label class="filter-option"><input type="checkbox" class="filter-checkbox genre-cb" value="Fantasy"><span class="filter-label">Fantasy</span></label>
                     </div>
                 </div>
-
                 <div class="filter-section">
                     <h3 class="filter-title">Release Year</h3>
                     <div class="filter-slider">
                         <input type="range" id="yearSlider" min="1888" max="2025" value="1888" class="slider">
-                        <div class="slider-label">
-                            <span>From <span id="yearVal">Any</span></span>
-                            <span>2025</span>
-                        </div>
+                        <div class="slider-label"><span>From <span id="yearVal">Any</span></span><span>2025</span></div>
                     </div>
                 </div>
-
                 <div class="filter-section">
                     <h3 class="filter-title">Min Rating</h3>
                     <div class="filter-slider">
                         <input type="range" id="ratingSlider" min="0" max="5" step="0.5" value="0" class="slider">
-                        <div class="slider-label">
-                            <span>⭐ <span id="ratingVal">Any</span></span>
-                            <span>5.0</span>
-                        </div>
+                        <div class="slider-label"><span>⭐ <span id="ratingVal">Any</span></span><span>5.0</span></div>
                     </div>
                 </div>
-
                 <div class="filter-section">
                     <h3 class="filter-title">Streaming On</h3>
                     <div class="filter-options">
@@ -766,162 +270,28 @@
                         <label class="filter-option"><input type="checkbox" class="filter-checkbox platform-cb" value="Hulu"><span class="filter-label">Hulu</span></label>
                     </div>
                 </div>
-
                 <div style="display:flex; gap:8px; flex-direction:column;">
-                    <button id="applyFiltersBtn"
-                        style="width:100%; padding:12px; background:var(--primary); border:none;
-                               border-radius:10px; color:white; font-weight:700; font-size:14px;
-                               cursor:pointer; font-family:'Outfit',sans-serif;">
-                        Apply Filters
-                    </button>
-                    <button id="resetFiltersBtn"
-                        style="width:100%; padding:10px; background:rgba(255,255,255,0.06);
-                               border:1px solid rgba(255,255,255,0.1); border-radius:10px;
-                               color:var(--text-secondary); font-weight:600; font-size:13px;
-                               cursor:pointer; font-family:'Outfit',sans-serif;">
-                        Reset
-                    </button>
+                    <button id="applyFiltersBtn" style="width:100%; padding:12px; background:var(--primary); border:none; border-radius:10px; color:white; font-weight:700; font-size:14px; cursor:pointer; font-family:'Outfit',sans-serif;">Apply Filters</button>
+                    <button id="resetFiltersBtn" style="width:100%; padding:10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); border-radius:10px; color:var(--text-secondary); font-weight:600; font-size:13px; cursor:pointer; font-family:'Outfit',sans-serif;">Reset</button>
                     <p id="filterStatus" style="font-size:12px; color:var(--text-tertiary); text-align:center; display:none;"></p>
                 </div>
             </aside>
 
-            <!-- Movies Section -->
             <main class="movies-section">
                 <div class="section-header">
                     <h2 class="section-title" id="mainSectionTitle">All Movies</h2>
                     <a href="#" class="view-all">View All →</a>
                 </div>
-
                 <div class="movie-grid" id="mainMovieGrid">
-                    <div class="movie-card">
-                        <div class="movie-poster">🎬</div>
-                        <div class="movie-info">
-                            <h3 class="movie-title">Inception</h3>
-                            <div class="movie-genres">
-                                <span class="genre-tag">Action</span>
-                                <span class="genre-tag">Sci-Fi</span>
-                            </div>
-                            <div class="movie-meta">
-                                <span>2010 • 2h 28m</span>
-                                <span class="movie-rating">⭐ 4.8</span>
-                            </div>
-                            <div class="movie-actions">
-                                <button class="icon-btn">♡</button>
-                                <button class="icon-btn">⭐</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="movie-card">
-                        <div class="movie-poster">🎬</div>
-                        <div class="movie-info">
-                            <h3 class="movie-title">The Dark Knight</h3>
-                            <div class="movie-genres">
-                                <span class="genre-tag">Action</span>
-                                <span class="genre-tag">Crime</span>
-                            </div>
-                            <div class="movie-meta">
-                                <span>2008 • 2h 32m</span>
-                                <span class="movie-rating">⭐ 4.9</span>
-                            </div>
-                            <div class="movie-actions">
-                                <button class="icon-btn">♥</button>
-                                <button class="icon-btn">⭐</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="movie-card">
-                        <div class="movie-poster">🎬</div>
-                        <div class="movie-info">
-                            <h3 class="movie-title">Interstellar</h3>
-                            <div class="movie-genres">
-                                <span class="genre-tag">Sci-Fi</span>
-                                <span class="genre-tag">Drama</span>
-                            </div>
-                            <div class="movie-meta">
-                                <span>2014 • 2h 49m</span>
-                                <span class="movie-rating">⭐ 4.7</span>
-                            </div>
-                            <div class="movie-actions">
-                                <button class="icon-btn">♡</button>
-                                <button class="icon-btn">⭐</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="movie-card">
-                        <div class="movie-poster">🎬</div>
-                        <div class="movie-info">
-                            <h3 class="movie-title">The Matrix</h3>
-                            <div class="movie-genres">
-                                <span class="genre-tag">Action</span>
-                                <span class="genre-tag">Sci-Fi</span>
-                            </div>
-                            <div class="movie-meta">
-                                <span>1999 • 2h 16m</span>
-                                <span class="movie-rating">⭐ 4.6</span>
-                            </div>
-                            <div class="movie-actions">
-                                <button class="icon-btn">♡</button>
-                                <button class="icon-btn">⭐</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="movie-card">
-                        <div class="movie-poster">🎬</div>
-                        <div class="movie-info">
-                            <h3 class="movie-title">Pulp Fiction</h3>
-                            <div class="movie-genres">
-                                <span class="genre-tag">Crime</span>
-                                <span class="genre-tag">Drama</span>
-                            </div>
-                            <div class="movie-meta">
-                                <span>1994 • 2h 34m</span>
-                                <span class="movie-rating">⭐ 4.8</span>
-                            </div>
-                            <div class="movie-actions">
-                                <button class="icon-btn">♡</button>
-                                <button class="icon-btn">⭐</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="movie-card">
-                        <div class="movie-poster">🎬</div>
-                        <div class="movie-info">
-                            <h3 class="movie-title">The Shawshank Redemption</h3>
-                            <div class="movie-genres">
-                                <span class="genre-tag">Drama</span>
-                            </div>
-                            <div class="movie-meta">
-                                <span>1994 • 2h 22m</span>
-                                <span class="movie-rating">⭐ 4.9</span>
-                            </div>
-                            <div class="movie-actions">
-                                <button class="icon-btn">♡</button>
-                                <button class="icon-btn">⭐</button>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="movie-card"><div class="movie-poster">🎬</div><div class="movie-info"><h3 class="movie-title">Inception</h3><div class="movie-genres"><span class="genre-tag">Action</span><span class="genre-tag">Sci-Fi</span></div><div class="movie-meta"><span>2010 • 2h 28m</span><span class="movie-rating">⭐ 4.8</span></div><div class="movie-actions"><button class="icon-btn">♡</button><button class="icon-btn">⭐</button></div></div></div>
                 </div>
-
-            
             </main>
         </div>
     </div>
 
-    </div><!-- /main-container -->
-
-    <!-- Movie detail modal (kept as modal — works fine) -->
-    <div id="movieModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85);
-         z-index:999; overflow-y:auto; padding:40px 20px;">
-        <div style="max-width:800px; margin:0 auto; background:var(--bg-card); border-radius:24px;
-             padding:40px; border:1px solid rgba(255,255,255,0.08); position:relative;">
-            <button onclick="closeModal()" style="position:absolute; top:20px; right:20px;
-                background:rgba(255,255,255,0.1); border:none; color:white; width:36px; height:36px;
-                border-radius:50%; font-size:18px; cursor:pointer;">✕</button>
+    <div id="movieModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:999; overflow-y:auto; padding:40px 20px;">
+        <div style="max-width:800px; margin:0 auto; background:var(--bg-card); border-radius:24px; padding:40px; border:1px solid rgba(255,255,255,0.08); position:relative;">
+            <button onclick="closeModal()" style="position:absolute; top:20px; right:20px; background:rgba(255,255,255,0.1); border:none; color:white; width:36px; height:36px; border-radius:50%; font-size:18px; cursor:pointer;">✕</button>
             <div id="modalContent"></div>
         </div>
     </div>
@@ -929,12 +299,10 @@
     <script>
         const BACKEND = "http://localhost:5000/api";
 
-        // ── On page load: check session then fetch movies ────────────────────
         window.addEventListener("DOMContentLoaded", async () => {
             await checkSession();
             await loadMovies();
 
-            // Wire search bar — filters already-loaded cards by title
             document.querySelector(".search-input").addEventListener("input", (e) => {
                 const query = e.target.value.trim().toLowerCase();
                 document.querySelectorAll(".movie-card").forEach(card => {
@@ -943,20 +311,16 @@
                 });
             });
 
-            // ── UC-06: Wire sidebar filters ───────────────────────────────────
             const yearSlider   = document.getElementById("yearSlider");
             const ratingSlider = document.getElementById("ratingSlider");
-
             yearSlider.addEventListener("input", () => {
                 const v = parseInt(yearSlider.value);
                 document.getElementById("yearVal").textContent = v <= 1888 ? "Any" : v;
             });
-
             ratingSlider.addEventListener("input", () => {
                 const v = parseFloat(ratingSlider.value);
                 document.getElementById("ratingVal").textContent = v === 0 ? "Any" : v.toFixed(1) + "+";
             });
-
             document.getElementById("applyFiltersBtn").addEventListener("click", applyFilters);
             document.getElementById("resetFiltersBtn").addEventListener("click", resetFilters);
         });
@@ -965,88 +329,43 @@
             try {
                 const res  = await fetch(`${BACKEND}/me`, { credentials: "include" });
                 const data = await res.json();
-                if (!data.logged_in) {
-                    window.location.href = "/login";
-                    return;
-                }
-                // Show first letter of username in avatar
-                const initials = data.username.charAt(0).toUpperCase();
-                document.querySelector(".user-avatar").textContent = initials;
-            } catch {
-                window.location.href = "/login";
-            }
+                if (!data.logged_in) { window.location.href = "/login"; return; }
+                document.querySelector(".user-avatar").textContent = data.username.charAt(0).toUpperCase();
+            } catch { window.location.href = "/login"; }
         }
 
-        // ── Load and render all movies ───────────────────────────────────────
         async function loadMovies() {
             try {
                 const res  = await fetch(`${BACKEND}/movies`, { credentials: "include" });
                 const data = await res.json();
-
-                if (!data.success) {
-                    showGridMessage("Could not load movies: " + data.message);
-                    return;
-                }
-
-                if (data.data.length === 0) {
-                    showGridMessage("Library is empty. Ask your admin to add movies.");
-                    return;
-                }
-
+                if (!data.success) { showGridMessage("Could not load movies: " + data.message); return; }
+                if (data.data.length === 0) { showGridMessage("Library is empty. Ask your admin to add movies."); return; }
                 renderMovieGrid(data.data);
-                renderHero(data.data[0]);   // top-rated movie as hero
-            } catch (err) {
-                showGridMessage("Could not reach the server. Is Flask running?");
-            }
+                renderHero(data.data[0]);
+            } catch { showGridMessage("Could not reach the server. Is Flask running?"); }
         }
 
-        // ── Render hero section with first (highest rated) movie ─────────────
         function renderHero(movie) {
             document.querySelector(".hero-title").textContent = movie.title;
-            document.querySelector(".hero-description").textContent =
-                movie.description || "No description available.";
-
-            const meta = document.querySelector(".hero-meta");
-            meta.innerHTML = `
+            document.querySelector(".hero-description").textContent = movie.description || "No description available.";
+            document.querySelector(".hero-meta").innerHTML = `
                 <span>⭐ ${movie.average_rating.toFixed(1)}</span>
                 <span>${movie.release_year || "—"}</span>
                 <span>${formatRuntime(movie.runtime)}</span>
-                <span>${movie.genres.split(",").slice(0,2).join(", ")}</span>
-            `;
-
-            // Wire hero watchlist button
-            document.querySelector(".hero-actions .btn-secondary")
-                .setAttribute("data-movie-id", movie.movie_id);
-            document.querySelector(".hero-actions .btn-secondary")
-                .onclick = () => openMovieDetail(movie.movie_id);
-
-            // Wire hero trailer button
+                <span>${movie.genres.split(",").slice(0,2).join(", ")}</span>`;
+            document.querySelector(".hero-actions .btn-secondary").onclick = () => openMovieDetail(movie.movie_id);
             document.querySelector(".hero-actions .btn-primary").onclick = () => {
-                if (movie.trailer_url) {
-                    window.open(movie.trailer_url, "_blank");
-                } else {
-                    alert("No trailer available for this movie.");
-                }
+                if (movie.trailer_url) window.open(movie.trailer_url, "_blank");
+                else alert("No trailer available for this movie.");
             };
         }
 
-        // ── Build movie cards from API data ──────────────────────────────────
         function renderMovieGrid(movies) {
             const grid = document.getElementById("mainMovieGrid");
             grid.innerHTML = "";
-
             movies.forEach((movie, index) => {
-                const genres = movie.genres
-                    ? movie.genres.split(",").slice(0, 2)
-                        .map(g => `<span class="genre-tag">${g.trim()}</span>`).join("")
-                    : "";
-
-                const posterContent = movie.poster_url
-                    ? `<img src="${movie.poster_url}" alt="${movie.title}"
-                            style="width:100%; height:100%; object-fit:cover;"
-                            onerror="this.parentElement.innerHTML='🎬'">`
-                    : "🎬";
-
+                const genres = movie.genres ? movie.genres.split(",").slice(0, 2).map(g => `<span class="genre-tag">${g.trim()}</span>`).join("") : "";
+                const posterContent = movie.poster_url ? `<img src="${movie.poster_url}" alt="${movie.title}" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.innerHTML='🎬'">` : "🎬";
                 const card = document.createElement("div");
                 card.className = "movie-card";
                 card.style.animationDelay = `${index * 0.05}s`;
@@ -1062,296 +381,128 @@
                         </div>
                         <div class="movie-actions">
                             <button class="icon-btn watchlist-btn" title="Add to Watchlist">♡</button>
-                            <button class="icon-btn detail-btn"    title="View Details">🎬</button>
+                            <button class="icon-btn detail-btn" title="View Details">🎬</button>
                         </div>
-                    </div>
-                `;
-
-                // Detail button → open modal
-                card.querySelector(".detail-btn").addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    openMovieDetail(movie.movie_id);
-                });
-
-                // Card click → also open detail
+                    </div>`;
+                card.querySelector(".detail-btn").addEventListener("click", (e) => { e.stopPropagation(); openMovieDetail(movie.movie_id); });
                 card.addEventListener("click", () => openMovieDetail(movie.movie_id));
-
-                // Watchlist button — toggle add/remove
                 const wBtn = card.querySelector(".watchlist-btn");
-                // Check initial state
-                fetch(`${BACKEND}/watchlist/check/${movie.movie_id}`, { credentials: "include" })
-                    .then(r => r.json())
-                    .then(d => { if (d.in_watchlist) wBtn.textContent = "♥"; });
-
-                wBtn.addEventListener("click", async (e) => {
-                    e.stopPropagation();
-                    await toggleWatchlist(movie.movie_id, wBtn);
-                });
-
+                fetch(`${BACKEND}/watchlist/check/${movie.movie_id}`, { credentials: "include" }).then(r => r.json()).then(d => { if (d.in_watchlist) wBtn.textContent = "♥"; });
+                wBtn.addEventListener("click", async (e) => { e.stopPropagation(); await toggleWatchlist(movie.movie_id, wBtn); });
                 grid.appendChild(card);
             });
         }
 
-        // ── Open movie detail modal ──────────────────────────────────────────
         async function openMovieDetail(movieId) {
             document.getElementById("movieModal").style.display = "block";
-            document.getElementById("modalContent").innerHTML =
-                `<p style="color:var(--text-secondary); text-align:center;">Loading...</p>`;
-
+            document.getElementById("modalContent").innerHTML = `<p style="color:var(--text-secondary); text-align:center;">Loading...</p>`;
             try {
-                // Fetch movie details, user's rating, review, and watchlist status in parallel
                 const [movieRes, myRatingRes, myReviewRes, watchlistRes] = await Promise.all([
-                    fetch(`${BACKEND}/movies/${movieId}`,            { credentials: "include" }),
-                    fetch(`${BACKEND}/ratings/me/${movieId}`,        { credentials: "include" }),
-                    fetch(`${BACKEND}/reviews/me/${movieId}`,        { credentials: "include" }),
-                    fetch(`${BACKEND}/watchlist/check/${movieId}`,   { credentials: "include" })
+                    fetch(`${BACKEND}/movies/${movieId}`, { credentials: "include" }),
+                    fetch(`${BACKEND}/ratings/me/${movieId}`, { credentials: "include" }),
+                    fetch(`${BACKEND}/reviews/me/${movieId}`, { credentials: "include" }),
+                    fetch(`${BACKEND}/watchlist/check/${movieId}`, { credentials: "include" })
                 ]);
-
-                const movieData      = await movieRes.json();
-                const myRatingData   = await myRatingRes.json();
-                const myReviewData   = await myReviewRes.json();
-                const watchlistData  = await watchlistRes.json();
-
-                if (!movieData.success) {
-                    document.getElementById("modalContent").innerHTML =
-                        `<p style="color:var(--primary);">${movieData.message}</p>`;
-                    return;
-                }
-
+                const movieData     = await movieRes.json();
+                const myRatingData  = await myRatingRes.json();
+                const myReviewData  = await myReviewRes.json();
+                const watchlistData = await watchlistRes.json();
+                if (!movieData.success) { document.getElementById("modalContent").innerHTML = `<p style="color:var(--primary);">${movieData.message}</p>`; return; }
                 const m           = movieData.data;
                 const userRating  = myRatingData.rated ? myRatingData.rating : 0;
                 const userReview  = myReviewData.has_review ? myReviewData.review_text : "";
                 const inWatchlist = watchlistData.in_watchlist || false;
-                const genres     = m.genres ? m.genres.split(",").map(g =>
-                    `<span class="genre-tag">${g.trim()}</span>`).join("") : "";
-                const reviews    = m.reviews.length
-                    ? m.reviews.map(r => `
-                        <div style="border-top:1px solid rgba(255,255,255,0.06); padding:16px 0;">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                                <strong>${r.username}</strong>
-                                <span style="color:var(--accent-yellow);">⭐ ${r.rating.toFixed(1)}</span>
-                            </div>
-                            <p style="color:var(--text-secondary); font-size:14px;">${r.review_text}</p>
-                            <small style="color:var(--text-tertiary);">${r.created_at}</small>
-                        </div>`).join("")
-                    : `<p style="color:var(--text-tertiary);">No reviews yet. Be the first!</p>`;
-
-                // ── Star rating UI ─────────────────────────────────────────────
-                // Shows 5 clickable stars. Highlights up to userRating if already rated.
+                const genres  = m.genres ? m.genres.split(",").map(g => `<span class="genre-tag">${g.trim()}</span>`).join("") : "";
+                const reviews = m.reviews.length ? m.reviews.map(r => `
+                    <div style="border-top:1px solid rgba(255,255,255,0.06); padding:16px 0;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><strong>${r.username}</strong><span style="color:var(--accent-yellow);">⭐ ${r.rating.toFixed(1)}</span></div>
+                        <p style="color:var(--text-secondary); font-size:14px;">${r.review_text}</p>
+                        <small style="color:var(--text-tertiary);">${r.created_at}</small>
+                    </div>`).join("") : `<p style="color:var(--text-tertiary);">No reviews yet. Be the first!</p>`;
                 const starsHtml = [1,2,3,4,5].map(n => `
-                    <span class="star-btn" data-value="${n}"
-                        style="font-size:32px; cursor:pointer; transition:transform 0.1s;
-                               color:${n <= userRating ? 'var(--accent-yellow)' : 'var(--text-tertiary)'};"
-                        onmouseover="highlightStars(${n})"
-                        onmouseout="highlightStars(${userRating})"
-                        onclick="submitRating(${movieId}, ${n})">★</span>
-                `).join("");
-
+                    <span class="star-btn" data-value="${n}" style="font-size:32px; cursor:pointer; transition:transform 0.1s; color:${n <= userRating ? 'var(--accent-yellow)' : 'var(--text-tertiary)'};"
+                        onmouseover="highlightStars(${n})" onmouseout="highlightStars(${userRating})" onclick="submitRating(${movieId}, ${n})">★</span>`).join("");
                 document.getElementById("modalContent").innerHTML = `
                     <h2 style="font-size:32px; font-weight:800; margin-bottom:8px;">${m.title}</h2>
-                    <div style="display:flex; gap:16px; color:var(--text-secondary);
-                                font-size:14px; margin-bottom:16px;">
-                        <span>📅 ${m.release_year || "—"}</span>
-                        <span>⏱ ${formatRuntime(m.runtime)}</span>
-                        <span>⭐ ${m.average_rating.toFixed(1)} (${m.total_ratings} ratings)</span>
+                    <div style="display:flex; gap:16px; color:var(--text-secondary); font-size:14px; margin-bottom:16px;">
+                        <span>📅 ${m.release_year || "—"}</span><span>⏱ ${formatRuntime(m.runtime)}</span><span>⭐ ${m.average_rating.toFixed(1)} (${m.total_ratings} ratings)</span>
                     </div>
                     <div class="movie-genres" style="margin-bottom:16px;">${genres}</div>
-                    <p style="color:var(--text-secondary); line-height:1.7; margin-bottom:20px;">
-                        ${m.description || "No description available."}
-                    </p>
-                    ${m.director ? `<p style="margin-bottom:8px;"><strong>Director:</strong>
-                        <span style="color:var(--text-secondary);">${m.director}</span></p>` : ""}
-                    ${m.cast ? `<p style="margin-bottom:20px;"><strong>Cast:</strong>
-                        <span style="color:var(--text-secondary);">${m.cast}</span></p>` : ""}
-                    ${m.platforms ? `<p style="margin-bottom:20px;"><strong>Streaming on:</strong>
-                        <span style="color:var(--accent-green);">${m.platforms}</span></p>` : ""}
-                    ${m.trailer_url ? `<a href="${m.trailer_url}" target="_blank"
-                        style="display:inline-block; margin-bottom:24px; padding:12px 24px;
-                        background:var(--primary); color:white; border-radius:10px;
-                        text-decoration:none; font-weight:600;">▶ Watch Trailer</a>` : ""}
-                    <button id="modalWatchlistBtn" onclick="toggleWatchlist(${movieId}, this)"
-                        style="display:inline-block; margin-bottom:24px; margin-left:12px;
-                               padding:12px 24px; background:rgba(255,255,255,0.08);
-                               border:1px solid rgba(255,255,255,0.15); border-radius:10px;
-                               color:white; font-weight:600; cursor:pointer;
-                               font-family:'Outfit',sans-serif;">
-                        ${inWatchlist ? "♥ In Watchlist" : "♡ Add to Watchlist"}
-                    </button>
-
-                    <div style="margin-bottom:24px; padding:20px; background:rgba(255,255,255,0.03);
-                                border-radius:12px; border:1px solid rgba(255,255,255,0.06);">
-                        <p style="margin-bottom:12px; font-weight:600;">
-                            ${userRating ? `Your rating: ${userRating}★ — click to update` : "Rate this movie:"}
-                        </p>
+                    <p style="color:var(--text-secondary); line-height:1.7; margin-bottom:20px;">${m.description || "No description available."}</p>
+                    ${m.director ? `<p style="margin-bottom:8px;"><strong>Director:</strong> <span style="color:var(--text-secondary);">${m.director}</span></p>` : ""}
+                    ${m.cast ? `<p style="margin-bottom:20px;"><strong>Cast:</strong> <span style="color:var(--text-secondary);">${m.cast}</span></p>` : ""}
+                    ${m.platforms ? `<p style="margin-bottom:20px;"><strong>Streaming on:</strong> <span style="color:var(--accent-green);">${m.platforms}</span></p>` : ""}
+                    ${m.trailer_url ? `<a href="${m.trailer_url}" target="_blank" style="display:inline-block; margin-bottom:24px; padding:12px 24px; background:var(--primary); color:white; border-radius:10px; text-decoration:none; font-weight:600;">▶ Watch Trailer</a>` : ""}
+                    <button id="modalWatchlistBtn" onclick="toggleWatchlist(${movieId}, this)" style="display:inline-block; margin-bottom:24px; margin-left:12px; padding:12px 24px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:10px; color:white; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif;">${inWatchlist ? "♥ In Watchlist" : "♡ Add to Watchlist"}</button>
+                    <div style="margin-bottom:24px; padding:20px; background:rgba(255,255,255,0.03); border-radius:12px; border:1px solid rgba(255,255,255,0.06);">
+                        <p style="margin-bottom:12px; font-weight:600;">${userRating ? `Your rating: ${userRating}★ — click to update` : "Rate this movie:"}</p>
                         <div id="starContainer">${starsHtml}</div>
-                        <div id="ratingMsg" style="margin-top:10px; font-size:14px;
-                             color:var(--accent-green); display:none;"></div>
+                        <div id="ratingMsg" style="margin-top:10px; font-size:14px; color:var(--accent-green); display:none;"></div>
                     </div>
-
                     ${userRating ? `
-                    <div style="margin-bottom:24px; padding:20px; background:rgba(255,255,255,0.03);
-                                border-radius:12px; border:1px solid rgba(255,255,255,0.06);">
-                        <p style="margin-bottom:12px; font-weight:600;">
-                            ${userReview ? "Your Review (click to edit):" : "Write a Review:"}
-                        </p>
-                        <textarea id="reviewText"
-                            placeholder="Share your thoughts about this movie..."
-                            maxlength="1000"
-                            style="width:100%; min-height:100px; background:var(--bg-card);
-                                   border:1px solid rgba(255,255,255,0.1); border-radius:10px;
-                                   color:var(--text-primary); font-family:'Outfit',sans-serif;
-                                   font-size:14px; padding:12px; resize:vertical;"
-                        >${userReview}</textarea>
-                        <div style="display:flex; justify-content:space-between;
-                                    align-items:center; margin-top:8px;">
-                            <small id="charCount" style="color:var(--text-tertiary);">
-                                ${userReview.length}/1000
-                            </small>
-                            <button onclick="submitReview(${movieId})"
-                                style="padding:10px 24px; background:var(--primary);
-                                       border:none; border-radius:8px; color:white;
-                                       font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif;">
-                                ${userReview ? "Update Review" : "Submit Review"}
-                            </button>
+                    <div style="margin-bottom:24px; padding:20px; background:rgba(255,255,255,0.03); border-radius:12px; border:1px solid rgba(255,255,255,0.06);">
+                        <p style="margin-bottom:12px; font-weight:600;">${userReview ? "Your Review (click to edit):" : "Write a Review:"}</p>
+                        <textarea id="reviewText" placeholder="Share your thoughts..." maxlength="1000" style="width:100%; min-height:100px; background:var(--bg-card); border:1px solid rgba(255,255,255,0.1); border-radius:10px; color:var(--text-primary); font-family:'Outfit',sans-serif; font-size:14px; padding:12px; resize:vertical;">${userReview}</textarea>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+                            <small id="charCount" style="color:var(--text-tertiary);">${userReview.length}/1000</small>
+                            <button onclick="submitReview(${movieId})" style="padding:10px 24px; background:var(--primary); border:none; border-radius:8px; color:white; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif;">${userReview ? "Update Review" : "Submit Review"}</button>
                         </div>
                         <div id="reviewMsg" style="margin-top:8px; font-size:14px; display:none;"></div>
-                    </div>` : `
-                    <div style="margin-bottom:24px; padding:16px; background:rgba(255,255,255,0.02);
-                                border-radius:10px; border:1px solid rgba(255,255,255,0.04);">
-                        <p style="color:var(--text-tertiary); font-size:14px;">
-                            Rate this movie first to write a review.
-                        </p>
-                    </div>`}
-
-                    <h3 style="margin-bottom:16px; font-size:20px;">Reviews</h3>
-                    ${reviews}
-                `;
-            } catch {
-                document.getElementById("modalContent").innerHTML =
-                    `<p style="color:var(--primary);">Could not load movie details.</p>`;
-            }
+                    </div>` : `<div style="margin-bottom:24px; padding:16px; background:rgba(255,255,255,0.02); border-radius:10px; border:1px solid rgba(255,255,255,0.04);"><p style="color:var(--text-tertiary); font-size:14px;">Rate this movie first to write a review.</p></div>`}
+                    <h3 style="margin-bottom:16px; font-size:20px;">Reviews</h3>${reviews}`;
+            } catch { document.getElementById("modalContent").innerHTML = `<p style="color:var(--primary);">Could not load movie details.</p>`; }
         }
 
-        // ── Star hover highlight ──────────────────────────────────────────────
         function highlightStars(upTo) {
             document.querySelectorAll(".star-btn").forEach(star => {
-                star.style.color = parseInt(star.dataset.value) <= upTo
-                    ? "var(--accent-yellow)"
-                    : "var(--text-tertiary)";
+                star.style.color = parseInt(star.dataset.value) <= upTo ? "var(--accent-yellow)" : "var(--text-tertiary)";
             });
         }
 
-        // ── Submit rating to backend ──────────────────────────────────────────
         async function submitRating(movieId, stars) {
-            // Immediately highlight selected stars
             highlightStars(stars);
-
             try {
-                const res  = await fetch(`${BACKEND}/ratings`, {
-                    method:      "POST",
-                    headers:     { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body:        JSON.stringify({ movie_id: movieId, rating: stars })
-                });
+                const res  = await fetch(`${BACKEND}/ratings`, { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "include", body: JSON.stringify({ movie_id: movieId, rating: stars }) });
                 const data = await res.json();
-
                 const msgBox = document.getElementById("ratingMsg");
-               if (data.success) {
-                    msgBox.style.display = "block";
-                    msgBox.style.color   = "var(--accent-green)";
-                    msgBox.textContent   = data.message;
-                    // Reload modal after 1 second so review box appears
-                    setTimeout(() => openMovieDetail(movieId), 1000);
-                } else {
-                    msgBox.style.display = "block";
-                    msgBox.style.color   = "var(--primary)";
-                    msgBox.textContent   = data.message;
-                }
-            } catch {
-                document.getElementById("ratingMsg").textContent =
-                    "Could not submit rating. Is Flask running?";
-            }
+                if (data.success) { msgBox.style.display = "block"; msgBox.style.color = "var(--accent-green)"; msgBox.textContent = data.message; setTimeout(() => openMovieDetail(movieId), 1000); }
+                else { msgBox.style.display = "block"; msgBox.style.color = "var(--primary)"; msgBox.textContent = data.message; }
+            } catch { document.getElementById("ratingMsg").textContent = "Could not submit rating."; }
         }
 
-        // ── Submit review to backend ──────────────────────────────────────────
         async function submitReview(movieId) {
             const textarea = document.getElementById("reviewText");
             const msgBox   = document.getElementById("reviewMsg");
             const text     = (textarea?.value || "").trim();
-
-            if (!text) {
-                msgBox.style.display = "block";
-                msgBox.style.color   = "var(--primary)";
-                msgBox.textContent   = "Review cannot be empty.";
-                return;
-            }
-
+            if (!text) { msgBox.style.display = "block"; msgBox.style.color = "var(--primary)"; msgBox.textContent = "Review cannot be empty."; return; }
             try {
-                const res  = await fetch(`${BACKEND}/reviews`, {
-                    method:      "POST",
-                    headers:     { "Content-Type": "application/json" },
-                    credentials: "include",
-                    body:        JSON.stringify({ movie_id: movieId, review_text: text })
-                });
+                const res  = await fetch(`${BACKEND}/reviews`, { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "include", body: JSON.stringify({ movie_id: movieId, review_text: text }) });
                 const data = await res.json();
-
                 msgBox.style.display = "block";
-                if (data.success) {
-                    msgBox.style.color = "var(--accent-green)";
-                    msgBox.textContent = data.action === "updated"
-                        ? "Review updated successfully."
-                        : "Review submitted successfully.";
-                } else {
-                    msgBox.style.color = "var(--primary)";
-                    msgBox.textContent = data.message;
-                }
-            } catch {
-                msgBox.style.display = "block";
-                msgBox.style.color   = "var(--primary)";
-                msgBox.textContent   = "Could not submit review. Is Flask running?";
-            }
+                if (data.success) { msgBox.style.color = "var(--accent-green)"; msgBox.textContent = data.action === "updated" ? "Review updated successfully." : "Review submitted successfully."; }
+                else { msgBox.style.color = "var(--primary)"; msgBox.textContent = data.message; }
+            } catch { msgBox.style.display = "block"; msgBox.style.color = "var(--primary)"; msgBox.textContent = "Could not submit review."; }
         }
 
-        // ── Toggle watchlist (add if not in, remove if in) ───────────────────
         async function toggleWatchlist(movieId, btn) {
             const currentlyIn = btn.textContent.includes("♥");
-
             try {
                 let res;
-                if (currentlyIn) {
-                    res = await fetch(`${BACKEND}/watchlist/${movieId}`, {
-                        method:      "DELETE",
-                        credentials: "include"
-                    });
-                } else {
-                    res = await fetch(`${BACKEND}/watchlist`, {
-                        method:      "POST",
-                        headers:     { "Content-Type": "application/json" },
-                        credentials: "include",
-                        body:        JSON.stringify({ movie_id: movieId })
-                    });
-                }
+                if (currentlyIn) res = await fetch(`${BACKEND}/watchlist/${movieId}`, { method: "DELETE", credentials: "include" });
+                else res = await fetch(`${BACKEND}/watchlist`, { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "include", body: JSON.stringify({ movie_id: movieId }) });
                 const data = await res.json();
-
                 if (data.success || data.in_watchlist !== undefined) {
                     const nowIn = data.in_watchlist;
-                    // Update whichever button called this (card or modal)
                     btn.textContent = nowIn ? "♥" : "♡";
                     if (btn.id === "modalWatchlistBtn") {
                         btn.textContent = nowIn ? "♥ In Watchlist" : "♡ Add to Watchlist";
-                    }
-                    // Sync the card button too if modal was used
-                    if (btn.id === "modalWatchlistBtn") {
                         const card = document.querySelector(`.movie-card[data-movie-id="${movieId}"] .watchlist-btn`);
                         if (card) card.textContent = nowIn ? "♥" : "♡";
                     }
                 }
-            } catch {
-                console.error("Could not update watchlist.");
-            }
+            } catch { console.error("Could not update watchlist."); }
         }
 
-        // Update charCount as user types in the review textarea
         document.addEventListener("input", (e) => {
             if (e.target && e.target.id === "reviewText") {
                 const counter = document.getElementById("charCount");
@@ -1359,48 +510,28 @@
             }
         });
 
-        function closeModal() {
-            document.getElementById("movieModal").style.display = "none";
-        }
+        function closeModal() { document.getElementById("movieModal").style.display = "none"; }
+        document.getElementById("movieModal").addEventListener("click", (e) => { if (e.target === document.getElementById("movieModal")) closeModal(); });
 
-        // Close modals when clicking backdrop
-        document.getElementById("movieModal").addEventListener("click", (e) => {
-            if (e.target === document.getElementById("movieModal")) closeModal();
-        });
-
-
-        // ── Watchlist nav link ───────────────────────────────────────────────
-        // ══════════════════════════════════════════════════════════════════════
-        // SECTION SWITCHER — one function controls all 6 nav tabs
-        // ══════════════════════════════════════════════════════════════════════
         const HERO_EL    = document.querySelector('.hero');
         const CONTENT_EL = document.querySelector('.content-wrapper');
 
         function showSection(name) {
-            // Show/hide the browse content (hero + sidebar + movie grid)
             const browseVisible = name === 'browse';
             HERO_EL.style.display    = browseVisible ? '' : 'none';
             CONTENT_EL.style.display = browseVisible ? '' : 'none';
-
-            // Show/hide inline panels
-            ['watchlist','foryou','trending','awards'].forEach(s => {
+            ['watchlist','foryou','trending'].forEach(s => {
                 const el = document.getElementById('section-' + s);
                 if (el) el.style.display = s === name ? '' : 'none';
             });
-
-            // Update active nav highlight
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             const activeLink = document.getElementById('nav-' + name);
             if (activeLink) activeLink.classList.add('active');
-
-            // Lazy-load: only fetch data the first time each section is opened
             if (name === 'watchlist' && !window._wlDone) { window._wlDone = true; loadWatchlistSection(); }
             if (name === 'foryou'    && !window._fyDone) { window._fyDone = true; loadForYouSection(); }
             if (name === 'trending'  && !window._trDone) { window._trDone = true; loadTrending(7); }
-            if (name === 'awards'    && !window._awDone) { window._awDone = true; loadAwardsSection(); }
         }
 
-        // ── Watchlist section ──────────────────────────────────────────────────
         async function loadWatchlistSection() {
             const container = document.getElementById('watchlistInlineContent');
             try {
@@ -1408,7 +539,6 @@
                 const data = await res.json();
                 if (!data.success) { container.innerHTML = `<p style="color:#FF3366">${data.message}</p>`; return; }
                 if (!data.data.length) { container.innerHTML = `<p style="color:#A0A0A0;">Your watchlist is empty. Click ♡ on any movie to save it.</p>`; return; }
-
                 container.innerHTML = data.data.map(m => {
                     const poster = m.poster_url ? `<img src="${m.poster_url}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">` : '🎬';
                     const genres = (m.genres||'').split(',').slice(0,2).map(g=>`<span class="genre-tag">${g.trim()}</span>`).join('');
@@ -1432,41 +562,30 @@
             const r = await fetch(`${BACKEND}/watchlist/${movieId}`,{method:'DELETE',credentials:'include'}).then(r=>r.json());
             if (r.success) {
                 btn.closest('div[style*="border-bottom"]').remove();
-                // Also sync heart button on grid
                 const card = document.querySelector(`.movie-card[data-movie-id="${movieId}"] .watchlist-btn`);
                 if (card) card.textContent = '♡';
             }
         }
 
-        // ── For You section ────────────────────────────────────────────────────
         async function loadForYouSection() {
             try {
                 const r = await fetch(`${BACKEND}/recommendations?top=24`,{credentials:'include'});
                 const d = await r.json();
                 if (!d.success) { document.getElementById('foryouContent').innerHTML=`<p style="color:#FF3366">${d.message}</p>`; return; }
-
                 if (d.personalised && d.top_genres && d.top_genres.length) {
                     const banner = document.getElementById('foryouBanner');
                     banner.style.display = 'flex';
                     document.getElementById('foryouDesc').textContent = `You've rated ${d.top_genres.join(', ')} the highest`;
                     const cols = [['rgba(255,51,102,0.15)','#FF3366'],['rgba(157,78,221,0.15)','#9D4EDD'],['rgba(0,217,255,0.12)','#00D9FF']];
-                    document.getElementById('foryouTags').innerHTML = d.top_genres.map((g,i)=>
-                        `<span style="padding:5px 13px;border-radius:20px;font-size:12px;font-weight:700;background:${cols[i%3][0]};color:${cols[i%3][1]};border:1px solid ${cols[i%3][1]}55">${g}</span>`
-                    ).join('');
-                } else {
-                    document.getElementById('foryouFallback').style.display = 'block';
-                }
-
+                    document.getElementById('foryouTags').innerHTML = d.top_genres.map((g,i)=>`<span style="padding:5px 13px;border-radius:20px;font-size:12px;font-weight:700;background:${cols[i%3][0]};color:${cols[i%3][1]};border:1px solid ${cols[i%3][1]}55">${g}</span>`).join('');
+                } else { document.getElementById('foryouFallback').style.display = 'block'; }
                 if (!d.data || !d.data.length) { document.getElementById('foryouContent').innerHTML=`<p style="color:#A0A0A0;text-align:center;padding:40px;">Rate more movies to see recommendations!</p>`; return; }
-
-                const used = new Set();
-                let html = '';
+                const used = new Set(); let html = '';
                 (d.top_genres||[]).forEach(genre => {
                     const matching = d.data.filter(m=>!used.has(m.movie_id)&&(m.genres||'').toLowerCase().includes(genre.toLowerCase())).slice(0,4);
                     if (!matching.length) return;
                     matching.forEach(m=>used.add(m.movie_id));
-                    html += `<h2 style="font-size:22px;font-weight:700;letter-spacing:-0.5px;margin-bottom:20px;">Top ${genre} Picks</h2>
-                             <div class="movie-grid" style="margin-bottom:40px;">${matching.map(m=>fyCard(m,genre)).join('')}</div>`;
+                    html += `<h2 style="font-size:22px;font-weight:700;letter-spacing:-0.5px;margin-bottom:20px;">Top ${genre} Picks</h2><div class="movie-grid" style="margin-bottom:40px;">${matching.map(m=>fyCard(m,genre)).join('')}</div>`;
                 });
                 const rest = d.data.filter(m=>!used.has(m.movie_id));
                 if (rest.length) html += `<h2 style="font-size:22px;font-weight:700;letter-spacing:-0.5px;margin-bottom:20px;">${d.personalised?'More For You':'🌟 Top Rated Movies'}</h2><div class="movie-grid" style="margin-bottom:40px;">${rest.map(m=>fyCard(m,null)).join('')}</div>`;
@@ -1479,20 +598,9 @@
             const genres = (m.genres||'').split(',').slice(0,2).map(g=>`<span class="genre-tag">${g.trim()}</span>`).join('');
             const why = genre?`<div style="position:absolute;bottom:8px;left:8px;right:8px;background:rgba(0,0,0,0.85);border-radius:7px;padding:5px 9px;font-size:10px;color:#9D4EDD;font-weight:600;border:1px solid rgba(157,78,221,0.3);z-index:2;">💡 Matches your ${genre} taste</div>`:'';
             return `<div class="movie-card" onclick="openMovieDetail(${m.movie_id})">
-                <div class="movie-poster">${poster}
-                    <div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);border-radius:7px;padding:3px 9px;font-size:12px;font-weight:700;color:#FFD60A;font-family:'JetBrains Mono',monospace;z-index:2;">${m.average_rating?m.average_rating.toFixed(1)+'★':'—'}</div>
-                    ${why}
-                </div>
-                <div class="movie-info">
-                    <h3 class="movie-title">${m.title}</h3>
-                    <div class="movie-genres">${genres}</div>
-                    <div class="movie-meta"><span>${m.release_year||'—'} · ${formatRuntime(m.runtime)}</span></div>
-                    <div class="movie-actions">
-                        <button class="icon-btn watchlist-btn" onclick="event.stopPropagation();fyToggleWL(${m.movie_id},this)" title="Watchlist">♡</button>
-                        <button class="icon-btn" onclick="event.stopPropagation();openMovieDetail(${m.movie_id})" title="Details">🎬</button>
-                    </div>
-                </div>
-            </div>`;
+                <div class="movie-poster">${poster}<div style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.8);border-radius:7px;padding:3px 9px;font-size:12px;font-weight:700;color:#FFD60A;font-family:'JetBrains Mono',monospace;z-index:2;">${m.average_rating?m.average_rating.toFixed(1)+'★':'—'}</div>${why}</div>
+                <div class="movie-info"><h3 class="movie-title">${m.title}</h3><div class="movie-genres">${genres}</div><div class="movie-meta"><span>${m.release_year||'—'} · ${formatRuntime(m.runtime)}</span></div>
+                <div class="movie-actions"><button class="icon-btn watchlist-btn" onclick="event.stopPropagation();fyToggleWL(${m.movie_id},this)" title="Watchlist">♡</button><button class="icon-btn" onclick="event.stopPropagation();openMovieDetail(${m.movie_id})" title="Details">🎬</button></div></div></div>`;
         }
 
         async function fyToggleWL(id, btn) {
@@ -1505,310 +613,58 @@
             }
         }
 
-        // ── Awards section ─────────────────────────────────────────────────────
-        async function loadAwardsSection() {
-            const container = document.getElementById('awardsInlineContent');
-            try {
-                const r = await fetch(`${BACKEND}/awards`,{credentials:'include'});
-                const d = await r.json();
-                if (!d.success) { container.innerHTML=`<p style="color:#FF3366">${d.message}</p>`; return; }
-                const a = d.current_awards;
-                const noData = !d.has_current_data?`<div style="background:rgba(255,214,10,0.07);border:1px solid rgba(255,214,10,0.18);border-radius:10px;padding:12px 18px;color:#FFD60A;font-size:13px;margin-bottom:20px;">⚠️ This month's awards are still being calculated.</div>`:'';
-                const cards=[
-                    {icon:'🏆',cat:'Top Rated Movie',winner:a.top_movie?.title,val:a.top_movie?.value},
-                    {icon:'✍️',cat:'Most Active Reviewer',winner:a.top_reviewer?.username,val:a.top_reviewer?.value},
-                    {icon:'📽️',cat:'Most Watchlisted',winner:a.most_watched?.title,val:a.most_watched?.value},
-                    {icon:'🎭',cat:'Genre of the Month',winner:a.top_genre?.genre,val:a.top_genre?.value},
-                ].map(c=>`<div style="background:#151515;border-radius:16px;padding:24px;border:1px solid rgba(255,255,255,0.05);">
-                    <div style="font-size:32px;margin-bottom:12px;">${c.icon}</div>
-                    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#666;margin-bottom:6px;">${c.cat}</div>
-                    <div style="font-size:${c.winner?'20':'15'}px;font-weight:${c.winner?'800':'400'};color:${c.winner?'white':'#666'};margin-bottom:4px;">${c.winner||'No data yet'}</div>
-                    <div style="font-size:13px;color:#A0A0A0;">${c.val||''}</div>
-                </div>`).join('');
-                const arch = d.archive&&d.archive.length ? `<h2 style="font-size:22px;font-weight:700;margin:40px 0 16px;">📅 Past Awards</h2>`+d.archive.map((mo,i)=>`
-                    <div style="background:#151515;border-radius:12px;border:1px solid rgba(255,255,255,0.04);margin-bottom:10px;overflow:hidden;">
-                        <div onclick="var b=document.getElementById('ab${i}'),open=b.style.display==='none';b.style.display=open?'block':'none';this.querySelector('span').style.transform=open?'rotate(180deg)':''" style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;">
-                            <span style="font-weight:700;">${mo.label}</span><span style="color:#666;transition:transform 0.3s;">▼</span>
-                        </div>
-                        <div id="ab${i}" style="display:none;padding:0 18px 18px;border-top:1px solid rgba(255,255,255,0.04);">
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;">
-                                <div style="background:#1F1F1F;border-radius:8px;padding:10px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:3px;">🏆 Top Movie</div><div style="font-size:13px;font-weight:600;">${mo.awards.top_movie?.title||'—'}</div></div>
-                                <div style="background:#1F1F1F;border-radius:8px;padding:10px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:3px;">✍️ Reviewer</div><div style="font-size:13px;font-weight:600;">${mo.awards.top_reviewer?.username||'—'}</div></div>
-                                <div style="background:#1F1F1F;border-radius:8px;padding:10px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:3px;">📽️ Watched</div><div style="font-size:13px;font-weight:600;">${mo.awards.most_watched?.title||'—'}</div></div>
-                                <div style="background:#1F1F1F;border-radius:8px;padding:10px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:3px;">🎭 Genre</div><div style="font-size:13px;font-weight:600;">${mo.awards.top_genre?.genre||'—'}</div></div>
-                            </div>
-                        </div>
-                    </div>`).join('') : '';
-                container.innerHTML=`${noData}<div style="display:inline-flex;align-items:center;gap:8px;padding:7px 18px;background:rgba(255,214,10,0.1);border:1px solid rgba(255,214,10,0.3);border-radius:20px;font-size:13px;font-weight:600;color:#FFD60A;margin-bottom:28px;">🏆 ${d.current_month} Winners</div><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;margin-bottom:32px;">${cards}</div>${arch}`;
-            } catch { container.innerHTML=`<p style="color:#FF3366;">Could not load awards.</p>`; }
-        }
-
-        // ── Remove old conflicting listeners ──────────────────────────────────
-
-        // ── Open and populate watchlist (used when clicking watchlist section) ─
-        async function openWatchlist() {
-            // now just calls the inline section loader
-            await loadWatchlistSection();
-        }
-
-        // kept for legacy references elsewhere in the script
-        async function openWatchlistLegacy() {
-
-            try {
-                const res  = await fetch(`${BACKEND}/watchlist`, { credentials: "include" });
-                const data = await res.json();
-
-                if (!data.success) {
-                    document.getElementById("watchlistContent").innerHTML =
-                        `<p style="color:var(--primary);">${data.message}</p>`;
-                    return;
-                }
-
-                if (data.data.length === 0) {
-                    document.getElementById("watchlistContent").innerHTML =
-                        `<p style="color:var(--text-secondary);">Your watchlist is empty. Click ♡ on any movie to save it.</p>`;
-                    return;
-                }
-
-                const cards = data.data.map(movie => {
-                    const posterContent = movie.poster_url
-                        ? `<img src="${movie.poster_url}" alt="${movie.title}"
-                                style="width:100%; height:100%; object-fit:cover;"
-                                onerror="this.parentElement.innerHTML='🎬'">`
-                        : "🎬";
-                    const genres = movie.genres
-                        ? movie.genres.split(",").slice(0,2)
-                            .map(g => `<span class="genre-tag">${g.trim()}</span>`).join("")
-                        : "";
-                    return `
-                        <div style="display:flex; gap:16px; padding:16px 0;
-                                    border-bottom:1px solid rgba(255,255,255,0.06); align-items:center;">
-                            <div style="width:60px; height:90px; border-radius:8px; overflow:hidden;
-                                        flex-shrink:0; background:var(--bg-elevated);
-                                        display:flex; align-items:center; justify-content:center; font-size:28px;">
-                                ${posterContent}
-                            </div>
-                            <div style="flex:1; min-width:0;">
-                                <h3 style="font-size:16px; font-weight:600; margin-bottom:4px;
-                                           white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                                    ${movie.title}
-                                </h3>
-                                <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:6px;">
-                                    ${genres}
-                                </div>
-                                <div style="font-size:13px; color:var(--text-tertiary);">
-                                    ${movie.release_year || "—"} · ${formatRuntime(movie.runtime)} ·
-                                    <span style="color:var(--accent-yellow);">⭐ ${movie.average_rating.toFixed(1)}</span>
-                                    · Added ${movie.added_at}
-                                </div>
-                            </div>
-                            <div style="display:flex; gap:8px; flex-shrink:0;">
-                                <button onclick="openMovieDetail(${movie.movie_id})"
-                                    style="padding:8px 16px; background:var(--primary); border:none;
-                                           border-radius:8px; color:white; font-weight:600;
-                                           cursor:pointer; font-family:'Outfit',sans-serif; font-size:13px;">
-                                    Details
-                                </button>
-                                <button onclick="removeFromWatchlistView(${movie.movie_id}, this)"
-                                    style="padding:8px 16px; background:rgba(255,255,255,0.08);
-                                           border:1px solid rgba(255,255,255,0.15); border-radius:8px;
-                                           color:white; font-weight:600; cursor:pointer;
-                                           font-family:'Outfit',sans-serif; font-size:13px;">
-                                    Remove
-                                </button>
-                            </div>
-                        </div>`;
-                }).join("");
-
-                document.getElementById("watchlistContent").innerHTML =
-                    `<p style="color:var(--text-tertiary); margin-bottom:16px; font-size:14px;">
-                        ${data.data.length} movie${data.data.length !== 1 ? "s" : ""} saved
-                    </p>` + cards;
-
-            } catch {
-                document.getElementById("watchlistContent").innerHTML =
-                    `<p style="color:var(--primary);">Could not load watchlist. Is Flask running?</p>`;
-            }
-        }
-
-        // Remove from watchlist directly inside the watchlist view
-        async function removeFromWatchlistView(movieId, btn) {
-            try {
-                const res  = await fetch(`${BACKEND}/watchlist/${movieId}`, {
-                    method: "DELETE", credentials: "include"
-                });
-                const data = await res.json();
-                if (data.success) {
-                    // Remove the row from the view
-                    btn.closest("div[style*='border-bottom']").remove();
-                    // Sync the card heart button on the grid
-                    const cardBtn = document.querySelector(`.movie-card[data-movie-id="${movieId}"] .watchlist-btn`);
-                    if (cardBtn) cardBtn.textContent = "♡";
-                    // Update count
-                    const countEl = document.querySelector("#watchlistContent p");
-                    if (countEl) {
-                        const remaining = document.querySelectorAll("#watchlistContent div[style*='border-bottom']").length;
-                        if (remaining === 0) {
-                            document.getElementById("watchlistContent").innerHTML =
-                                `<p style="color:var(--text-secondary);">Your watchlist is empty. Click ♡ on any movie to save it.</p>`;
-                        } else {
-                            countEl.textContent = `${remaining} movie${remaining !== 1 ? "s" : ""} saved`;
-                        }
-                    }
-                }
-            } catch {
-                console.error("Could not remove from watchlist.");
-            }
-        }
-
-        // trending now handled by showSection() — no modal
-
-        // ── Load trending movies for a given day window ───────────────────────
         async function loadTrending(days) {
-            // Update active tab highlight
-            ["trend7","trend30","trend90"].forEach(id => {
-                document.getElementById(id)?.classList.remove("active-tab");
-            });
+            ["trend7","trend30","trend90"].forEach(id => document.getElementById(id)?.classList.remove("active-tab"));
             const tabMap = { 7: "trend7", 30: "trend30", 90: "trend90" };
             if (tabMap[days]) document.getElementById(tabMap[days]).classList.add("active-tab");
-
-            document.getElementById("trendingContent").innerHTML =
-                `<p style="color:var(--text-secondary);">Loading...</p>`;
-
+            document.getElementById("trendingContent").innerHTML = `<p style="color:var(--text-secondary);">Loading...</p>`;
             try {
                 const res  = await fetch(`${BACKEND}/trending?days=${days}`, { credentials: "include" });
                 const data = await res.json();
-
-                if (!data.success) {
-                    document.getElementById("trendingContent").innerHTML =
-                        `<p style="color:var(--primary);">${data.message}</p>`;
-                    return;
-                }
-
-                if (data.data.length === 0) {
-                    document.getElementById("trendingContent").innerHTML =
-                        `<p style="color:var(--text-secondary);">No trending movies in the last ${days} days yet — start rating and saving movies!</p>`;
-                    return;
-                }
-
+                if (!data.success) { document.getElementById("trendingContent").innerHTML = `<p style="color:var(--primary);">${data.message}</p>`; return; }
+                if (data.data.length === 0) { document.getElementById("trendingContent").innerHTML = `<p style="color:var(--text-secondary);">No trending movies in the last ${days} days yet.</p>`; return; }
                 const rows = data.data.map((movie, i) => {
-                    const posterContent = movie.poster_url
-                        ? `<img src="${movie.poster_url}" alt="${movie.title}"
-                                style="width:100%; height:100%; object-fit:cover;"
-                                onerror="this.parentElement.innerHTML='🎬'">`
-                        : "🎬";
-                    const genres = movie.genres
-                        ? movie.genres.split(",").slice(0,2)
-                            .map(g => `<span class="genre-tag">${g.trim()}</span>`).join("")
-                        : "";
-                    return `
-                        <div style="display:flex; gap:16px; padding:16px 0;
-                                    border-bottom:1px solid rgba(255,255,255,0.06); align-items:center;">
-                            <div style="font-size:22px; font-weight:900; color:${i < 3 ? 'var(--primary)' : 'var(--text-tertiary)'};
-                                        width:32px; text-align:center; flex-shrink:0;">
-                                ${i + 1}
-                            </div>
-                            <div style="width:60px; height:90px; border-radius:8px; overflow:hidden;
-                                        flex-shrink:0; background:var(--bg-elevated);
-                                        display:flex; align-items:center; justify-content:center; font-size:28px;">
-                                ${posterContent}
-                            </div>
-                            <div style="flex:1; min-width:0;">
-                                <h3 style="font-size:16px; font-weight:600; margin-bottom:4px;
-                                           white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                                    ${movie.title}
-                                </h3>
-                                <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:6px;">
-                                    ${genres}
-                                </div>
-                                <div style="font-size:13px; color:var(--text-tertiary);">
-                                    ${movie.release_year || "—"} ·
-                                    <span style="color:var(--accent-yellow);">⭐ ${movie.average_rating.toFixed(1)}</span> ·
-                                    <span style="color:var(--accent-green);">🔥 ${movie.trend_score} interactions</span>
-                                    (${movie.recent_ratings} ratings · ${movie.recent_watchlist_adds} saves)
-                                </div>
-                            </div>
-                            <button onclick="openMovieDetail(${movie.movie_id})"
-                                style="padding:8px 16px; background:var(--primary); border:none;
-                                       border-radius:8px; color:white; font-weight:600;
-                                       cursor:pointer; font-family:'Outfit',sans-serif;
-                                       font-size:13px; flex-shrink:0;">
-                                Details
-                            </button>
-                        </div>`;
+                    const posterContent = movie.poster_url ? `<img src="${movie.poster_url}" alt="${movie.title}" style="width:100%; height:100%; object-fit:cover;" onerror="this.parentElement.innerHTML='🎬'">` : "🎬";
+                    const genres = movie.genres ? movie.genres.split(",").slice(0,2).map(g => `<span class="genre-tag">${g.trim()}</span>`).join("") : "";
+                    return `<div style="display:flex; gap:16px; padding:16px 0; border-bottom:1px solid rgba(255,255,255,0.06); align-items:center;">
+                        <div style="font-size:22px; font-weight:900; color:${i < 3 ? 'var(--primary)' : 'var(--text-tertiary)'}; width:32px; text-align:center; flex-shrink:0;">${i + 1}</div>
+                        <div style="width:60px; height:90px; border-radius:8px; overflow:hidden; flex-shrink:0; background:var(--bg-elevated); display:flex; align-items:center; justify-content:center; font-size:28px;">${posterContent}</div>
+                        <div style="flex:1; min-width:0;">
+                            <h3 style="font-size:16px; font-weight:600; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${movie.title}</h3>
+                            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:6px;">${genres}</div>
+                            <div style="font-size:13px; color:var(--text-tertiary);">${movie.release_year || "—"} · <span style="color:var(--accent-yellow);">⭐ ${movie.average_rating.toFixed(1)}</span> · <span style="color:var(--accent-green);">🔥 ${movie.trend_score} interactions</span></div>
+                        </div>
+                        <button onclick="openMovieDetail(${movie.movie_id})" style="padding:8px 16px; background:var(--primary); border:none; border-radius:8px; color:white; font-weight:600; cursor:pointer; font-family:'Outfit',sans-serif; font-size:13px; flex-shrink:0;">Details</button>
+                    </div>`;
                 }).join("");
-
-                document.getElementById("trendingContent").innerHTML =
-                    `<p style="color:var(--text-tertiary); margin-bottom:16px; font-size:14px;">
-                        Top ${data.data.length} movies by activity in the last ${days} days
-                    </p>` + rows;
-
-            } catch {
-                document.getElementById("trendingContent").innerHTML =
-                    `<p style="color:var(--primary);">Could not load trending movies. Is Flask running?</p>`;
-            }
+                document.getElementById("trendingContent").innerHTML = `<p style="color:var(--text-tertiary); margin-bottom:16px; font-size:14px;">Top ${data.data.length} movies in the last ${days} days</p>` + rows;
+            } catch { document.getElementById("trendingContent").innerHTML = `<p style="color:var(--primary);">Could not load trending movies.</p>`; }
         }
 
-        // ── UC-06: Apply sidebar filters ─────────────────────────────────────
         async function applyFilters() {
-            const genres = [...document.querySelectorAll(".genre-cb:checked")]
-                .map(cb => cb.value);
-            const platforms = [...document.querySelectorAll(".platform-cb:checked")]
-                .map(cb => cb.value);
-            const yearMin  = parseInt(document.getElementById("yearSlider").value);
+            const genres    = [...document.querySelectorAll(".genre-cb:checked")].map(cb => cb.value);
+            const platforms = [...document.querySelectorAll(".platform-cb:checked")].map(cb => cb.value);
+            const yearMin   = parseInt(document.getElementById("yearSlider").value);
             const minRating = parseFloat(document.getElementById("ratingSlider").value);
-
             const params = new URLSearchParams();
             if (genres.length)    params.set("genre",    genres.join(","));
             if (platforms.length) params.set("platform", platforms.join(","));
             if (yearMin > 1888)   params.set("year_min", yearMin);
             if (minRating > 0)    params.set("rating",   minRating);
-
-            const statusEl     = document.getElementById("filterStatus");
-            const titleEl      = document.getElementById("mainSectionTitle");
-            const secondHeader = document.querySelector(".section-header[style*='margin-top']");
-            const secondGrid   = document.querySelectorAll(".movie-grid")[1];
-
+            const statusEl = document.getElementById("filterStatus");
+            const titleEl  = document.getElementById("mainSectionTitle");
             statusEl.style.display = "block";
             statusEl.textContent   = "Filtering...";
-
-            // Hide the second section (Recommended For You) during filtering
-            if (secondHeader) secondHeader.style.display = "none";
-            if (secondGrid)   secondGrid.style.display   = "none";
-
-            // If no filters at all, just reload full catalog
-            if (!params.toString()) {
-                await loadMovies();
-                titleEl.textContent    = "All Movies";
-                statusEl.textContent   = "Showing all movies.";
-                if (secondHeader) secondHeader.style.display = "";
-                if (secondGrid)   secondGrid.style.display   = "";
-                return;
-            }
-
+            if (!params.toString()) { await loadMovies(); titleEl.textContent = "All Movies"; statusEl.textContent = "Showing all movies."; return; }
             try {
                 const res  = await fetch(`${BACKEND}/movies/filter?${params}`, { credentials: "include" });
                 const data = await res.json();
-
-                if (!data.success) {
-                    statusEl.textContent = "Filter error: " + data.message;
-                    return;
-                }
-
-                if (data.data.length === 0) {
-                    document.getElementById("mainMovieGrid").innerHTML =
-                        `<p style="color:var(--text-secondary); grid-column:1/-1;">No movies match your filters.</p>`;
-                    titleEl.textContent  = "Filter Results";
-                    statusEl.textContent = "0 results";
-                    return;
-                }
-
+                if (!data.success) { statusEl.textContent = "Filter error: " + data.message; return; }
+                if (data.data.length === 0) { document.getElementById("mainMovieGrid").innerHTML = `<p style="color:var(--text-secondary); grid-column:1/-1;">No movies match your filters.</p>`; titleEl.textContent = "Filter Results"; statusEl.textContent = "0 results"; return; }
                 renderMovieGrid(data.data);
                 titleEl.textContent  = "Filter Results";
                 statusEl.textContent = `${data.count} movie${data.count !== 1 ? "s" : ""} found`;
-            } catch {
-                statusEl.textContent = "Could not apply filters. Is Flask running?";
-            }
+            } catch { statusEl.textContent = "Could not apply filters."; }
         }
 
         function resetFilters() {
@@ -1819,53 +675,23 @@
             document.getElementById("ratingVal").textContent = "Any";
             document.getElementById("filterStatus").style.display = "none";
             document.getElementById("mainSectionTitle").textContent = "All Movies";
-            const secondHeader = document.querySelector(".section-header[style*='margin-top']");
-            const secondGrid   = document.querySelectorAll(".movie-grid")[1];
-            if (secondHeader) secondHeader.style.display = "";
-            if (secondGrid)   secondGrid.style.display   = "";
             loadMovies();
         }
 
-        // ── Avatar click → show menu (Profile or Logout) ─────────────────────
         document.querySelector(".user-avatar").addEventListener("click", () => {
             const existing = document.getElementById("avatarMenu");
             if (existing) { existing.remove(); return; }
-
             const avatar = document.querySelector(".user-avatar");
             const rect   = avatar.getBoundingClientRect();
-
-            const menu = document.createElement("div");
+            const menu   = document.createElement("div");
             menu.id = "avatarMenu";
-            menu.style.cssText = `
-                position: fixed;
-                top: ${rect.bottom + 8}px;
-                right: ${window.innerWidth - rect.right}px;
-                background: var(--bg-card);
-                border: 1px solid rgba(255,255,255,0.1);
-                border-radius: 12px;
-                padding: 8px;
-                z-index: 9999;
-                min-width: 160px;
-                box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-            `;
-
+            menu.style.cssText = `position:fixed;top:${rect.bottom+8}px;right:${window.innerWidth-rect.right}px;background:var(--bg-card);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:8px;z-index:9999;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.5);`;
             menu.innerHTML = `
                 <button onclick="window.location.href='/profile'" style="width:100%;padding:10px 16px;background:transparent;border:none;color:white;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border-radius:8px;text-align:left;">👤 My Profile</button>
                 <button onclick="window.location.href='/dashboard'" style="width:100%;padding:10px 16px;background:transparent;border:none;color:white;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border-radius:8px;text-align:left;">📊 My Dashboard</button>
-                <button onclick="logoutUser()" style="width:100%;padding:10px 16px;background:transparent;border:none;color:#FF3366;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border-radius:8px;text-align:left;">🚪 Log Out</button>
-            `;
-
+                <button onclick="logoutUser()" style="width:100%;padding:10px 16px;background:transparent;border:none;color:#FF3366;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;cursor:pointer;border-radius:8px;text-align:left;">🚪 Log Out</button>`;
             document.body.appendChild(menu);
-
-            // Close menu when clicking outside
-            setTimeout(() => {
-                document.addEventListener("click", function handler(e) {
-                    if (!menu.contains(e.target) && e.target !== avatar) {
-                        menu.remove();
-                        document.removeEventListener("click", handler);
-                    }
-                });
-            }, 0);
+            setTimeout(() => { document.addEventListener("click", function handler(e) { if (!menu.contains(e.target) && e.target !== avatar) { menu.remove(); document.removeEventListener("click", handler); } }); }, 0);
         });
 
         async function logoutUser() {
@@ -1873,16 +699,8 @@
             window.location.href = "/login";
         }
 
-        // ── Helpers ──────────────────────────────────────────────────────────
-        function formatRuntime(mins) {
-            if (!mins) return "—";
-            return `${Math.floor(mins / 60)}h ${mins % 60}m`;
-        }
-
-        function showGridMessage(msg) {
-            document.getElementById("mainMovieGrid").innerHTML =
-                `<p style="color:var(--text-secondary); grid-column:1/-1;">${msg}</p>`;
-        }
+        function formatRuntime(mins) { if (!mins) return "—"; return `${Math.floor(mins / 60)}h ${mins % 60}m`; }
+        function showGridMessage(msg) { document.getElementById("mainMovieGrid").innerHTML = `<p style="color:var(--text-secondary); grid-column:1/-1;">${msg}</p>`; }
     </script>
 </body>
 </html>
