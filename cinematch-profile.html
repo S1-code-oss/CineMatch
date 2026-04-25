@@ -6,789 +6,509 @@
     <title>CineMatch - Profile & Stats</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #FF3366;
-            --bg-dark: #0A0A0A;
-            --bg-card: #151515;
-            --bg-elevated: #1F1F1F;
-            --text-primary: #FFFFFF;
-            --text-secondary: #A0A0A0;
-            --text-tertiary: #666666;
-            --accent-blue: #00D9FF;
-            --accent-purple: #9D4EDD;
-            --accent-yellow: #FFD60A;
-            --accent-green: #06FFA5;
+            --primary: #FF3366; --bg-dark: #0A0A0A; --bg-card: #151515;
+            --bg-elevated: #1F1F1F; --text-primary: #FFFFFF; --text-secondary: #A0A0A0;
+            --text-tertiary: #666666; --accent-blue: #00D9FF; --accent-purple: #9D4EDD;
+            --accent-yellow: #FFD60A; --accent-green: #06FFA5;
         }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 80px 40px; }
 
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 80px 40px;
-        }
-
-        /* Profile Header */
         .profile-header {
             background: linear-gradient(135deg, var(--bg-card), var(--bg-elevated));
-            border-radius: 32px;
-            padding: 48px;
-            margin-bottom: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            display: grid;
-            grid-template-columns: auto 1fr auto;
-            gap: 40px;
-            align-items: center;
-            animation: fadeInUp 0.6s ease;
+            border-radius: 32px; padding: 48px; margin-bottom: 40px;
+            border: 1px solid rgba(255,255,255,0.05);
+            display: grid; grid-template-columns: auto 1fr auto; gap: 40px;
+            align-items: center; animation: fadeInUp 0.6s ease;
         }
-
         .profile-avatar-large {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
+            width: 160px; height: 160px; border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--accent-purple));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 72px;
-            font-weight: 800;
-            box-shadow: 0 16px 48px rgba(255, 51, 102, 0.3);
-            border: 6px solid var(--bg-dark);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 72px; font-weight: 800;
+            box-shadow: 0 16px 48px rgba(255,51,102,0.3); border: 6px solid var(--bg-dark);
         }
+        .profile-info h1 { font-size: 48px; font-weight: 900; letter-spacing: -2px; margin-bottom: 8px; }
+        .profile-meta { display: flex; gap: 24px; color: var(--text-secondary); font-size: 15px; margin-bottom: 8px; flex-wrap: wrap; }
+        .profile-bio { color: var(--text-secondary); font-size: 15px; line-height: 1.6; max-width: 600px; margin-bottom: 6px; }
+        .profile-location { color: var(--text-tertiary); font-size: 14px; }
+        .profile-actions { display: flex; flex-direction: column; gap: 12px; }
 
-        .profile-info h1 {
-            font-size: 48px;
-            font-weight: 900;
-            letter-spacing: -2px;
-            margin-bottom: 8px;
+        .btn { padding: 14px 28px; border: none; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-family: 'Outfit', sans-serif; white-space: nowrap; }
+        .btn-primary  { background: linear-gradient(135deg, var(--primary), #CC0033); color: white; }
+        .btn-secondary { background: rgba(255,255,255,0.05); color: white; border: 1px solid rgba(255,255,255,0.1); }
+        .btn:hover { transform: translateY(-2px); }
+
+        .tabs { display: flex; gap: 8px; margin-bottom: 40px; background: var(--bg-card); border-radius: 16px; padding: 8px; animation: fadeInUp 0.6s ease 0.1s backwards; }
+        .tab { flex: 1; padding: 16px; border: none; background: transparent; color: var(--text-secondary); font-size: 16px; font-weight: 600; cursor: pointer; border-radius: 12px; transition: all 0.3s ease; font-family: 'Outfit', sans-serif; }
+        .tab.active { background: linear-gradient(135deg, var(--primary), var(--accent-purple)); color: white; box-shadow: 0 4px 16px rgba(255,51,102,0.3); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; margin-bottom: 40px; animation: fadeInUp 0.6s ease 0.2s backwards; }
+        .stat-card { background: var(--bg-card); border-radius: 20px; padding: 32px; border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s ease; }
+        .stat-card:hover { transform: translateY(-4px); border-color: rgba(255,51,102,0.3); box-shadow: 0 12px 32px rgba(0,0,0,0.5); }
+        .stat-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(255,51,102,0.1); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; }
+        .stat-value { font-size: 40px; font-weight: 900; letter-spacing: -2px; margin-bottom: 8px; background: linear-gradient(135deg, var(--text-primary), var(--text-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .stat-label { color: var(--text-secondary); font-size: 14px; font-weight: 500; }
+
+        .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; animation: fadeInUp 0.6s ease 0.3s backwards; }
+        .chart-card { background: var(--bg-card); border-radius: 20px; padding: 32px; border: 1px solid rgba(255,255,255,0.05); }
+        .chart-title { font-size: 20px; font-weight: 700; margin-bottom: 24px; }
+        .rating-bars { display: flex; flex-direction: column; gap: 16px; }
+        .rating-bar-item { display: flex; align-items: center; gap: 16px; }
+        .rating-stars { color: var(--accent-yellow); font-size: 14px; width: 80px; font-family: 'JetBrains Mono', monospace; }
+        .rating-bar-bg { flex: 1; height: 32px; background: var(--bg-elevated); border-radius: 8px; overflow: hidden; }
+        .rating-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent-purple)); border-radius: 8px; display: flex; align-items: center; justify-content: flex-end; padding: 0 12px; font-size: 13px; font-weight: 600; transition: width 0.6s ease; min-width: 36px; }
+        .genre-chart { position: relative; height: 260px; display: flex; align-items: center; justify-content: center; gap: 24px; }
+        .pie-chart { width: 200px; height: 200px; border-radius: 50%; position: relative; box-shadow: 0 0 60px rgba(255,51,102,0.3); flex-shrink: 0; background: var(--bg-elevated); }
+        .pie-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 120px; height: 120px; border-radius: 50%; background: var(--bg-card); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .pie-center-value { font-size: 28px; font-weight: 900; }
+        .pie-center-label { font-size: 11px; color: var(--text-secondary); }
+        .genre-legend { display: flex; flex-direction: column; gap: 10px; }
+        .legend-item { display: flex; align-items: center; gap: 10px; }
+        .legend-color { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
+        .legend-label { font-size: 13px; color: var(--text-secondary); flex: 1; }
+        .legend-value { font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+        .decade-chart { display: flex; align-items: flex-end; justify-content: space-around; height: 200px; padding-top: 30px; }
+        .decade-bar { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; }
+        .bar-container { width: 100%; max-width: 60px; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; position: relative; }
+        .bar { width: 100%; background: linear-gradient(180deg, var(--primary), var(--accent-purple)); border-radius: 8px 8px 0 0; position: relative; transition: height 0.6s ease; min-height: 4px; }
+        .bar:hover { filter: brightness(1.2); }
+        .bar-value { position: absolute; top: -24px; left: 50%; transform: translateX(-50%); font-size: 12px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+        .bar-label { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
+        .activity-timeline { display: flex; flex-direction: column; }
+        .timeline-item { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.05); align-items: center; }
+        .timeline-time { color: var(--text-tertiary); font-size: 12px; font-family: 'JetBrains Mono', monospace; }
+        .timeline-content { display: flex; gap: 14px; align-items: center; }
+        .timeline-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--bg-elevated); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .timeline-rating { color: var(--accent-yellow); margin-left: 6px; }
+        .review-card { background: var(--bg-card); border-radius: 16px; padding: 24px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.05); }
+        .review-movie { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+        .review-meta { display: flex; gap: 16px; font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; flex-wrap: wrap; }
+        .review-text { color: var(--text-secondary); line-height: 1.7; font-size: 15px; }
+        .wl-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.06); align-items: center; }
+        .wl-thumb { width: 60px; height: 90px; border-radius: 8px; background: var(--bg-elevated); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+        .genre-tag { padding: 4px 10px; background: rgba(255,255,255,0.05); border-radius: 12px; font-size: 11px; font-weight: 500; color: var(--text-secondary); }
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-tertiary); font-size: 16px; }
+        .empty-icon { font-size: 48px; margin-bottom: 16px; }
+        .loading { text-align: center; padding: 60px; color: var(--text-secondary); font-size: 16px; }
+        .error-banner { background: rgba(255,51,102,0.1); border: 1px solid var(--primary); border-radius: 12px; padding: 16px 24px; color: var(--primary); margin-bottom: 24px; display: none; }
+
+        /* Settings form styles */
+        .settings-section { background: var(--bg-elevated); border-radius: 16px; padding: 24px; margin-bottom: 16px; }
+        .settings-section h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--text-primary); }
+        .form-group { margin-bottom: 14px; }
+        .form-label { font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; display: block; font-weight: 500; }
+        .form-input {
+            width: 100%; padding: 12px 16px; background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+            color: var(--text-primary); font-family: 'Outfit', sans-serif;
+            font-size: 14px; transition: border-color 0.3s;
         }
-
-        .profile-meta {
-            display: flex;
-            gap: 24px;
-            color: var(--text-secondary);
-            font-size: 15px;
-            margin-bottom: 16px;
+        .form-input:focus { outline: none; border-color: var(--primary); }
+        .form-textarea { resize: vertical; min-height: 80px; }
+        .form-btn {
+            width: 100%; padding: 12px; border: none; border-radius: 10px;
+            font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700;
+            cursor: pointer; transition: all 0.3s; margin-top: 4px;
         }
+        .form-btn-primary { background: var(--primary); color: white; }
+        .form-btn-primary:hover { background: #CC0033; }
+        .form-msg { font-size: 13px; margin-top: 8px; display: none; text-align: center; padding: 8px; border-radius: 8px; }
+        .form-msg.success { color: var(--accent-green); background: rgba(6,255,165,0.1); display: block; }
+        .form-msg.error   { color: var(--primary); background: rgba(255,51,102,0.1); display: block; }
 
-        .profile-bio {
-            color: var(--text-secondary);
-            font-size: 16px;
-            line-height: 1.6;
-            max-width: 600px;
-        }
-
-        .profile-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .btn {
-            padding: 14px 28px;
-            border: none;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Outfit', sans-serif;
-            white-space: nowrap;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), #CC0033);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 40px;
-            background: var(--bg-card);
-            border-radius: 16px;
-            padding: 8px;
-            animation: fadeInUp 0.6s ease 0.1s backwards;
-        }
-
-        .tab {
-            flex: 1;
-            padding: 16px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            font-family: 'Outfit', sans-serif;
-        }
-
-        .tab.active {
-            background: linear-gradient(135deg, var(--primary), var(--accent-purple));
-            color: white;
-            box-shadow: 0 4px 16px rgba(255, 51, 102, 0.3);
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            margin-bottom: 40px;
-            animation: fadeInUp 0.6s ease 0.2s backwards;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255, 51, 102, 0.3);
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-        }
-
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: rgba(255, 51, 102, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 16px;
-        }
-
-        .stat-value {
-            font-size: 40px;
-            font-weight: 900;
-            letter-spacing: -2px;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        /* Chart Sections */
-        .chart-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-bottom: 40px;
-            animation: fadeInUp 0.6s ease 0.3s backwards;
-        }
-
-        .chart-card {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .chart-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            letter-spacing: -0.5px;
-        }
-
-        /* Rating Distribution */
-        .rating-bars {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .rating-bar-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .rating-stars {
-            color: var(--accent-yellow);
-            font-size: 14px;
-            width: 80px;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .rating-bar-bg {
-            flex: 1;
-            height: 32px;
-            background: var(--bg-elevated);
-            border-radius: 8px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .rating-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary), var(--accent-purple));
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding: 0 12px;
-            font-size: 13px;
-            font-weight: 600;
-            transition: width 0.6s ease;
-        }
-
-        /* Genre Chart */
-        .genre-chart {
-            position: relative;
-            height: 300px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .pie-chart {
-            width: 240px;
-            height: 240px;
-            border-radius: 50%;
-            background: conic-gradient(
-                var(--primary) 0% 35%,
-                var(--accent-purple) 35% 60%,
-                var(--accent-blue) 60% 80%,
-                var(--accent-yellow) 80% 95%,
-                var(--accent-green) 95% 100%
-            );
-            position: relative;
-            box-shadow: 0 0 60px rgba(255, 51, 102, 0.3);
-        }
-
-        .pie-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: var(--bg-card);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .pie-center-value {
-            font-size: 32px;
-            font-weight: 900;
-        }
-
-        .pie-center-label {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .genre-legend {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
-        }
-
-        .legend-label {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        .legend-value {
-            margin-left: auto;
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        /* Decade Chart */
-        .decade-chart {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            height: 250px;
-            padding-top: 40px;
-        }
-
-        .decade-bar {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            flex: 1;
-        }
-
-        .bar-container {
-            width: 100%;
-            max-width: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            height: 100%;
-            position: relative;
-        }
-
-        .bar {
-            width: 100%;
-            background: linear-gradient(180deg, var(--primary), var(--accent-purple));
-            border-radius: 8px 8px 0 0;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .bar:hover {
-            filter: brightness(1.2);
-        }
-
-        .bar-value {
-            position: absolute;
-            top: -24px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 13px;
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .bar-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
-
-        /* Activity Timeline */
-        .activity-timeline {
-            animation: fadeInUp 0.6s ease 0.4s backwards;
-        }
-
-        .timeline-item {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 24px;
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .timeline-time {
-            color: var(--text-tertiary);
-            font-size: 13px;
-            font-family: 'JetBrains Mono', monospace;
-            width: 120px;
-        }
-
-        .timeline-content {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-        }
-
-        .timeline-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: var(--bg-elevated);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
-        .timeline-text {
-            flex: 1;
-        }
-
-        .timeline-text strong {
-            color: var(--text-primary);
-        }
-
-        .timeline-rating {
-            color: var(--accent-yellow);
-            margin-left: 8px;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @media (max-width: 1024px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .chart-row {
-                grid-template-columns: 1fr;
-            }
-
-            .profile-header {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .profile-avatar-large {
-                margin: 0 auto;
-            }
-
-            .profile-meta {
-                justify-content: center;
-            }
+            .stats-grid { grid-template-columns: repeat(2,1fr); }
+            .chart-row { grid-template-columns: 1fr; }
+            .profile-header { grid-template-columns: 1fr; text-align: center; }
+            .profile-avatar-large { margin: 0 auto; }
+            .profile-meta { justify-content: center; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Profile Header -->
-        <div class="profile-header">
-            <div class="profile-avatar-large">EA</div>
-            <div class="profile-info">
-                <h1>@eman_atif</h1>
-                <div class="profile-meta">
-                    <span>📍 Lahore, Pakistan</span>
-                    <span>🗓️ Member since March 2024</span>
-                </div>
-                <p class="profile-bio">
-                    Movie enthusiast | Sci-Fi lover | Always looking for the next mind-bending thriller
-                </p>
+<!-- Top nav bar with back button -->
+<nav style="position:sticky;top:0;background:rgba(10,10,10,0.88);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.05);padding:0 40px;height:72px;display:flex;align-items:center;justify-content:space-between;z-index:100;">
+    <a href="/browse" style="font-size:26px;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#FF3366,#9D4EDD);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;">CineMatch</a>
+    <div style="display:flex;align-items:center;gap:12px;">
+        <a href="/browse" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:var(--text-secondary);text-decoration:none;font-size:14px;font-weight:500;transition:all 0.2s;" onmouseover="this.style.color='white';this.style.borderColor='rgba(255,255,255,0.25)'" onmouseout="this.style.color='';this.style.borderColor='rgba(255,255,255,0.1)'">← Back to Browse</a>
+        <a href="/dashboard" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:10px;border:1px solid rgba(255,51,102,0.25);background:rgba(255,51,102,0.08);color:#FF3366;text-decoration:none;font-size:14px;font-weight:600;transition:all 0.2s;">📊 My Dashboard</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="error-banner" id="errorBanner"></div>
+
+    <div class="profile-header">
+        <div class="profile-avatar-large" id="profileAvatar">…</div>
+        <div class="profile-info">
+            <h1 id="profileUsername">Loading…</h1>
+            <div class="profile-meta">
+                <span id="profileMemberSince">🗓️ …</span>
+                <span id="profileLocation" style="display:none;"></span>
             </div>
-            <div class="profile-actions">
-                <button class="btn btn-primary">⚙️ Settings</button>
-                <button class="btn btn-secondary">🔗 Share Profile</button>
-            </div>
+            <p class="profile-bio" id="profileBio"></p>
         </div>
+        <div class="profile-actions" id="profileActions"></div>
+    </div>
 
-        <!-- Tabs -->
-        <div class="tabs">
-            <button class="tab active">📊 Stats</button>
-            <button class="tab">✍️ Reviews</button>
-            <button class="tab">💾 Watchlist</button>
-            <button class="tab">🏆 Awards</button>
-        </div>
+    <div class="tabs">
+        <button class="tab active" data-tab="stats">📊 Stats</button>
+        <button class="tab"        data-tab="reviews">✍️ Reviews</button>
+        <button class="tab"        data-tab="watchlist">💾 Watchlist</button>
+        <button class="tab"        data-tab="awards">🏆 Awards</button>
+    </div>
 
-        <!-- Stats Grid -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">🎬</div>
-                <div class="stat-value">156</div>
-                <div class="stat-label">Movies Rated</div>
+    <!-- Stats Panel -->
+    <div class="tab-panel active" id="panel-stats">
+        <div class="loading" id="statsLoading">Loading profile…</div>
+        <div id="statsContent" style="display:none;">
+            <div class="stats-grid">
+                <div class="stat-card"><div class="stat-icon">🎬</div><div class="stat-value" id="statRated">—</div><div class="stat-label">Movies Rated</div></div>
+                <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-value" id="statAvg">—</div><div class="stat-label">Average Rating</div></div>
+                <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-value" id="statGenre">—</div><div class="stat-label">Top Genre</div></div>
+                <div class="stat-card"><div class="stat-icon">📅</div><div class="stat-value" id="statDecade">—</div><div class="stat-label">Favorite Decade</div></div>
             </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">⭐</div>
-                <div class="stat-value">4.2</div>
-                <div class="stat-label">Average Rating</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">🎯</div>
-                <div class="stat-value">Action</div>
-                <div class="stat-label">Most Watched Genre</div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">📅</div>
-                <div class="stat-value">2010s</div>
-                <div class="stat-label">Favorite Decade</div>
-            </div>
-        </div>
-
-        <!-- Charts Row 1 -->
-        <div class="chart-row">
-            <div class="chart-card">
-                <h2 class="chart-title">Rating Distribution</h2>
-                <div class="rating-bars">
-                    <div class="rating-bar-item">
-                        <div class="rating-stars">⭐</div>
-                        <div class="rating-bar-bg">
-                            <div class="rating-bar-fill" style="width: 12%;">12%</div>
-                        </div>
-                    </div>
-                    <div class="rating-bar-item">
-                        <div class="rating-stars">⭐⭐</div>
-                        <div class="rating-bar-bg">
-                            <div class="rating-bar-fill" style="width: 18%;">18%</div>
-                        </div>
-                    </div>
-                    <div class="rating-bar-item">
-                        <div class="rating-stars">⭐⭐⭐</div>
-                        <div class="rating-bar-bg">
-                            <div class="rating-bar-fill" style="width: 35%;">35%</div>
-                        </div>
-                    </div>
-                    <div class="rating-bar-item">
-                        <div class="rating-stars">⭐⭐⭐⭐</div>
-                        <div class="rating-bar-bg">
-                            <div class="rating-bar-fill" style="width: 25%;">25%</div>
-                        </div>
-                    </div>
-                    <div class="rating-bar-item">
-                        <div class="rating-stars">⭐⭐⭐⭐⭐</div>
-                        <div class="rating-bar-bg">
-                            <div class="rating-bar-fill" style="width: 10%;">10%</div>
-                        </div>
+            <div class="chart-row">
+                <div class="chart-card"><h2 class="chart-title">Rating Distribution</h2><div class="rating-bars" id="ratingBars"></div></div>
+                <div class="chart-card">
+                    <h2 class="chart-title">Genre Breakdown</h2>
+                    <div class="genre-chart">
+                        <div class="pie-chart" id="pieChart"><div class="pie-center"><div class="pie-center-value" id="pieCenterVal">0</div><div class="pie-center-label">Total</div></div></div>
+                        <div class="genre-legend" id="genreLegend"></div>
                     </div>
                 </div>
             </div>
-
-            <div class="chart-card">
-                <h2 class="chart-title">Genre Breakdown</h2>
-                <div class="genre-chart">
-                    <div class="pie-chart">
-                        <div class="pie-center">
-                            <div class="pie-center-value">156</div>
-                            <div class="pie-center-label">Total</div>
-                        </div>
-                    </div>
-                    <div class="genre-legend">
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: var(--primary);"></div>
-                            <span class="legend-label">Action</span>
-                            <span class="legend-value">35%</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: var(--accent-purple);"></div>
-                            <span class="legend-label">Sci-Fi</span>
-                            <span class="legend-value">25%</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: var(--accent-blue);"></div>
-                            <span class="legend-label">Thriller</span>
-                            <span class="legend-value">20%</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: var(--accent-yellow);"></div>
-                            <span class="legend-label">Drama</span>
-                            <span class="legend-value">15%</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: var(--accent-green);"></div>
-                            <span class="legend-label">Other</span>
-                            <span class="legend-value">5%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Charts Row 2 -->
-        <div class="chart-row">
-            <div class="chart-card">
-                <h2 class="chart-title">Favorite Decades</h2>
-                <div class="decade-chart">
-                    <div class="decade-bar">
-                        <div class="bar-container">
-                            <div class="bar" style="height: 25%;">
-                                <span class="bar-value">12</span>
-                            </div>
-                        </div>
-                        <div class="bar-label">1980s</div>
-                    </div>
-                    <div class="decade-bar">
-                        <div class="bar-container">
-                            <div class="bar" style="height: 45%;">
-                                <span class="bar-value">28</span>
-                            </div>
-                        </div>
-                        <div class="bar-label">1990s</div>
-                    </div>
-                    <div class="decade-bar">
-                        <div class="bar-container">
-                            <div class="bar" style="height: 70%;">
-                                <span class="bar-value">45</span>
-                            </div>
-                        </div>
-                        <div class="bar-label">2000s</div>
-                    </div>
-                    <div class="decade-bar">
-                        <div class="bar-container">
-                            <div class="bar" style="height: 100%;">
-                                <span class="bar-value">58</span>
-                            </div>
-                        </div>
-                        <div class="bar-label">2010s</div>
-                    </div>
-                    <div class="decade-bar">
-                        <div class="bar-container">
-                            <div class="bar" style="height: 35%;">
-                                <span class="bar-value">13</span>
-                            </div>
-                        </div>
-                        <div class="bar-label">2020s</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="chart-card">
-                <h2 class="chart-title">Recent Activity</h2>
-                <div class="activity-timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-time">2 days ago</div>
-                        <div class="timeline-content">
-                            <div class="timeline-icon">⭐</div>
-                            <div class="timeline-text">
-                                Rated <strong>The Dark Knight</strong>
-                                <span class="timeline-rating">⭐⭐⭐⭐⭐</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-time">3 days ago</div>
-                        <div class="timeline-content">
-                            <div class="timeline-icon">💾</div>
-                            <div class="timeline-text">
-                                Added <strong>Dune: Part Two</strong> to watchlist
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-time">1 week ago</div>
-                        <div class="timeline-content">
-                            <div class="timeline-icon">✍️</div>
-                            <div class="timeline-text">
-                                Wrote review for <strong>Interstellar</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-time">1 week ago</div>
-                        <div class="timeline-content">
-                            <div class="timeline-icon">🎯</div>
-                            <div class="timeline-text">
-                                Created CineBlend with <strong>@sara_anwaar</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-time">2 weeks ago</div>
-                        <div class="timeline-content">
-                            <div class="timeline-icon">⭐</div>
-                            <div class="timeline-text">
-                                Rated <strong>Inception</strong>
-                                <span class="timeline-rating">⭐⭐⭐⭐⭐</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="chart-row">
+                <div class="chart-card"><h2 class="chart-title">Favorite Decades</h2><div class="decade-chart" id="decadeChart"></div></div>
             </div>
         </div>
     </div>
 
-    <script>
-         // Animate bars on load
-        window.addEventListener('load', () => {
-            const ratingFills = document.querySelectorAll('.rating-bar-fill');
-            ratingFills.forEach((fill, index) => {
-                const width = fill.style.width;
-                fill.style.width = '0%';
-                setTimeout(() => {
-                    fill.style.width = width;
-                }, 300 + (index * 100));
-            });
+    <!-- Reviews Panel -->
+    <div class="tab-panel" id="panel-reviews">
+        <div id="reviewsContent"><div class="loading">Loading reviews…</div></div>
+    </div>
 
-            const bars = document.querySelectorAll('.bar');
-            bars.forEach((bar, index) => {
-                const height = bar.style.height;
-                bar.style.height = '0%';
-                setTimeout(() => {
-                    bar.style.height = height;
-                }, 500 + (index * 100));
-            });
+    <!-- Watchlist Panel -->
+    <div class="tab-panel" id="panel-watchlist">
+        <div id="watchlistContent"><div class="loading">Loading watchlist…</div></div>
+    </div>
+
+    <!-- Awards Panel -->
+    <div class="tab-panel" id="panel-awards">
+        <div id="awardsContent"><div class="loading">Loading awards…</div></div>
+    </div>
+
+</div>
+
+<!-- Settings Modal -->
+<div id="settingsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:9999; overflow-y:auto; padding:40px 20px;">
+    <div style="max-width:520px; margin:0 auto; background:var(--bg-card); border-radius:24px; padding:40px; border:1px solid rgba(255,255,255,0.08); position:relative;">
+        <button onclick="closeSettings()" style="position:absolute; top:16px; right:16px; background:rgba(255,255,255,0.1); border:none; color:white; width:32px; height:32px; border-radius:50%; font-size:16px; cursor:pointer;">✕</button>
+        <h2 style="font-size:24px; font-weight:800; margin-bottom:24px;">⚙️ Settings</h2>
+
+        <!-- Watchlist Privacy Toggle -->
+        <div class="settings-section">
+            <h3>🔒 Privacy</h3>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <p style="font-weight:600; margin-bottom:4px; font-size:15px;">Public Watchlist</p>
+                    <p style="font-size:13px; color:var(--text-secondary);">Allow others to see your watchlist.</p>
+                </div>
+                <div onclick="toggleWatchlistPublic()" style="cursor:pointer; margin-left:16px; flex-shrink:0;">
+                    <div id="toggleTrack" style="width:52px; height:28px; border-radius:28px; background:var(--text-tertiary); position:relative; transition:0.3s;">
+                        <div id="toggleKnob" style="position:absolute; height:20px; width:20px; left:4px; top:4px; background:white; border-radius:50%; transition:0.3s;"></div>
+                    </div>
+                </div>
+            </div>
+            <p id="privacyMsg" class="form-msg"></p>
+        </div>
+
+        <!-- Edit Profile Info -->
+        <div class="settings-section">
+            <h3>👤 Edit Profile</h3>
+            <div class="form-group">
+                <label class="form-label">Bio (max 300 chars)</label>
+                <textarea id="settingsBio" class="form-input form-textarea" placeholder="Tell people about yourself…" maxlength="300"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="form-label">📍 City / Location</label>
+                <input type="text" id="settingsLocation" class="form-input" placeholder="e.g. Lahore, Pakistan" maxlength="100">
+            </div>
+            <button class="form-btn form-btn-primary" onclick="saveProfileInfo()">Save Profile Info</button>
+            <p id="infoMsg" class="form-msg"></p>
+        </div>
+
+
+    </div>
+</div>
+
+<script>
+    const BACKEND   = "http://localhost:5000/api";
+    const urlParams = new URLSearchParams(window.location.search);
+    const TARGET    = urlParams.get("user") || null;
+
+    window.addEventListener("DOMContentLoaded", async () => {
+        let sessionUsername = null;
+        try {
+            const r = await fetch(`${BACKEND}/me`, { credentials: "include" });
+            const d = await r.json();
+            if (!d.logged_in) { window.location.href = "/login"; return; }
+            sessionUsername = d.username;
+        } catch { window.location.href = "/login"; return; }
+
+        const username = TARGET || sessionUsername;
+        try {
+            const res  = await fetch(`${BACKEND}/profile/${username}`, { credentials: "include" });
+            const data = await res.json();
+            if (!data.success) {
+                showError(data.message || "Could not load profile.");
+                document.getElementById("statsLoading").style.display = "none";
+                return;
+            }
+            renderAll(data.data);
+        } catch {
+            showError("Could not reach the server. Is Flask running?");
+            document.getElementById("statsLoading").style.display = "none";
+        }
+    });
+
+    document.querySelectorAll(".tab").forEach(tab => {
+        tab.addEventListener("click", () => {
+            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+            document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+            tab.classList.add("active");
+            document.getElementById(`panel-${tab.dataset.tab}`).classList.add("active");
         });
-
-        // Tab switching
-document.querySelectorAll('.tab').forEach((tab, index) => {
-    tab.addEventListener('click', function () {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-        // Backend will load tab content — for now just log
-        const tabs = ['stats', 'reviews', 'watchlist', 'awards'];
-        console.log('Tab switched to:', tabs[index]);
     });
-});
 
-// Tab switching
-const tabs = document.querySelectorAll('.tab');
-const tabNames = ['stats', 'reviews', 'watchlist', 'awards'];
+    function renderAll(d) {
+        renderHeader(d);
+        renderStats(d.stats);
+        renderRatingDistribution(d.rating_distribution, d.stats.total_rated);
+        renderGenreBreakdown(d.genre_breakdown, d.stats.total_rated);
+        renderDecadeChart(d.decade_breakdown);
+        renderReviews(d.reviews);
+        renderWatchlist(d.watchlist, d.watchlist_public);
+        renderAwards(d.awards);
+        document.getElementById("statsLoading").style.display = "none";
+        document.getElementById("statsContent").style.display = "block";
+    }
 
-tabs.forEach((tab, index) => {
-    tab.addEventListener('click', function() {
-        tabs.forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-        console.log('Tab:', tabNames[index]);
-        // Backend will load actual content per tab
+    function renderHeader(d) {
+        document.getElementById("profileAvatar").textContent = d.username.charAt(0).toUpperCase();
+        document.getElementById("profileUsername").textContent = "@" + d.username;
+        document.getElementById("profileMemberSince").textContent = "🗓️ Member since " + fmtMemberDate(d.member_since);
+
+        if (d.location) {
+            const locEl = document.getElementById("profileLocation");
+            locEl.textContent = "📍 " + d.location;
+            locEl.style.display = "inline";
+        }
+        if (d.bio) {
+            document.getElementById("profileBio").textContent = d.bio;
+        }
+
+        const actionsEl = document.getElementById("profileActions");
+        if (d.is_own_profile) {
+            actionsEl.innerHTML = `
+                <button class="btn btn-primary" onclick="openSettings()">⚙️ Settings</button>
+                <button class="btn btn-secondary" onclick="copyShareLink()">🔗 Share Profile</button>`;
+        } else {
+            actionsEl.innerHTML = `
+                <button class="btn btn-secondary" onclick="copyShareLink()">🔗 Share Profile</button>`;
+        }
+    }
+
+    function renderStats(s) {
+        document.getElementById("statRated").textContent  = s.total_rated;
+        document.getElementById("statAvg").textContent    = s.avg_rating.toFixed(1);
+        document.getElementById("statGenre").textContent  = s.top_genre;
+        document.getElementById("statDecade").textContent = s.fav_decade;
+    }
+
+    function renderRatingDistribution(dist, total) {
+        const stars = ["⭐","⭐⭐","⭐⭐⭐","⭐⭐⭐⭐","⭐⭐⭐⭐⭐"];
+        const container = document.getElementById("ratingBars");
+        container.innerHTML = "";
+        if (total === 0) { container.innerHTML = `<p style="color:var(--text-tertiary);">No ratings yet.</p>`; return; }
+        [1,2,3,4,5].forEach((n, i) => {
+            const count = dist[String(n)] || 0;
+            const pct   = Math.round(count / total * 100);
+            const item  = document.createElement("div");
+            item.className = "rating-bar-item";
+            item.innerHTML = `<div class="rating-stars">${stars[i]}</div><div class="rating-bar-bg"><div class="rating-bar-fill" style="width:0%;">${pct}%</div></div>`;
+            container.appendChild(item);
+            setTimeout(() => { item.querySelector(".rating-bar-fill").style.width = pct + "%"; }, 300 + i * 80);
+        });
+    }
+
+    const PIE_COLORS = ["var(--primary)","var(--accent-purple)","var(--accent-blue)","var(--accent-yellow)","var(--accent-green)"];
+    function renderGenreBreakdown(genres, total) {
+        document.getElementById("pieCenterVal").textContent = total;
+        const pie = document.getElementById("pieChart");
+        const legend = document.getElementById("genreLegend");
+        legend.innerHTML = "";
+        if (!genres.length) { pie.style.background = "var(--bg-elevated)"; legend.innerHTML = `<p style="color:var(--text-tertiary); font-size:13px;">No data yet.</p>`; return; }
+        let stops = ""; let cur = 0;
+        genres.forEach((g, i) => {
+            const end = cur + g.percent;
+            stops += `${PIE_COLORS[i % PIE_COLORS.length]} ${cur}% ${end}%, `;
+            cur = end;
+            const item = document.createElement("div");
+            item.className = "legend-item";
+            item.innerHTML = `<div class="legend-color" style="background:${PIE_COLORS[i % PIE_COLORS.length]};"></div><span class="legend-label">${g.genre}</span><span class="legend-value">${g.percent}%</span>`;
+            legend.appendChild(item);
+        });
+        pie.style.background = `conic-gradient(${stops}var(--bg-elevated) ${cur}% 100%)`;
+    }
+
+    function renderDecadeChart(decades) {
+        const container = document.getElementById("decadeChart");
+        container.innerHTML = "";
+        if (!decades.length) { container.innerHTML = `<p style="color:var(--text-tertiary); text-align:center; width:100%;">No data yet.</p>`; return; }
+        const maxCount = Math.max(...decades.map(d => d.count));
+        decades.forEach((d, i) => {
+            const pct = Math.round(d.count / maxCount * 100);
+            const item = document.createElement("div");
+            item.className = "decade-bar";
+            item.innerHTML = `<div class="bar-container"><div class="bar" style="height:0%;"><span class="bar-value">${d.count}</span></div></div><div class="bar-label">${d.decade}</div>`;
+            container.appendChild(item);
+            setTimeout(() => { item.querySelector(".bar").style.height = pct + "%"; }, 500 + i * 80);
+        });
+    }
+
+
+
+    function renderReviews(reviews) {
+        const container = document.getElementById("reviewsContent");
+        if (!reviews.length) { container.innerHTML = `<div class="empty-state"><div class="empty-icon">✍️</div>No reviews written yet.</div>`; return; }
+        container.innerHTML = reviews.map(r => {
+            const genreTags = r.genres ? r.genres.split(",").slice(0,2).map(g => `<span class="genre-tag">${g.trim()}</span>`).join("") : "";
+            return `<div class="review-card"><div class="review-movie">${r.movie}</div><div class="review-meta"><span style="color:var(--accent-yellow);">⭐ ${r.rating}</span><span>${r.created_at}</span>${genreTags}</div><p class="review-text">${r.review_text}</p></div>`;
+        }).join("");
+    }
+
+    function renderWatchlist(items, isVisible) {
+        const container = document.getElementById("watchlistContent");
+        if (!isVisible) {
+            container.innerHTML = `<div class="empty-state"><div class="empty-icon">🔒</div>This watchlist is set to private.</div>`;
+            return;
+        }
+        if (!items.length) { container.innerHTML = `<div class="empty-state"><div class="empty-icon">💾</div>No movies in watchlist yet.</div>`; return; }
+        container.innerHTML = items.map(m => {
+            const genreTags = m.genres ? m.genres.split(",").slice(0,2).map(g => `<span class="genre-tag">${g.trim()}</span>`).join("") : "";
+            return `<div class="wl-item"><div class="wl-thumb">🎬</div><div style="flex:1; min-width:0;"><h3 style="font-size:16px; font-weight:600; margin-bottom:4px;">${m.title}</h3><div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:6px;">${genreTags}</div><div style="font-size:13px; color:var(--text-tertiary);">${m.release_year || "—"} · <span style="color:var(--accent-yellow);">⭐ ${m.avg_rating.toFixed(1)}</span> · Added ${m.added_at}</div></div></div>`;
+        }).join("");
+    }
+
+    const AWARD_ICONS = { "Top Rater": "⭐", "Most Reviews": "✍️", "Most Active Reviewer": "✍️", "Cinephile": "🎬", "Genre Expert": "🎯", "Top Watchlister": "💾" };
+    function renderAwards(awards) {
+        const container = document.getElementById("awardsContent");
+        if (!awards.length) { container.innerHTML = `<div class="empty-state"><div class="empty-icon">🏆</div>No awards yet. Keep rating and reviewing to earn one!</div>`; return; }
+        container.innerHTML = awards.map(a => `
+            <div style="display:flex; align-items:center; gap:20px; padding:20px; background:var(--bg-card); border-radius:16px; margin-bottom:12px; border:1px solid rgba(255,215,0,0.2);">
+                <div style="width:56px; height:56px; border-radius:50%; background:linear-gradient(135deg,#FFD60A,#FF9500); display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0; box-shadow:0 4px 16px rgba(255,214,10,0.3);">${a.icon || AWARD_ICONS[a.category] || "🏆"}</div>
+                <div style="flex:1;"><p style="font-size:17px; font-weight:700; margin-bottom:4px;">${a.category}</p><p style="font-size:13px; color:var(--text-secondary);">🗓️ ${a.month}${a.value ? ` · <span style="color:var(--accent-yellow);">${a.value}</span>` : ""}</p></div>
+                <div style="font-size:28px;">🥇</div>
+            </div>`).join("");
+    }
+
+    // ── Settings Modal ────────────────────────────────────────────────────────
+    async function openSettings() {
+        document.getElementById("settingsModal").style.display = "block";
+
+        // Load current data to prefill fields
+        try {
+            const res  = await fetch(`${BACKEND}/profile/settings-data`, { credentials: "include" });
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById("settingsBio").value      = data.bio || "";
+                document.getElementById("settingsLocation").value = data.location || "";
+                setToggle(data.watchlist_public);
+            }
+        } catch { setToggle(false); }
+    }
+
+    function closeSettings() {
+        document.getElementById("settingsModal").style.display = "none";
+    }
+
+    document.getElementById("settingsModal").addEventListener("click", e => {
+        if (e.target === document.getElementById("settingsModal")) closeSettings();
     });
-});
 
-// Settings button
-document.querySelector('.btn-primary').addEventListener('click', function() {
-    alert('Settings page will be added by the backend.');
-});
+    function setToggle(isOn) {
+        const track = document.getElementById("toggleTrack");
+        const knob  = document.getElementById("toggleKnob");
+        if (!track || !knob) return;
+        track.style.background = isOn ? "var(--accent-green)" : "var(--text-tertiary)";
+        knob.style.transform   = isOn ? "translateX(24px)" : "translateX(0)";
+    }
 
-// Share Profile button
-document.querySelector('.btn-secondary').addEventListener('click', function() {
-    const btn = this;
-    btn.textContent = '✓ Link Copied!';
-    btn.style.color = '#06FFA5';
-    btn.style.borderColor = '#06FFA5';
-    setTimeout(() => {
-        btn.textContent = '🔗 Share Profile';
-        btn.style.color = '';
-        btn.style.borderColor = '';
-    }, 2000);
-});
+    async function toggleWatchlistPublic() {
+        try {
+            const res  = await fetch(`${BACKEND}/profile/watchlist-privacy`, { method: "POST", credentials: "include" });
+            const data = await res.json();
+            setToggle(data.watchlist_public);
+            showFormMsg("privacyMsg", data.watchlist_public ? "✅ Watchlist is now public." : "🔒 Watchlist is now private.", true);
+        } catch { showFormMsg("privacyMsg", "Could not update.", false); }
+    }
+
+    async function saveProfileInfo() {
+        const bio      = document.getElementById("settingsBio").value.trim();
+        const location = document.getElementById("settingsLocation").value.trim();
+        try {
+            const res  = await fetch(`${BACKEND}/profile/update-info`, {
+                method: "POST", credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ bio, location })
+            });
+            const data = await res.json();
+            showFormMsg("infoMsg", data.message, data.success);
+            if (data.success) {
+                // Update header live
+                document.getElementById("profileBio").textContent = bio;
+                const locEl = document.getElementById("profileLocation");
+                if (location) { locEl.textContent = "📍 " + location; locEl.style.display = "inline"; }
+                else locEl.style.display = "none";
+            }
+        } catch { showFormMsg("infoMsg", "Could not save.", false); }
+    }
 
 
-    </script>
+
+    // ── Utilities ─────────────────────────────────────────────────────────────
+    function showFormMsg(id, msg, success) {
+        const el = document.getElementById(id);
+        el.textContent = msg;
+        el.className   = "form-msg " + (success ? "success" : "error");
+        setTimeout(() => { el.className = "form-msg"; }, 4000);
+    }
+
+    function fmtMemberDate(iso) {
+        if (!iso || iso === "—") return "—";
+        return new Date(iso).toLocaleDateString("en-US", { month: "long", year: "numeric" });
+    }
+
+    function copyShareLink() {
+        navigator.clipboard.writeText(window.location.href)
+            .then(() => alert("Profile link copied!"))
+            .catch(() => alert("Could not copy link."));
+    }
+
+    function showError(msg) {
+        const banner = document.getElementById("errorBanner");
+        banner.textContent   = "⚠️ " + msg;
+        banner.style.display = "block";
+    }
+</script>
 </body>
 </html>
