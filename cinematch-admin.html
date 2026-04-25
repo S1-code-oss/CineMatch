@@ -3,210 +3,486 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CineMatch — Admin Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <title>CineMatch — Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --primary: #FF3366; --primary-dark: #CC0033;
             --bg-dark: #0A0A0A; --bg-card: #151515; --bg-elevated: #1F1F1F;
             --text-primary: #FFFFFF; --text-secondary: #A0A0A0; --text-tertiary: #666666;
-            --accent-purple: #9D4EDD; --accent-green: #06FFA5;
+            --accent-blue: #00D9FF; --accent-purple: #9D4EDD;
+            --accent-yellow: #FFD60A; --accent-green: #06FFA5;
         }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-dark); color: var(--text-primary); overflow-x: hidden; }
+        body::before { content:''; position:fixed; inset:0; background: radial-gradient(circle at 10% 20%, rgba(255,51,102,0.06) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(157,78,221,0.06) 0%, transparent 40%); pointer-events:none; z-index:0; }
+        .main-container { position:relative; z-index:1; min-height:100vh; }
 
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .nav { position:sticky; top:0; background:rgba(10,10,10,0.92); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,51,102,0.15); padding:0 40px; z-index:100; height:72px; display:flex; align-items:center; justify-content:space-between; }
+        .nav-left { display:flex; align-items:center; gap:16px; }
+        .logo { font-size:26px; font-weight:900; letter-spacing:-1px; background:linear-gradient(135deg,var(--primary),var(--accent-purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; text-decoration:none; }
+        .admin-badge { padding:3px 10px; background:rgba(255,51,102,0.15); border:1px solid rgba(255,51,102,0.3); border-radius:20px; font-size:11px; font-weight:700; color:var(--primary); letter-spacing:0.5px; }
+        .nav-right { display:flex; align-items:center; gap:14px; }
+        .nav-user { color:var(--text-secondary); font-size:13px; }
+        .back-link { color:var(--text-secondary); text-decoration:none; font-size:13px; font-weight:500; padding:6px 14px; border-radius:8px; border:1px solid rgba(255,255,255,0.08); transition:all 0.2s; }
+        .back-link:hover { color:var(--text-primary); border-color:rgba(255,255,255,0.2); }
+        .logout-btn { padding:6px 14px; border-radius:8px; border:1px solid rgba(255,51,102,0.25); background:transparent; color:var(--primary); font-family:'Outfit',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+        .logout-btn:hover { background:rgba(255,51,102,0.1); }
 
-        body::before {
-            content: '';
-            position: fixed; inset: 0;
-            background:
-                radial-gradient(circle at 20% 30%, rgba(255,51,102,0.07) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(157,78,221,0.07) 0%, transparent 50%);
-            pointer-events: none;
-        }
+        .page-content { padding:36px 48px 80px; }
+        .page-header { margin-bottom:28px; }
+        .page-header h1 { font-size:36px; font-weight:900; letter-spacing:-1.5px; }
+        .page-header p { color:var(--text-secondary); font-size:14px; margin-top:4px; }
+        .highlight { color:var(--primary); }
 
-        .card {
-            position: relative; z-index: 1;
-            background: var(--bg-card);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 28px;
-            padding: 48px 44px;
-            width: 420px;
-            max-width: 95vw;
-            animation: fadeIn 0.5s ease;
-        }
+        .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:32px; }
+        .stat-card { background:var(--bg-card); border:1px solid rgba(255,255,255,0.05); border-radius:14px; padding:20px 24px; display:flex; align-items:center; gap:16px; }
+        .stat-icon { font-size:28px; }
+        .stat-value { font-size:30px; font-weight:900; font-family:'JetBrains Mono',monospace; line-height:1; }
+        .stat-label { font-size:12px; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px; margin-top:3px; }
+        .s1 .stat-value { color:var(--primary); }
+        .s2 .stat-value { color:var(--accent-blue); }
+        .s3 .stat-value { color:var(--accent-yellow); }
+        .s4 .stat-value { color:var(--accent-green); }
 
-        .logo {
-            text-align: center;
-            margin-bottom: 8px;
-        }
-        .logo-text {
-            font-size: 30px; font-weight: 900; letter-spacing: -1px;
-            background: linear-gradient(135deg, var(--primary), var(--accent-purple));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-        }
-        .admin-badge {
-            display: inline-block;
-            margin-top: 6px;
-            padding: 4px 14px;
-            background: rgba(255,51,102,0.12);
-            border: 1px solid rgba(255,51,102,0.25);
-            border-radius: 20px;
-            font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
-            color: var(--primary); text-transform: uppercase;
-        }
+        .tabs { display:flex; gap:4px; margin-bottom:24px; background:var(--bg-card); border:1px solid rgba(255,255,255,0.05); border-radius:14px; padding:5px; width:fit-content; }
+        .tab-btn { padding:10px 28px; border-radius:10px; border:none; background:transparent; color:var(--text-secondary); font-family:'Outfit',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.25s; display:flex; align-items:center; gap:8px; }
+        .tab-btn.active { background:var(--bg-elevated); color:var(--text-primary); box-shadow:0 2px 8px rgba(0,0,0,0.4); }
+        .tab-btn .tc { font-size:11px; padding:2px 7px; border-radius:10px; background:rgba(255,255,255,0.08); font-family:'JetBrains Mono',monospace; }
+        .tab-btn.active .tc { background:rgba(255,51,102,0.2); color:var(--primary); }
+        .tab-panel { display:none; }
+        .tab-panel.active { display:block; }
 
-        h2 {
-            font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
-            margin: 28px 0 6px;
-        }
-        .subtitle { font-size: 14px; color: var(--text-secondary); margin-bottom: 32px; }
+        .card { background:var(--bg-card); border:1px solid rgba(255,255,255,0.05); border-radius:16px; padding:24px; margin-bottom:20px; }
+        .card-title { font-size:16px; font-weight:700; margin-bottom:6px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+        .card-hint { font-size:12px; color:var(--text-tertiary); margin-bottom:16px; }
 
-        .form-group { margin-bottom: 18px; }
-        .form-label {
-            display: block; font-size: 12px; font-weight: 700;
-            color: var(--text-secondary); text-transform: uppercase;
-            letter-spacing: 0.5px; margin-bottom: 8px;
-        }
-        .form-input {
-            width: 100%; padding: 13px 16px;
-            background: var(--bg-elevated);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-family: 'Outfit', sans-serif; font-size: 15px;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255,51,102,0.1);
-        }
-        .form-input::placeholder { color: var(--text-tertiary); }
+        .filter-bar { display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap; }
+        .filter-input { flex:1; min-width:180px; padding:10px 14px; background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.08); border-radius:10px; color:var(--text-primary); font-family:'Outfit',sans-serif; font-size:14px; transition:border-color 0.2s; }
+        .filter-input:focus { outline:none; border-color:var(--primary); }
+        .filter-input::placeholder { color:var(--text-tertiary); }
+        .filter-select { padding:10px 14px; background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.08); border-radius:10px; color:var(--text-primary); font-family:'Outfit',sans-serif; font-size:14px; cursor:pointer; }
+        .filter-select:focus { outline:none; border-color:var(--primary); }
 
-        .submit-btn {
-            width: 100%; padding: 14px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border: none; border-radius: 12px;
-            color: white; font-family: 'Outfit', sans-serif;
-            font-size: 15px; font-weight: 700; cursor: pointer;
-            transition: all 0.3s; margin-top: 8px;
-        }
-        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,51,102,0.35); }
-        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+        .tbl { width:100%; border-collapse:collapse; }
+        .tbl th { text-align:left; padding:8px 12px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-tertiary); border-bottom:1px solid rgba(255,255,255,0.05); }
+        .tbl td { padding:12px 12px; font-size:13px; border-bottom:1px solid rgba(255,255,255,0.03); vertical-align:middle; }
+        .tbl tr:last-child td { border-bottom:none; }
+        .tbl tr:hover td { background:rgba(255,255,255,0.02); }
+        .mono { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-secondary); }
+        .title-cell { font-weight:600; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
-        .error-msg {
-            margin-top: 16px; padding: 12px 16px;
-            background: rgba(255,51,102,0.1);
-            border: 1px solid rgba(255,51,102,0.25);
-            border-radius: 10px;
-            color: var(--primary); font-size: 13px; font-weight: 500;
-            display: none; text-align: center;
-        }
+        .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+        .b-approved   { background:rgba(6,255,165,0.12);  color:var(--accent-green); }
+        .b-pending    { background:rgba(255,214,10,0.12); color:var(--accent-yellow); }
+        .b-active     { background:rgba(6,255,165,0.12);  color:var(--accent-green); }
+        .b-restricted { background:rgba(255,51,102,0.12); color:var(--primary); }
+        .b-admin      { background:rgba(157,78,221,0.12); color:var(--accent-purple); }
+        .b-user       { background:rgba(255,255,255,0.06);color:var(--text-secondary); }
 
-        .divider {
-            text-align: center; margin-top: 28px;
-            color: var(--text-tertiary); font-size: 13px;
-        }
-        .divider a { color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
-        .divider a:hover { color: var(--text-primary); }
+        .btn { padding:5px 12px; border-radius:7px; font-family:'Outfit',sans-serif; font-size:12px; font-weight:700; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+        .btn-approve    { border:1px solid rgba(6,255,165,0.3);  background:transparent; color:var(--accent-green); }
+        .btn-approve:hover    { background:rgba(6,255,165,0.1); }
+        .btn-unapprove  { border:1px solid rgba(255,214,10,0.3); background:transparent; color:var(--accent-yellow); }
+        .btn-unapprove:hover  { background:rgba(255,214,10,0.1); }
+        .btn-restrict   { border:1px solid rgba(255,51,102,0.3); background:transparent; color:var(--primary); }
+        .btn-restrict:hover   { background:rgba(255,51,102,0.1); }
+        .btn-unrestrict { border:1px solid rgba(6,255,165,0.3);  background:transparent; color:var(--accent-green); }
+        .btn-unrestrict:hover { background:rgba(6,255,165,0.1); }
+        .btn-del { border:1px solid rgba(255,51,102,0.2); background:transparent; color:var(--primary); width:28px; height:28px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:7px; font-size:13px; }
+        .btn-del:hover { background:rgba(255,51,102,0.1); }
+        .act { display:flex; align-items:center; gap:6px; }
 
-        .lock-icon {
-            width: 56px; height: 56px;
-            background: rgba(255,51,102,0.1);
-            border: 1px solid rgba(255,51,102,0.2);
-            border-radius: 16px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 26px; margin: 0 auto 20px;
-        }
+        .pending-row td { background:rgba(255,214,10,0.025) !important; }
+        .restricted-row { opacity:0.7; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        .empty { text-align:center; padding:48px 24px; color:var(--text-tertiary); font-size:14px; }
+        .empty .ei { font-size:36px; margin-bottom:10px; }
+
+        .add-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+        .full { grid-column:1/-1; }
+        .fg { display:flex; flex-direction:column; gap:5px; }
+        .fl { font-size:11px; font-weight:700; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.5px; }
+        .fi,.fta { padding:10px 14px; background:var(--bg-elevated); border:1px solid rgba(255,255,255,0.08); border-radius:10px; color:var(--text-primary); font-family:'Outfit',sans-serif; font-size:14px; transition:border-color 0.2s; }
+        .fi:focus,.fta:focus { outline:none; border-color:var(--primary); }
+        .fta { resize:vertical; min-height:72px; }
+        .fa { display:flex; gap:10px; margin-top:6px; }
+        .btn-add { padding:10px 24px; background:linear-gradient(135deg,var(--primary),var(--primary-dark)); border:none; border-radius:10px; color:white; font-family:'Outfit',sans-serif; font-size:14px; font-weight:700; cursor:pointer; transition:all 0.3s; }
+        .btn-add:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,51,102,0.3); }
+        .btn-clr { padding:10px 20px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:transparent; color:var(--text-secondary); font-family:'Outfit',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+        .btn-clr:hover { border-color:rgba(255,255,255,0.25); color:var(--text-primary); }
+        .fmsg { font-size:13px; margin-top:10px; display:none; }
+
+        .toast { position:fixed; bottom:24px; right:24px; z-index:999; padding:12px 20px; border-radius:12px; font-size:13px; font-weight:600; transform:translateY(60px); opacity:0; transition:all 0.35s; pointer-events:none; }
+        .toast.show { transform:translateY(0); opacity:1; }
+        .toast.success { background:rgba(6,255,165,0.15); border:1px solid rgba(6,255,165,0.3); color:var(--accent-green); }
+        .toast.error   { background:rgba(255,51,102,0.15); border:1px solid rgba(255,51,102,0.3); color:var(--primary); }
+
+        @keyframes fadeInUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+        .anim { animation:fadeInUp 0.4s ease backwards; }
+        @media(max-width:1100px) { .stats-grid{grid-template-columns:repeat(2,1fr);} .page-content{padding:24px 24px 60px;} }
+        @media(max-width:700px)  { .add-grid{grid-template-columns:1fr;} .tabs{width:100%;} .tab-btn{flex:1;justify-content:center;padding:10px 8px;font-size:13px;} }
     </style>
 </head>
 <body>
+<div class="main-container">
 
-<div class="card">
-    <div class="logo">
-        <div class="logo-text">CineMatch</div>
-        <div><span class="admin-badge">Admin Portal</span></div>
-    </div>
-
-    <div class="lock-icon" style="margin-top:24px;">🔐</div>
-
-    <h2>Admin Sign In</h2>
-    <p class="subtitle">Restricted access — authorized personnel only.</p>
-
-    <form onsubmit="handleLogin(event)">
-        <div class="form-group">
-            <label class="form-label">Username or Email</label>
-            <input class="form-input" id="identifier" type="text" placeholder="admin@cinematch.com" autocomplete="username" required>
+    <nav class="nav">
+        <div class="nav-left">
+            <a href="/" class="logo">CineMatch</a>
+            <span class="admin-badge">ADMIN</span>
         </div>
-        <div class="form-group">
-            <label class="form-label">Password</label>
-            <input class="form-input" id="password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+        <div class="nav-right">
+            <span class="nav-user" id="navUsername"></span>
+            <a href="/login" class="back-link">← Back to site</a>
+            <button class="logout-btn" onclick="logout()">Sign Out</button>
         </div>
-        <button class="submit-btn" id="submitBtn" type="submit">Sign In to Admin Panel</button>
-        <div class="error-msg" id="errorMsg"></div>
-    </form>
+    </nav>
 
-    <div class="divider">
-        Not an admin? <a href="/login">Go to user login →</a>
+    <div class="page-content">
+
+        <div class="page-header anim">
+            <h1>Admin <span class="highlight">Panel</span></h1>
+            <p>Manage the CineMatch movie library and user accounts</p>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid anim" style="animation-delay:0.05s">
+            <div class="stat-card s1"><div class="stat-icon">🎬</div><div><div class="stat-value" id="statMovies">—</div><div class="stat-label">Total Movies</div></div></div>
+            <div class="stat-card s2"><div class="stat-icon">👥</div><div><div class="stat-value" id="statUsers">—</div><div class="stat-label">Total Users</div></div></div>
+            <div class="stat-card s3"><div class="stat-icon">⏳</div><div><div class="stat-value" id="statPending">—</div><div class="stat-label">Pending Approval</div></div></div>
+            <div class="stat-card s4"><div class="stat-icon">🚫</div><div><div class="stat-value" id="statRestricted">—</div><div class="stat-label">Restricted Users</div></div></div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs anim" style="animation-delay:0.1s">
+            <button class="tab-btn active" id="tab-movies" onclick="switchTab('movies')">
+                🎬 Movies <span class="tc" id="tcMovies">—</span>
+            </button>
+            <button class="tab-btn" id="tab-users" onclick="switchTab('users')">
+                👥 Users <span class="tc" id="tcUsers">—</span>
+            </button>
+            <button class="tab-btn" id="tab-add" onclick="switchTab('add')">
+                ➕ Add Movie
+            </button>
+        </div>
+
+        <!-- TAB: MOVIES -->
+        <div class="tab-panel active" id="panel-movies">
+            <div class="card anim" style="animation-delay:0.15s">
+                <div class="card-title">
+                    Movie Library
+                    <span style="color:var(--text-tertiary);font-size:12px;" id="libraryCount">loading…</span>
+                </div>
+                <p class="card-hint">Pending movies are highlighted. Use the filter to show only pending ones.</p>
+                <div class="filter-bar">
+                    <input class="filter-input" type="text" id="movieSearch" placeholder="Search by title…" oninput="filterMovies()">
+                    <select class="filter-select" id="movieFilter" onchange="filterMovies()">
+                        <option value="all">All movies</option>
+                        <option value="pending">⏳ Pending approval</option>
+                        <option value="approved">✅ Approved only</option>
+                    </select>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="tbl">
+                        <thead><tr>
+                            <th>Title</th><th>Year</th><th>Avg Rating</th><th>Status</th><th>Actions</th>
+                        </tr></thead>
+                        <tbody id="movieBody">
+                            <tr><td colspan="5"><div class="empty"><div class="ei">🎬</div>Loading…</div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: USERS -->
+        <div class="tab-panel" id="panel-users">
+            <div class="card anim" style="animation-delay:0.15s">
+                <div class="card-title">User Management</div>
+                <p class="card-hint">
+                    🚫 <strong>Restrict</strong> blocks a user from logging in. 
+                    ✓ <strong>Unrestrict</strong> restores their access. 
+                    Admin accounts cannot be restricted.
+                </p>
+                <div class="filter-bar">
+                    <input class="filter-input" type="text" id="userSearch" placeholder="Search by username or email…" oninput="filterUsers()">
+                    <select class="filter-select" id="userFilter" onchange="filterUsers()">
+                        <option value="all">All users</option>
+                        <option value="active">✅ Active only</option>
+                        <option value="restricted">🚫 Restricted only</option>
+                    </select>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="tbl">
+                        <thead><tr>
+                            <th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Joined</th><th>Last Login</th><th style="min-width:130px;">Action</th>
+                        </tr></thead>
+                        <tbody id="userBody">
+                            <tr><td colspan="7"><div class="empty"><div class="ei">👥</div>Loading…</div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: ADD MOVIE -->
+        <div class="tab-panel" id="panel-add">
+            <div class="card anim" style="animation-delay:0.15s; max-width:820px;">
+                <div class="card-title">Add Movie to Library</div>
+                <p class="card-hint">Fields marked * are required. The movie will be auto-approved and appear in the library immediately.</p>
+                <div class="add-grid">
+                    <div class="fg full"><label class="fl">Title *</label><input class="fi" id="addTitle" type="text" placeholder="e.g. Inception"></div>
+                    <div class="fg"><label class="fl">Release Year *</label><input class="fi" id="addYear" type="number" placeholder="e.g. 2010" min="1888" max="2030"></div>
+                    <div class="fg"><label class="fl">Runtime (minutes)</label><input class="fi" id="addRuntime" type="number" placeholder="e.g. 148"></div>
+                    <div class="fg"><label class="fl">Director</label><input class="fi" id="addDirector" type="text" placeholder="e.g. Christopher Nolan"></div>
+                    <div class="fg"><label class="fl">Cast</label><input class="fi" id="addCast" type="text" placeholder="e.g. Leonardo DiCaprio, Tom Hardy"></div>
+                    <div class="fg full"><label class="fl">Description</label><textarea class="fta" id="addDescription" placeholder="Short synopsis of the movie…"></textarea></div>
+                    <div class="fg"><label class="fl">Poster URL</label><input class="fi" id="addPoster" type="url" placeholder="https://image.tmdb.org/…"></div>
+                    <div class="fg"><label class="fl">Trailer URL</label><input class="fi" id="addTrailer" type="url" placeholder="https://youtube.com/watch?v=…"></div>
+                </div>
+                <div class="fa">
+                    <button class="btn-add" onclick="submitAddMovie()">+ Add Movie</button>
+                    <button class="btn-clr" onclick="clearAddForm()">Clear</button>
+                </div>
+                <div class="fmsg" id="addMsg"></div>
+            </div>
+        </div>
+
     </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
-    // If already logged in as admin, skip the login page
-    (async function () {
-        const r = await fetch('/api/admin/me', { credentials: 'include' });
-        const data = await r.json();
-        if (data.logged_in) window.location.href = '/admin/dashboard';
+    let allMovies = [];
+    let allUsers  = [];
+
+    (async function init() {
+        const me = await api('/api/admin/me');
+        if (!me.logged_in) { window.location.href = '/admin/login'; return; }
+        document.getElementById('navUsername').textContent = '👤 ' + me.username;
+        loadStats();
+        loadMovies();
+        loadUsers();
     })();
 
-    async function handleLogin(e) {
-        e.preventDefault();
+    function switchTab(name) {
+        ['movies','users','add'].forEach(t => {
+            document.getElementById('tab-' + t).classList.toggle('active', t === name);
+            document.getElementById('panel-' + t).classList.toggle('active', t === name);
+        });
+    }
 
-        const identifier = document.getElementById('identifier').value.trim();
-        const password   = document.getElementById('password').value;
-        const btn        = document.getElementById('submitBtn');
-        const errEl      = document.getElementById('errorMsg');
+    async function loadStats() {
+        const r = await api('/api/admin/stats');
+        if (!r.success) return;
+        document.getElementById('statMovies').textContent     = r.data.total_movies;
+        document.getElementById('statUsers').textContent      = r.data.total_users;
+        document.getElementById('statPending').textContent    = r.data.pending_movies;
+        document.getElementById('statRestricted').textContent = r.data.restricted_users;
+    }
 
-        errEl.style.display = 'none';
-        btn.disabled = true;
-        btn.textContent = 'Signing in…';
+    // ── MOVIES ────────────────────────────────────────────────────────────────
 
-        try {
-            const res  = await fetch('/api/admin/login', {
-                method:      'POST',
-                credentials: 'include',
-                headers:     { 'Content-Type': 'application/json' },
-                body:        JSON.stringify({ identifier, password }),
-            });
-            const data = await res.json();
-
-            if (data.success) {
-                window.location.href = data.redirect || '/admin/dashboard';
-            } else {
-                errEl.textContent    = data.message;
-                errEl.style.display  = 'block';
-                btn.disabled         = false;
-                btn.textContent      = 'Sign In to Admin Panel';
-            }
-        } catch {
-            errEl.textContent   = 'Network error. Is the server running?';
-            errEl.style.display = 'block';
-            btn.disabled        = false;
-            btn.textContent     = 'Sign In to Admin Panel';
+    async function loadMovies() {
+        const r = await api('/api/admin/movies');
+        if (!r.success) {
+            document.getElementById('movieBody').innerHTML =
+                `<tr><td colspan="5"><div class="empty"><div class="ei">⚠️</div>${esc(r.message)}</div></td></tr>`;
+            return;
         }
+        allMovies = r.data;
+        document.getElementById('tcMovies').textContent = allMovies.length;
+        renderMovies(allMovies);
+    }
+
+    function filterMovies() {
+        const q = document.getElementById('movieSearch').value.toLowerCase();
+        const f = document.getElementById('movieFilter').value;
+        let list = allMovies;
+        if (q) list = list.filter(m => m.title.toLowerCase().includes(q));
+        if (f === 'pending')  list = list.filter(m => !m.is_approved);
+        if (f === 'approved') list = list.filter(m =>  m.is_approved);
+        renderMovies(list);
+    }
+
+    function renderMovies(movies) {
+        document.getElementById('libraryCount').textContent = movies.length + ' movie' + (movies.length !== 1 ? 's' : '');
+        const tbody = document.getElementById('movieBody');
+        if (!movies.length) {
+            tbody.innerHTML = `<tr><td colspan="5"><div class="empty"><div class="ei">🎬</div>No movies found.</div></td></tr>`;
+            return;
+        }
+        tbody.innerHTML = movies.map(m => {
+            const sb = m.is_approved
+                ? `<span class="badge b-approved">● Approved</span>`
+                : `<span class="badge b-pending">● Pending</span>`;
+            const ab = m.is_approved
+                ? `<button class="btn btn-unapprove" onclick="toggleApprove(${m.movie_id})">Unapprove</button>`
+                : `<button class="btn btn-approve"   onclick="toggleApprove(${m.movie_id})">✓ Approve</button>`;
+            return `<tr class="${m.is_approved ? '' : 'pending-row'}" id="mr-${m.movie_id}">
+                <td class="title-cell" title="${esc(m.title)}">${esc(m.title)}</td>
+                <td class="mono">${m.release_year || '—'}</td>
+                <td class="mono">${m.average_rating ? '★ ' + m.average_rating.toFixed(1) : '—'}</td>
+                <td>${sb}</td>
+                <td><div class="act">${ab}<button class="btn btn-del" onclick="deleteMovie(${m.movie_id},'${esc(m.title).replace(/'/g,"\\'")}' )" title="Delete">✕</button></div></td>
+            </tr>`;
+        }).join('');
+    }
+
+    async function toggleApprove(id) {
+        const r = await api(`/api/admin/movies/${id}/approve`, 'PATCH');
+        if (!r.success) { showToast(r.message, 'error'); return; }
+        const m = allMovies.find(x => x.movie_id === id);
+        if (m) m.is_approved = r.is_approved;
+        filterMovies(); loadStats();
+        showToast(r.message, 'success');
+    }
+
+    async function deleteMovie(id, title) {
+        if (!confirm(`Delete "${title}"?\n\nThis permanently removes all ratings and reviews.`)) return;
+        const r = await api(`/api/admin/movies/${id}`, 'DELETE');
+        if (!r.success) { showToast(r.message, 'error'); return; }
+        allMovies = allMovies.filter(m => m.movie_id !== id);
+        document.getElementById('tcMovies').textContent = allMovies.length;
+        filterMovies(); loadStats();
+        showToast('Movie deleted.', 'success');
+    }
+
+    // ── ADD MOVIE ─────────────────────────────────────────────────────────────
+
+    async function submitAddMovie() {
+        const title = document.getElementById('addTitle').value.trim();
+        const year  = document.getElementById('addYear').value.trim();
+        if (!title) { showAddMsg('Title is required.', false); return; }
+        if (!year)  { showAddMsg('Release year is required.', false); return; }
+
+        const payload = {
+            title,
+            release_year: parseInt(year),
+            runtime:     parseInt(document.getElementById('addRuntime').value)   || null,
+            director:    document.getElementById('addDirector').value.trim()     || null,
+            cast:        document.getElementById('addCast').value.trim()         || null,
+            description: document.getElementById('addDescription').value.trim()  || null,
+            poster_url:  document.getElementById('addPoster').value.trim()       || null,
+            trailer_url: document.getElementById('addTrailer').value.trim()      || null,
+        };
+
+        const r = await api('/api/admin/movies', 'POST', payload);
+        if (!r.success) { showAddMsg(r.message, false); return; }
+        showAddMsg('✓ Movie added! Switching to library…', true);
+        clearAddForm();
+        allMovies = []; loadMovies(); loadStats();
+        setTimeout(() => switchTab('movies'), 1400);
+    }
+
+    function clearAddForm() {
+        ['addTitle','addYear','addRuntime','addDirector','addCast','addDescription','addPoster','addTrailer']
+            .forEach(id => document.getElementById(id).value = '');
+        document.getElementById('addMsg').style.display = 'none';
+    }
+
+    function showAddMsg(text, ok) {
+        const el = document.getElementById('addMsg');
+        el.textContent = text;
+        el.style.color = ok ? 'var(--accent-green)' : 'var(--primary)';
+        el.style.display = 'block';
+    }
+
+    // ── USERS ─────────────────────────────────────────────────────────────────
+
+    async function loadUsers() {
+        const r = await api('/api/admin/users');
+        if (!r.success) {
+            document.getElementById('userBody').innerHTML =
+                `<tr><td colspan="7"><div class="empty"><div class="ei">⚠️</div>${esc(r.message)}</div></td></tr>`;
+            return;
+        }
+        allUsers = r.data;
+        document.getElementById('tcUsers').textContent = allUsers.length;
+        renderUsers(allUsers);
+    }
+
+    function filterUsers() {
+        const q = document.getElementById('userSearch').value.toLowerCase();
+        const f = document.getElementById('userFilter').value;
+        let list = allUsers;
+        if (q) list = list.filter(u => u.username.toLowerCase().includes(q) || u.email.toLowerCase().includes(q));
+        if (f === 'active')     list = list.filter(u =>  u.is_active);
+        if (f === 'restricted') list = list.filter(u => !u.is_active);
+        renderUsers(list);
+    }
+
+    function renderUsers(users) {
+        const tbody = document.getElementById('userBody');
+        if (!users.length) {
+            tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="ei">👥</div>No users found.</div></td></tr>`;
+            return;
+        }
+        tbody.innerHTML = users.map(u => {
+            const rb = u.role === 'Admin'
+                ? `<span class="badge b-admin">Admin</span>`
+                : `<span class="badge b-user">User</span>`;
+            const sb = u.is_active
+                ? `<span class="badge b-active">● Active</span>`
+                : `<span class="badge b-restricted">● Restricted</span>`;
+            const ab = u.role === 'Admin'
+                ? `<span style="color:var(--text-tertiary);font-size:12px;">— cannot restrict</span>`
+                : u.is_active
+                    ? `<button class="btn btn-restrict"   onclick="toggleRestrict(${u.user_id})">🚫 Restrict</button>`
+                    : `<button class="btn btn-unrestrict" onclick="toggleRestrict(${u.user_id})">✓ Unrestrict</button>`;
+            return `<tr id="ur-${u.user_id}" class="${!u.is_active ? 'restricted-row' : ''}">
+                <td><strong>${esc(u.username)}</strong></td>
+                <td class="mono">${esc(u.email)}</td>
+                <td>${rb}</td>
+                <td>${sb}</td>
+                <td class="mono">${u.created_at || '—'}</td>
+                <td class="mono">${u.last_login || 'Never'}</td>
+                <td>${ab}</td>
+            </tr>`;
+        }).join('');
+    }
+
+    async function toggleRestrict(userId) {
+        const u = allUsers.find(x => x.user_id === userId);
+        const action = u && u.is_active ? 'restrict' : 'unrestrict';
+        if (!confirm(`${action === 'restrict' ? 'Restrict' : 'Unrestrict'} user "${u ? u.username : userId}"?`)) return;
+        const r = await api(`/api/admin/users/${userId}/restrict`, 'PATCH');
+        if (!r.success) { showToast(r.message, 'error'); return; }
+        if (u) u.is_active = r.is_active;
+        filterUsers(); loadStats();
+        showToast(r.message, 'success');
+    }
+
+    // ── MISC ──────────────────────────────────────────────────────────────────
+
+    async function logout() {
+        await api('/api/admin/logout', 'POST');
+        window.location.href = '/login';
+    }
+
+    async function api(url, method = 'GET', body = null) {
+        try {
+            const opts = { method, credentials: 'include', headers: { 'Content-Type': 'application/json' } };
+            if (body) opts.body = JSON.stringify(body);
+            const res = await fetch(url, opts);
+            return await res.json();
+        } catch { return { success: false, message: 'Network error.' }; }
+    }
+
+    function esc(s) {
+        return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    let tt;
+    function showToast(msg, type = 'success') {
+        const el = document.getElementById('toast');
+        el.textContent = msg;
+        el.className = `toast ${type} show`;
+        clearTimeout(tt);
+        tt = setTimeout(() => el.classList.remove('show'), 3000);
     }
 </script>
-
 </body>
 </html>
