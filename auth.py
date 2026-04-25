@@ -187,7 +187,7 @@ def login():
         session["role"]     = role
 
         #Tell frontend where to redirect 
-        redirect = "/admin/dashboard" if role == "Admin" else "/dashboard"
+        redirect = "/admin/dashboard" if role == "Admin" else "/browse"
 
         return jsonify({
             "success":  True,
