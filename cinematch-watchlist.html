@@ -147,14 +147,14 @@ body::before { content: ''; position: fixed; top:0;left:0;right:0;bottom:0; back
 
 <nav class="nav">
   <div class="nav-left">
-    <a href="cinematch-browse.html" class="logo">CineMatch</a>
+    <a href="/browse" class="logo">CineMatch</a>
     <ul class="nav-links">
-      <li><a href="cinematch-browse.html" class="nav-link">Browse</a></li>
-      <li><a href="cinematch-watchlist.html" class="nav-link active">Watchlist</a></li>
-      <li><a href="cinematch-recommendations.html" class="nav-link">For You</a></li>
-      <li><a href="cinematch-cineblend.html" class="nav-link">CineBlend</a></li>
-      <li><a href="cinematch-trending.html" class="nav-link">Trending</a></li>
-      <li><a href="cinematch-dashboard.html" class="nav-link">Dashboard</a></li>
+      <li><a href="/browse" class="nav-link">Browse</a></li>
+      <li><a href="/watchlist" class="nav-link active">Watchlist</a></li>
+      <li><a href="/recommendations" class="nav-link">For You</a></li>
+      <li><a href="/cineblend" class="nav-link">CineBlend</a></li>
+      <li><a href="/trending" class="nav-link">Trending</a></li>
+      <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
     </ul>
   </div>
   <div class="nav-right">
@@ -169,12 +169,11 @@ body::before { content: ''; position: fixed; top:0;left:0;right:0;bottom:0; back
           <div class="dropdown-username">Eman Atif</div>
           <div class="dropdown-email">@eman_atif</div>
         </div>
-        <a href="cinematch-profile.html" class="dropdown-item"><span class="di-icon">👤</span> My Profile</a>
-        <a href="cinematch-dashboard.html" class="dropdown-item"><span class="di-icon">📊</span> Dashboard</a>
-        <a href="cinematch-watchlist.html" class="dropdown-item"><span class="di-icon">🔖</span> Watchlist</a>
+       <a href="/profile" class="dropdown-item"><span class="di-icon">👤</span> My Profile</a>
+        <a href="/dashboard" class="dropdown-item"><span class="di-icon">📊</span> Dashboard</a>
         <div class="dropdown-divider"></div>
-        <a href="#" class="dropdown-item"><span class="di-icon">⚙️</span> Settings</a>
-        <button class="dropdown-item danger" onclick="alert('Logged out')"><span class="di-icon">🚪</span> Log Out</button>
+        <button class="dropdown-item danger" onclick="fetch('/api/logout',{method:'POST',credentials:'include'}).then(()=>window.location.href='/login')"><span class="di-icon">🚪</span> Log Out</button>
+        
       </div>
     </div>
   </div>
@@ -358,7 +357,7 @@ body::before { content: ''; position: fixed; top:0;left:0;right:0;bottom:0; back
     <div class="empty-icon">🎬</div>
     <div class="empty-title">Your watchlist is empty</div>
     <p class="empty-sub">Browse movies and hit ♡ to save them here</p>
-    <a href="cinematch-browse.html" class="browse-btn">▶ Browse Movies</a>
+    <a href="/browse" class="browse-btn">▶ Browse Movies</a>
   </div>
 
 </div><!-- /page-content -->
