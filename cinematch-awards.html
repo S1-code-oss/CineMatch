@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineMatch - Community Awards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #FF3366; --primary-dark: #CC0033;
+            --bg-dark: #0A0A0A; --bg-card: #151515; --bg-elevated: #1F1F1F;
+            --text-primary: #FFFFFF; --text-secondary: #A0A0A0; --text-tertiary: #666666;
+            --accent-blue: #00D9FF; --accent-purple: #9D4EDD; --accent-yellow: #FFD60A; --accent-green: #06FFA5;
+        }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-dark); color: var(--text-primary); overflow-x: hidden; }
+        body::before { content: ''; position: fixed; top:0;left:0;right:0;bottom:0; background: radial-gradient(circle at 10% 20%, rgba(255,51,102,0.08) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(157,78,221,0.08) 0%, transparent 40%); pointer-events: none; z-index: 0; }
+        .main-container { position: relative; z-index: 1; min-height: 100vh; }
+        .nav { position: sticky; top: 0; background: rgba(10,10,10,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 0 40px; z-index: 100; height: 80px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-left { display: flex; align-items: center; gap: 48px; }
+        .logo { font-size: 28px; font-weight: 800; letter-spacing: -1px; background: linear-gradient(135deg, var(--primary), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-decoration: none; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-link { color: var(--text-secondary); text-decoration: none; font-size: 15px; font-weight: 500; transition: all 0.3s ease; position: relative; }
+        .nav-link:hover, .nav-link.active { color: var(--text-primary); }
+        .nav-link.active::after { content: ''; position: absolute; bottom: -28px; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent-purple)); border-radius: 2px 2px 0 0; }
+        .nav-right { display: flex; align-items: center; gap: 24px; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); display: flex; align-items: center; justify-content: center; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 15px; }
+        .page-content { padding: 48px 80px 80px; }
+        .page-header { margin-bottom: 12px; animation: fadeInUp 0.5s ease; }
+        .page-header h1 { font-size: 42px; font-weight: 900; letter-spacing: -2px; margin-bottom: 8px; }
+        .page-header p { color: var(--text-secondary); font-size: 16px; font-weight: 300; }
+        .highlight { color: var(--primary); }
+        .month-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; background: rgba(255,214,10,0.1); border: 1px solid rgba(255,214,10,0.3); border-radius: 24px; font-size: 14px; font-weight: 600; color: var(--accent-yellow); margin-bottom: 40px; animation: fadeInUp 0.5s ease 0.05s backwards; }
+        .no-data-notice { background: rgba(255,214,10,0.06); border: 1px solid rgba(255,214,10,0.15); border-radius: 12px; padding: 12px 20px; color: var(--accent-yellow); font-size: 13px; margin-bottom: 24px; display: none; }
+
+        /* AWARDS GRID */
+        .awards-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 48px; animation: fadeInUp 0.5s ease 0.1s backwards; }
+        .award-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 28px; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .award-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+        .award-card.gold::before   { background: linear-gradient(90deg, var(--accent-yellow), #FF9500); }
+        .award-card.purple::before { background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue)); }
+        .award-card.red::before    { background: linear-gradient(90deg, var(--primary), var(--accent-purple)); }
+        .award-card.green::before  { background: linear-gradient(90deg, var(--accent-green), var(--accent-blue)); }
+        .award-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.5); }
+        .award-icon     { font-size: 36px; margin-bottom: 16px; }
+        .award-category { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-tertiary); margin-bottom: 8px; }
+        .award-title    { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; }
+        .award-subtitle { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; }
+        .award-winner   { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-elevated); border-radius: 12px; cursor: pointer; transition: background 0.2s; }
+        .award-winner:hover { background: #2a2a2a; }
+        .winner-avatar  { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+        .gold   .winner-avatar { background: linear-gradient(135deg, var(--accent-yellow), #FF9500); color: #000; }
+        .purple .winner-avatar { background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue)); color: #fff; }
+        .red    .winner-avatar { background: linear-gradient(135deg, var(--primary), var(--accent-purple)); color: #fff; }
+        .green  .winner-avatar { background: linear-gradient(135deg, var(--accent-green), var(--accent-blue)); color: #000; }
+        .winner-info  { flex: 1; }
+        .winner-name  { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+        .winner-stat  { font-size: 13px; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; }
+        .no-winner    { color: var(--text-tertiary); font-size: 14px; padding: 12px 0; }
+
+        /* MOVIE AWARDS */
+        .movie-awards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 48px; animation: fadeInUp 0.5s ease 0.2s backwards; }
+        .movie-award-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; overflow: hidden; cursor: pointer; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); position: relative; }
+        .movie-award-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,51,102,0.08), rgba(157,78,221,0.08)); opacity: 0; transition: opacity 0.4s ease; pointer-events: none; }
+        .movie-award-card:hover::before { opacity: 1; }
+        .movie-award-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(0,0,0,0.6); border-color: rgba(255,51,102,0.3); }
+        .movie-award-poster { width: 100%; aspect-ratio: 2/3; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card)); display: flex; align-items: center; justify-content: center; font-size: 64px; position: relative; overflow: hidden; }
+        .movie-award-poster::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg-card), transparent 60%); }
+        .award-ribbon { position: absolute; top: 12px; right: 12px; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; z-index: 2; }
+        .ribbon-gold { background: var(--accent-yellow); color: #000; }
+        .ribbon-red  { background: var(--primary); color: #fff; }
+        .ribbon-blue { background: var(--accent-blue); color: #000; }
+        .movie-award-info { padding: 16px; }
+        .award-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+        .award-label.gold { color: var(--accent-yellow); }
+        .award-label.red  { color: var(--primary); }
+        .award-label.blue { color: var(--accent-blue); }
+        .movie-award-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+        .movie-award-meta  { font-size: 13px; color: var(--text-secondary); }
+
+        /* SECTION & ARCHIVE */
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .section-title  { font-size: 28px; font-weight: 700; letter-spacing: -1px; }
+        .archive-list   { display: flex; flex-direction: column; gap: 12px; }
+        .archive-item   { background: var(--bg-card); border-radius: 14px; border: 1px solid rgba(255,255,255,0.04); overflow: hidden; }
+        .archive-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; transition: background 0.2s; }
+        .archive-header:hover { background: var(--bg-elevated); }
+        .archive-month  { font-size: 15px; font-weight: 700; }
+        .archive-toggle { color: var(--text-tertiary); font-size: 16px; transition: transform 0.3s; }
+        .archive-toggle.open { transform: rotate(180deg); }
+        .archive-body   { display: none; padding: 0 20px 20px; border-top: 1px solid rgba(255,255,255,0.04); }
+        .archive-body.open { display: block; }
+        .archive-mini-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-top: 14px; }
+        .amc { background: var(--bg-elevated); border-radius: 10px; padding: 12px 14px; }
+        .amc-cat { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-tertiary); margin-bottom: 4px; }
+        .amc-val { font-size: 14px; font-weight: 600; }
+        .amc-sub { font-size: 12px; color: var(--text-secondary); }
+
+        /* loading */
+        .loading-state { text-align: center; padding: 80px; color: var(--text-secondary); }
+        .loading-spinner { width: 40px; height: 40px; border: 3px solid rgba(255,214,10,0.2); border-top-color: var(--accent-yellow); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+
+        @keyframes fadeInUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 1024px) { .page-content { padding: 40px; } .nav-links { display: none; } .awards-grid { grid-template-columns: 1fr; } .movie-awards-grid { grid-template-columns: 1fr 1fr; } .archive-mini-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="main-container">
+    <nav class="nav">
+        <div class="nav-left">
+            <a href="/browse" class="logo">CineMatch</a>
+            <ul class="nav-links">
+                <li><a href="/browse" class="nav-link">Browse</a></li>
+                <li><a href="/recommendations" class="nav-link">For You</a></li>
+                <li><a href="/awards" class="nav-link active">Awards</a></li>
+                <li><a href="/cineblend" class="nav-link">CineBlend</a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <div class="user-avatar" id="avatarBtn"></div>
+        </div>
+    </nav>
+
+    <div class="page-content">
+        <div class="page-header">
+            <h1>Community <span class="highlight">Awards</span></h1>
+            <p>Monthly highlights calculated automatically from community activity</p>
+        </div>
+
+        <div id="awardsContent">
+            <div class="loading-state"><div class="loading-spinner"></div><p>Loading awards…</p></div>
+        </div>
+    </div>
+</div>
+
+<script>
+const API = 'http://localhost:5000/api';
+
+(async function init() {
+    const me = await fetch(`${API}/me`,{credentials:'include'}).then(r=>r.json());
+    if (!me.logged_in) { window.location.href='/login'; return; }
+    document.getElementById('avatarBtn').textContent = me.username.slice(0,2).toUpperCase();
+    setupAvatar(me.username);
+    loadAwards();
+})();
+
+async function loadAwards() {
+    try {
+        const r = await fetch(`${API}/awards`,{credentials:'include'});
+        const d = await r.json();
+        if (!d.success) { document.getElementById('awardsContent').innerHTML=`<p style="color:var(--primary);padding:40px">${esc(d.message)}</p>`; return; }
+        renderAwards(d);
+    } catch(e) {
+        document.getElementById('awardsContent').innerHTML=`<p style="color:var(--primary);padding:40px">Could not load awards. Is Flask running?</p>`;
+    }
+}
+
+function renderAwards(d) {
+    const a = d.current_awards;
+
+    // No-data notice
+    const noDataHTML = !d.has_current_data
+        ? `<div class="no-data-notice" style="display:block">⚠️ This month's awards are still being calculated — showing latest available data.</div>`
+        : '';
+
+    // Month badge
+    const badgeHTML = `<div class="month-badge">🏆 ${esc(d.current_month)} Winners</div>`;
+
+    // Movie awards (top rated + most watched)
+    const topMovie    = a.top_movie;
+    const mostWatched = a.most_watched;
+    const topReviewer = a.top_reviewer;
+
+    const movieAwardsHTML = `
+        <div class="section-header"><h2 class="section-title">Movie Awards</h2></div>
+        <div class="movie-awards-grid">
+            <div class="movie-award-card">
+                <div class="movie-award-poster">🎬<div class="award-ribbon ribbon-gold">🥇 Top Rated</div></div>
+                <div class="movie-award-info">
+                    <div class="award-label gold">Top Rated Movie of the Month</div>
+                    <div class="movie-award-title">${topMovie.title ? esc(topMovie.title) : 'No data yet'}</div>
+                    <div class="movie-award-meta">${topMovie.value ? esc(topMovie.value) : '—'}</div>
+                </div>
+            </div>
+            <div class="movie-award-card">
+                <div class="movie-award-poster">🎬<div class="award-ribbon ribbon-red">🔖 Most Saved</div></div>
+                <div class="movie-award-info">
+                    <div class="award-label red">Most Watchlisted Movie</div>
+                    <div class="movie-award-title">${mostWatched.title ? esc(mostWatched.title) : 'No data yet'}</div>
+                    <div class="movie-award-meta">${mostWatched.value ? esc(mostWatched.value) : '—'}</div>
+                </div>
+            </div>
+            <div class="movie-award-card">
+                <div class="movie-award-poster">🎬<div class="award-ribbon ribbon-blue">💬 Most Reviewed</div></div>
+                <div class="movie-award-info">
+                    <div class="award-label blue">Most Active Reviewer</div>
+                    <div class="movie-award-title">${topReviewer.username ? esc(topReviewer.username) : 'No data yet'}</div>
+                    <div class="movie-award-meta">${topReviewer.value ? esc(topReviewer.value) : '—'}</div>
+                </div>
+            </div>
+        </div>`;
+
+    // Community awards
+    const topGenre = a.top_genre;
+    const communityHTML = `
+        <div class="section-header"><h2 class="section-title">Community Awards</h2></div>
+        <div class="awards-grid">
+            <div class="award-card gold">
+                <div class="award-icon">✍️</div>
+                <div class="award-category">Community Award</div>
+                <div class="award-title">Most Active Reviewer</div>
+                <div class="award-subtitle">Wrote the most reviews this month</div>
+                ${topReviewer.username
+                    ? `<div class="award-winner" onclick="window.location.href='/profile?u=${esc(topReviewer.username)}'">
+                        <div class="winner-avatar">${topReviewer.username.slice(0,2).toUpperCase()}</div>
+                        <div class="winner-info"><div class="winner-name">${esc(topReviewer.username)}</div><div class="winner-stat">${esc(topReviewer.value)}</div></div>
+                        <span style="color:var(--text-tertiary);font-size:18px">→</span>
+                       </div>`
+                    : '<div class="no-winner">No reviews this month yet.</div>'}
+            </div>
+            <div class="award-card purple">
+                <div class="award-icon">⭐</div>
+                <div class="award-category">Community Award</div>
+                <div class="award-title">Top Rated Movie</div>
+                <div class="award-subtitle">Highest rated movie this month</div>
+                ${topMovie.title
+                    ? `<div class="award-winner">
+                        <div class="winner-avatar">🎬</div>
+                        <div class="winner-info"><div class="winner-name">${esc(topMovie.title)}</div><div class="winner-stat">${esc(topMovie.value)}</div></div>
+                       </div>`
+                    : '<div class="no-winner">No ratings this month yet.</div>'}
+            </div>
+            <div class="award-card red">
+                <div class="award-icon">🎭</div>
+                <div class="award-category">Community Award</div>
+                <div class="award-title">Genre of the Month</div>
+                <div class="award-subtitle">Most activity in a single genre</div>
+                ${topGenre.genre
+                    ? `<div class="award-winner">
+                        <div class="winner-avatar">🎬</div>
+                        <div class="winner-info"><div class="winner-name">${esc(topGenre.genre)}</div><div class="winner-stat">${esc(topGenre.value)}</div></div>
+                       </div>`
+                    : '<div class="no-winner">No genre data yet.</div>'}
+            </div>
+            <div class="award-card green">
+                <div class="award-icon">📽️</div>
+                <div class="award-category">Community Award</div>
+                <div class="award-title">Most Watchlisted</div>
+                <div class="award-subtitle">Most added to watchlists this month</div>
+                ${mostWatched.title
+                    ? `<div class="award-winner">
+                        <div class="winner-avatar">🔖</div>
+                        <div class="winner-info"><div class="winner-name">${esc(mostWatched.title)}</div><div class="winner-stat">${esc(mostWatched.value)}</div></div>
+                       </div>`
+                    : '<div class="no-winner">No watchlist activity yet.</div>'}
+            </div>
+        </div>`;
+
+    // Archive
+    const archiveHTML = d.archive && d.archive.length
+        ? `<div class="section-header"><h2 class="section-title">📅 Past Awards</h2></div>
+           <div class="archive-list">${d.archive.map((month,i)=>`
+               <div class="archive-item">
+                   <div class="archive-header" onclick="toggleArch(${i})">
+                       <span class="archive-month">${esc(month.label)}</span>
+                       <span class="archive-toggle" id="at-${i}">▼</span>
+                   </div>
+                   <div class="archive-body" id="ab-${i}">
+                       <div class="archive-mini-grid">
+                           <div class="amc"><div class="amc-cat">🏆 Top Movie</div><div class="amc-val">${esc(month.awards.top_movie?.title||'—')}</div><div class="amc-sub">${esc(month.awards.top_movie?.value||'')}</div></div>
+                           <div class="amc"><div class="amc-cat">✍️ Top Reviewer</div><div class="amc-val">${esc(month.awards.top_reviewer?.username||'—')}</div><div class="amc-sub">${esc(month.awards.top_reviewer?.value||'')}</div></div>
+                           <div class="amc"><div class="amc-cat">📽️ Most Watched</div><div class="amc-val">${esc(month.awards.most_watched?.title||'—')}</div><div class="amc-sub">${esc(month.awards.most_watched?.value||'')}</div></div>
+                           <div class="amc"><div class="amc-cat">🎭 Genre</div><div class="amc-val">${esc(month.awards.top_genre?.genre||'—')}</div><div class="amc-sub">${esc(month.awards.top_genre?.value||'')}</div></div>
+                       </div>
+                   </div>
+               </div>`).join('')}
+           </div>`
+        : `<div class="section-header"><h2 class="section-title">📅 Past Awards</h2></div>
+           <p style="color:var(--text-tertiary);font-size:14px;padding:8px 0;">No past award data yet — check back next month!</p>`;
+
+    document.getElementById('awardsContent').innerHTML =
+        noDataHTML + badgeHTML + movieAwardsHTML + communityHTML + archiveHTML;
+}
+
+function toggleArch(i) {
+    const body = document.getElementById(`ab-${i}`);
+    const tog  = document.getElementById(`at-${i}`);
+    const open = body.classList.toggle('open');
+    tog.classList.toggle('open', open);
+}
+
+function setupAvatar(username) {
+    document.getElementById('avatarBtn').onclick = () => {
+        const ex=document.getElementById('avatarMenu'); if(ex){ex.remove();return;}
+        const btn=document.getElementById('avatarBtn'); const rect=btn.getBoundingClientRect();
+        const menu=document.createElement('div'); menu.id='avatarMenu';
+        menu.style.cssText=`position:fixed;top:${rect.bottom+8}px;right:${window.innerWidth-rect.right}px;background:var(--bg-card);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:8px;z-index:9999;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.5);`;
+        menu.innerHTML=`
+            <button onclick="window.location.href='/browse'" style="width:100%;padding:10px 16px;background:transparent;border:none;color:white;font-family:'Outfit',sans-serif;font-size:14px;cursor:pointer;border-radius:8px;text-align:left;">🏠 Main Page</button>
+            <button onclick="window.location.href='/profile'" style="width:100%;padding:10px 16px;background:transparent;border:none;color:white;font-family:'Outfit',sans-serif;font-size:14px;cursor:pointer;border-radius:8px;text-align:left;">👤 My Profile</button>
+            <button onclick="window.location.href='/dashboard'" style="width:100%;padding:10px 16px;background:transparent;border:none;color:white;font-family:'Outfit',sans-serif;font-size:14px;cursor:pointer;border-radius:8px;text-align:left;">📊 Dashboard</button>
+            <button onclick="logout()" style="width:100%;padding:10px 16px;background:transparent;border:none;color:#FF3366;font-family:'Outfit',sans-serif;font-size:14px;cursor:pointer;border-radius:8px;text-align:left;">🚪 Log Out</button>`;
+        document.body.appendChild(menu);
+        setTimeout(()=>document.addEventListener('click',function h(e){if(!menu.contains(e.target)&&e.target!==btn){menu.remove();document.removeEventListener('click',h);}}),0);
+    };
+}
+
+async function logout(){await fetch(`${API}/logout`,{method:'POST',credentials:'include'});window.location.href='/login';}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+</script>
+</body>
+</html>
