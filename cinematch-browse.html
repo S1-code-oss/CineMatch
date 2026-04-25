@@ -301,12 +301,27 @@
         }
 
         /* Filters Sidebar */
-        .filters {
-            position: sticky;
-            top: 120px;
-            height: fit-content;
-        }
+       .filters {
+    position: sticky;
+    top: 120px;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #FF3366 #0A0A0A;
+}
 
+.filters::-webkit-scrollbar {
+    width: 4px;
+}
+
+.filters::-webkit-scrollbar-track {
+    background: #0A0A0A;
+}
+
+.filters::-webkit-scrollbar-thumb {
+    background: #FF3366;
+    border-radius: 4px;
+}
         .filter-section {
             margin-bottom: 32px;
         }
