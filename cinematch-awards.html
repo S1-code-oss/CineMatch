@@ -145,7 +145,6 @@
             <a href="/browse" class="logo">CineMatch</a>
             <ul class="nav-links">
                 <li><a href="/browse" class="nav-link">Browse</a></li>
-                <li><a href="/browse" class="nav-link" onclick="sessionStorage.setItem('section','watchlist');return true;">Watchlist</a></li>
                 <li><a href="/recommendations" class="nav-link">For You</a></li>
                 <li><a href="/browse#trending" class="nav-link" onclick="window.location.href='/browse';return false;">Trending</a></li>
                 <li><a href="/cineblend" class="nav-link">CineBlend</a></li>
@@ -506,7 +505,6 @@ function setupAvatar(username) {
         const menu=document.createElement('div'); menu.id='avatarMenu';
         menu.style.cssText=`position:fixed;top:${rect.bottom+8}px;right:${window.innerWidth-rect.right}px;background:var(--bg-card);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:8px;z-index:9999;min-width:160px;box-shadow:0 8px 32px rgba(0,0,0,0.5);`;
         menu.innerHTML=`
-            <button onclick="window.location.href='/browse'" style="width:100%;padding:10px 16px;background:transparent;border:none;color:white;font-family:'Outfit',sans-serif;font-size:14px;cursor:pointer;border-radius:8px;text-align:left;">🏠 Main Page</button>
             <button onclick="window.location.href='/profile'" style="width:100%;padding:10px 16px;background:transparent;border:none;color:white;font-family:'Outfit',sans-serif;font-size:14px;cursor:pointer;border-radius:8px;text-align:left;">👤 My Profile</button>
             <button onclick="window.location.href='/dashboard'" style="width:100%;padding:10px 16px;background:transparent;border:none;color:white;font-family:'Outfit',sans-serif;font-size:14px;cursor:pointer;border-radius:8px;text-align:left;">📊 Dashboard</button>
             <button onclick="logout()" style="width:100%;padding:10px 16px;background:transparent;border:none;color:#FF3366;font-family:'Outfit',sans-serif;font-size:14px;cursor:pointer;border-radius:8px;text-align:left;">🚪 Log Out</button>`;
