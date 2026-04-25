@@ -225,7 +225,7 @@ def _get_public_reviews(cursor, user_id: int) -> list:
 def _get_watchlist(cursor, user_id: int, viewer_id: int) -> tuple:
     cursor.execute("SELECT WatchlistPublic FROM Users WHERE UserID = ?", (user_id,))
     pref_row  = cursor.fetchone()
-    is_public = bool(pref_row and pref_row[0])
+    is_public = bool(pref_row and int(pref_row[0]))
     is_owner  = (viewer_id == user_id)
 
     if not is_owner and not is_public:
