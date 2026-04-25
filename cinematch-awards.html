@@ -145,9 +145,11 @@
             <a href="/browse" class="logo">CineMatch</a>
             <ul class="nav-links">
                 <li><a href="/browse" class="nav-link">Browse</a></li>
+                <li><a href="/browse" class="nav-link" onclick="sessionStorage.setItem('section','watchlist');return true;">Watchlist</a></li>
                 <li><a href="/recommendations" class="nav-link">For You</a></li>
-                <li><a href="/awards" class="nav-link active">Awards</a></li>
+                <li><a href="/browse#trending" class="nav-link" onclick="window.location.href='/browse';return false;">Trending</a></li>
                 <li><a href="/cineblend" class="nav-link">CineBlend</a></li>
+                <li><a href="/awards" class="nav-link active">Awards</a></li>
             </ul>
         </div>
         <div class="nav-right">
@@ -260,6 +262,32 @@ async function openUserModal(username, awardLabel) {
         const data = await res.json();
         if (!data.success) { document.getElementById('userModalContent').innerHTML='<div class="modal-loading"><p style="color:var(--text-tertiary)">Profile not found.</p></div>'; return; }
         const u = data.data;
+
+        // Reviews dropdown
+        const reviewsHTML = u.reviews && u.reviews.length
+            ? u.reviews.map(r => `
+                <div style="padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                        <strong style="font-size:13px;">${esc(r.movie)}</strong>
+                        <span style="color:var(--accent-yellow);font-size:12px;">⭐ ${r.rating.toFixed(1)}</span>
+                    </div>
+                    <p style="font-size:13px;color:var(--text-secondary);line-height:1.5;">${esc(r.review_text)}</p>
+                    <small style="color:var(--text-tertiary);font-size:11px;">${esc(r.created_at)}</small>
+                </div>`).join('')
+            : '<p style="color:var(--text-tertiary);font-size:13px;padding:8px 0;">No public reviews yet.</p>';
+
+        // Watchlist dropdown
+        const watchlistHTML = u.watchlist_public && u.watchlist && u.watchlist.length
+            ? u.watchlist.slice(0,10).map(w => `
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <div>
+                        <div style="font-size:13px;font-weight:600;">${esc(w.title)}</div>
+                        <div style="font-size:11px;color:var(--text-tertiary);">${w.release_year||'—'} · ⭐ ${w.avg_rating}</div>
+                    </div>
+                    <small style="color:var(--text-tertiary);font-size:11px;">${esc(w.added_at)}</small>
+                </div>`).join('')
+            : `<p style="color:var(--text-tertiary);font-size:13px;padding:8px 0;">${u.watchlist_public ? 'Watchlist is empty.' : 'Watchlist is private.'}</p>`;
+
         document.getElementById('userModalContent').innerHTML = `
             <div class="user-modal-header">
                 <div class="user-modal-avatar">${esc(username.slice(0,2).toUpperCase())}</div>
@@ -267,18 +295,44 @@ async function openUserModal(username, awardLabel) {
                     <div class="user-modal-name">@${esc(username)}</div>
                     <div class="user-modal-sub">🏆 ${esc(awardLabel)}</div>
                     ${u.location ? `<div class="user-modal-sub" style="margin-top:4px">📍 ${esc(u.location)}</div>` : ''}
+                    ${u.member_since ? `<div class="user-modal-sub" style="margin-top:2px;font-family:'JetBrains Mono',monospace;font-size:11px;">Since ${esc(u.member_since)}</div>` : ''}
                 </div>
             </div>
             <div class="user-modal-body">
                 <div class="user-stats-grid">
-                    <div class="user-stat"><div class="user-stat-val">${u.rating_count??'—'}</div><div class="user-stat-label">Ratings</div></div>
-                    <div class="user-stat"><div class="user-stat-val">${u.review_count??'—'}</div><div class="user-stat-label">Reviews</div></div>
-                    <div class="user-stat"><div class="user-stat-val">${u.watchlist_count??'—'}</div><div class="user-stat-label">Watchlist</div></div>
+                    <div class="user-stat"><div class="user-stat-val">${u.stats?.total_rated??'—'}</div><div class="user-stat-label">Ratings</div></div>
+                    <div class="user-stat"><div class="user-stat-val">${u.stats?.total_reviews??'—'}</div><div class="user-stat-label">Reviews</div></div>
+                    <div class="user-stat"><div class="user-stat-val">${u.stats?.watchlist_count??'—'}</div><div class="user-stat-label">Watchlist</div></div>
+                </div>
+                <div style="display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
+                    ${u.stats?.avg_rating ? `<span style="font-size:13px;color:var(--text-secondary);">⭐ Avg <strong>${u.stats.avg_rating}</strong></span>` : ''}
+                    ${u.stats?.top_genre && u.stats.top_genre !== '—' ? `<span style="font-size:13px;color:var(--text-secondary);">🎬 Loves <strong>${esc(u.stats.top_genre)}</strong></span>` : ''}
+                    ${u.stats?.fav_decade && u.stats.fav_decade !== '—' ? `<span style="font-size:13px;color:var(--text-secondary);">📅 <strong>${esc(u.stats.fav_decade)}</strong></span>` : ''}
                 </div>
                 ${u.bio ? `<p class="user-modal-bio">${esc(u.bio)}</p>` : ''}
-                ${u.member_since ? `<p style="font-size:12px;color:var(--text-tertiary);font-family:'JetBrains Mono',monospace">Member since ${esc(u.member_since)}</p>` : ''}
-                <div class="modal-actions" style="margin-top:20px">
-                    <button class="modal-btn modal-btn-primary" onclick="window.location.href='/profile?u=${esc(username)}'">View Full Profile →</button>
+
+                <!-- Reviews dropdown -->
+                <div style="border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;margin-bottom:10px;">
+                    <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.dd-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(180deg)':''"
+                        style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;background:var(--bg-elevated);">
+                        <span style="font-size:13px;font-weight:700;">✍️ Reviews (${u.stats?.total_reviews??0})</span>
+                        <span class="dd-arrow" style="color:var(--text-tertiary);transition:transform 0.2s;">▼</span>
+                    </div>
+                    <div style="display:none;padding:0 16px;max-height:220px;overflow-y:auto;">
+                        ${reviewsHTML}
+                    </div>
+                </div>
+
+                <!-- Watchlist dropdown -->
+                <div style="border:1px solid rgba(255,255,255,0.07);border-radius:12px;overflow:hidden;">
+                    <div onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none';this.querySelector('.dd-arrow').style.transform=this.nextElementSibling.style.display==='block'?'rotate(180deg)':''"
+                        style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;cursor:pointer;background:var(--bg-elevated);">
+                        <span style="font-size:13px;font-weight:700;">🔖 Watchlist ${u.watchlist_public ? `(${u.watchlist?.length??0})` : '(Private)'}</span>
+                        <span class="dd-arrow" style="color:var(--text-tertiary);transition:transform 0.2s;">▼</span>
+                    </div>
+                    <div style="display:none;padding:0 16px;max-height:220px;overflow-y:auto;">
+                        ${watchlistHTML}
+                    </div>
                 </div>
             </div>`;
     } catch(e) {
