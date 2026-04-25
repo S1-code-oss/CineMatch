@@ -73,9 +73,12 @@ def run_cineblend():
 
         #search friend by username
         cursor.execute(
-            "SELECT UserID, Username, Email FROM Users WHERE Username = ?",
-            (friend_username,)
+            "EXEC SP_CalculateCompatibility @User1ID = ?, @User2ID = ?",
+            (user_id, friend_id)
         )
+        compat_row = cursor.fetchone()
+        while cursor.nextset():
+            pass
         friend = cursor.fetchone()
         if not friend:
             conn.close()
@@ -112,6 +115,9 @@ def run_cineblend():
             "EXEC SP_GetUserRecommendations @UserID = ?, @TopN = 10",
             (user_id,)
         )
+        rec_rows = cursor.fetchall()
+        while cursor.nextset():
+            pass
         rec_rows = cursor.fetchall()
         rec_ids  = [row.MovieID for row in rec_rows]
 
