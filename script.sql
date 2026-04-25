@@ -1,19 +1,9 @@
--- ============================================================
---  CineMatch Database Script  (Updated 25/04/2026)
---  Changes from original:
---    - All CREATE TABLE / INDEX / CONSTRAINT statements are
---      wrapped in IF NOT EXISTS guards so the script is safe
---      to run on an existing database without losing data.
---    - VW_MoviesComplete fixed: adds Description, PosterURL,
---      TrailerURL, Cast, IsApproved; renames AvailableOn -> Platforms.
---    - All four stored procedures wrapped with DROP IF EXISTS
---      so they are always recreated fresh.
--- ============================================================
+
 
 USE [master]
 GO
 
--- Create database only if it does not already exist
+--create database only if it doesnt already exist
 IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'CineMatch')
 BEGIN
     CREATE DATABASE [CineMatch]
